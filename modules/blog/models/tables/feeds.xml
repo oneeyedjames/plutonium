@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="feeds">
+	<field name="name" type="string" size="tiny"/>
+	<field name="slug" type="string" size="tiny"/>
+	<ref name="user" table="users"/>
+</table>

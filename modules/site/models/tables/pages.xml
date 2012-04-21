@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="pages" timestamps="yes">
+	<field name="name" type="string" size="short"/>
+	<field name="slug" type="string" size="short"/>
+	<field name="body" type="string"/>
+	<ref name="parent" table="pages"/>
+</table>

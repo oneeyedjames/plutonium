@@ -1,0 +1,91 @@
+body {
+	background-color: #999999;
+	font-family: sans-serif;
+	font-size: small;
+	color: #333333;
+}
+
+h1, h2, h3 {
+	margin: 0px;
+	padding: 0px;
+	font-weight: normal;
+}
+
+h1 {
+	font-size: 30px;
+}
+
+h2 {
+	font-size: 24px;
+}
+
+h3 {
+	font-size: 20px;
+}
+
+p {
+	text-align: justify;
+}
+
+a {
+	color: #006699;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a img {
+	border: none;
+}
+
+form.wig-login fieldset {
+	margin: 0px;
+	padding: 12px;
+	border: 1px solid #999999;
+}
+
+form.wig-login fieldset legend {
+	height: 16px;
+	padding-left: 20px;
+	background-image: url('../../../images/icons/silk/user.png');
+	background-position: 2px 0px;
+	background-repeat: no-repeat;
+}
+
+ul.wig-menu {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#page {
+	width: 966px;
+	margin: 24px auto;
+}
+
+#header {
+	height: 104px;
+	padding-left: 76px;
+	background: url('../images/logo.png') 12px 12px no-repeat;
+}
+
+#footer {
+}
+
+#wrapper {
+	/*border: 1px solid #333333;*/
+	background-color: #FFFFFF;
+	
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+.inside {
+	padding: 12px;
+}
+
+.clear {
+	clear: both;
+}

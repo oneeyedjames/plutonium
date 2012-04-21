@@ -1,0 +1,37 @@
+Plutonium Request/Response Workflow
+-----------------------------------
+
+Bootstrap Framework
+	Set global constants
+	Load class libraries
+	Load global configuration
+		Initialize Registry
+		Initialize Database
+		Initialize Language
+	Parse request variables
+		Set default values (module, resource, action);
+Initialize Application
+	Initialize Document
+	Initialize Theme
+	Initialize Module
+	Initialize Widgets
+Execute Application
+	Execute Module
+		Load Controller
+		Load Model
+		Load View
+		
+		Execute Controller
+		Display View
+	Execute Widgets
+		Load Layout
+		
+		Display Layout
+	Execute Theme
+		Load Layout
+		
+		Display Layout
+	Execute Document
+		Display Theme Layout
+			Display Module View
+			Display Widgets
