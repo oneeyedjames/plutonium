@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans type="application" name="http" lang="en-US">
+	<phrase key="date_format_long" value="%B %d, %Y" />
+	<phrase key="date_format_short" value="%m/%d/%Y" />
+	<phrase key="date_format_system" value="%Y-%m-%d" />
+	
+	<phrase key="time_format_long" value="%I:%M %p" />
+	<phrase key="time_format_short" value="%I:%M %p" />
+	<phrase key="time_format_system" value="%H:%M:%S" />
+	
+	<phrase key="datetime_format_long" value="%A %d, %Y %I:%M %p" />
+	<phrase key="datetime_format_short" value="%m/%d/%Y %I:%M %p" />
+	<phrase key="datetime_format_system" value="%Y-%m-%d %H:%M:%S" />
+</trans>

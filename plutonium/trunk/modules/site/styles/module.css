@@ -1,0 +1,17 @@
+#user_login_form {
+	width: 0px;
+	white-space: nowrap;
+}
+
+#user_login_form fieldset {
+	padding: .5em;
+	border: 1px solid #333;
+}
+
+#user_login_form fieldset div {
+	margin-top: 1em;
+}
+
+#user_login_form fieldset div:first-child {
+	margin-top: 0em;
+}

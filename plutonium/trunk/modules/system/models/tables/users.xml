@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="sys_users">
+	<fields>
+		<field name="id" type="int"/>
+		<field name="realname" type="text"/>
+		<field name="username" type="text"/>
+		<field name="password" type="text"/>
+		<field name="created" type="date"/>
+		<field name="updated" type="date"/>
+	</fields>
+	<indexes>
+		<index name="primary" unique="yes">
+			<field name="id"/>
+		</index>
+	</indexes>
+</table>
