@@ -1,4 +1,4 @@
-<?php define('PLUTONIUM_VERSION', '0.9.0');
+<?php
 /**
  * @version		0.9.0
  * @package		Plutonium
@@ -6,6 +6,8 @@
  * @copyright	Copyright (C) 2010 J Andrew Scott. All rights reserved.
  * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
  */
+
+define('PLUTONIUM_VERSION', '0.9.0');
 
 define('DS', DIRECTORY_SEPARATOR);
 define('PS', PATH_SEPARATOR);

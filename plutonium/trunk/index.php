@@ -11,8 +11,8 @@ require_once 'framework.php';
 require_once 'functions.php';
 
 // Initialize Components
-require_once 'application/request.php';
 require_once 'application/config.php';
+require_once 'application/request.php';
 
 $config = new Plutonium_Object($config);
 

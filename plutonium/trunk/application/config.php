@@ -1,7 +1,7 @@
 <?php
 
 // System Configuration Parameters
-$config['system']['hostname'] = 'plutonium.net';
+$config['system']['hostname'] = 'plutonium.dev';
 
 // Database Connection Parameters
 $config['database']['driver']   = 'MySQL';
