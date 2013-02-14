@@ -5,8 +5,7 @@ $page_width   = 966;
 $left_width   = $this->countWidgets('left')  ? 266 : 0;
 $right_width  = $this->countWidgets('right') ? 250 : 0;
 $center_width = $page_width - $left_width - $right_width;
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html>
 	<head>
 		<p:head />
