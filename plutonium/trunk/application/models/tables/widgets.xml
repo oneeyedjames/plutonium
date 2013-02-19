@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="widgets" timestamps="yes">
+	<field name="name" type="string" size="tiny"/>
+	<field name="slug" type="string" size="tiny"/>
+	<field name="descrip" type="string" size="short"/>
+	<field name="default" type="bool"/>
+	<xref name="widget_group" table="modules">
+		<field name="grant" type="bool"/>
+	</xref>
+</table>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<table name="users" timestamps="yes">
-	<field name="realname" type="text"/>
-	<field name="username" type="text" size="short"/>
-	<field name="password" type="text" size="short"/>
-</table>
