@@ -75,10 +75,45 @@ class Plutonium_Database_Helper {
 			
 			$cfg->refs = $refs;
 			
+			$xrefs = array();
+			
 			$nodes = $xpath->query('/table/xref');
 			foreach ($nodes as $xref) {
+				$temp = new Plutonium_Object(array(
+					'driver'     => $cfg->driver,
+					'prefix'     => $cfg->prefix,
+					'suffix'     => 'xref',
+					'name'       => $xref->getAttribute('name'),
+					'timestamps' => $xref->getAttribute('timestamps'),
+					'refs'       => array(
+						new Plutonium_Object(array(
+							'name'   => $cfg->name,
+							'table'  => $cfg->name,
+							'prefix' => $cfg->prefix
+						)),
+						new Plutonium_Object(array(
+							'name'   => $xref->getAttribute('table'),
+							'table'  => $xref->getAttribute('table'),
+							'prefix' => $xref->getAttribute('prefix')
+						))
+					)
+				));
 				
+				$temp->fields = array();
+				
+				$subnodes = $xpath->query('field', $xref);
+				foreach ($subnodes as $field) {
+					$temp->fields[] = new Plutonium_Object(array(
+						'name' => $field->getAttribute('name'),
+						'type' => $field->getAttribure('type'),
+						'size' => $field->getAttribure('size')
+					));
+				}
+				
+				$xrefs[] = $temp;
 			}
+			
+			$cfg->xrefs = $xrefs;
 			
 			if (is_file($file_php)) require_once $file_php;
 			else $type = 'Plutonium_Database_Table_Default';
