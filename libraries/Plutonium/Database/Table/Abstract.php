@@ -1,6 +1,7 @@
 <?php defined('PLUTONIUM_VERSION') or die('Plutonium framework is not initialized.');
 
-abstract class Plutonium_Database_Table_Abstract {
+abstract class Plutonium_Database_Table_Abstract
+implements Plutonium_Database_Table_Interface {
 	protected $_delegate = NULL;
 	
 	protected $_name = NULL;
@@ -11,7 +12,9 @@ abstract class Plutonium_Database_Table_Abstract {
 	protected $_field_meta  = array();
 	
 	public function __construct($cfg) {
-		$this->_delegate = Plutonium_Database_Helper::getTableDelegate($cfg->driver, $this);
+		$type = 'Plutonium_Database_Table_Delegate_' . $cfg->driver;
+		
+		$this->_delegate = new $type($this);
 		
 		$this->_name = $cfg->name;
 		
@@ -112,7 +115,7 @@ abstract class Plutonium_Database_Table_Abstract {
 		}
 	}
 	
-	public function make($data) {
+	public function make($data = NULL) {
 		return new Plutonium_Database_Row($this, $this->_field_names, $data);
 	}
 	

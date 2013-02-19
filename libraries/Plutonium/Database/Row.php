@@ -4,11 +4,9 @@ class Plutonium_Database_Row {
 	protected $_table = NULL;
 	protected $_data  = NULL;
 	
-	public function __construct(&$table, $fields, $data = null) {
+	public function __construct(&$table, $data = null) {
 		$this->_table = $table;
 		$this->_data  = array();
-		
-		foreach ($fields as $field) $this->_data[$field] = null;
 		
 		$this->bind($data);
 	}
@@ -25,6 +23,7 @@ class Plutonium_Database_Row {
 	
 	public function bind($data) {
 		if (is_array($data)) {
+			$this->_data = array_fill_keys($this->_table->field_names, NULL);
 			foreach ($data as $key => $value) $this->$key = $value;
 		}
 	}
