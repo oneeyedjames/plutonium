@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="users" timestamps="yes">
+	<field name="realname" type="string" size="tiny"/>
+	<field name="username" type="string" size="tiny"/>
+	<field name="password" type="string" size="tiny"/>
+	<xref name="user_group" table="groups">
+		<field name="default" type="bool"/>
+	</xref>
+</table>

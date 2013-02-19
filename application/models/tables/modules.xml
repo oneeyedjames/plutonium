@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="modules" timestamps="yes">
+	<field name="name" type="string" size="tiny"/>
+	<field name="slug" type="string" size="tiny"/>
+	<field name="descrip" type="string" size="short"/>
+	<field name="default" type="bool"/>
+	<xref name="module_widget" table="widgets">
+		<field name="location" type="string" size="tiny"/>
+		<field name="position" type="int" size="tiny" unsigned="yes"/>
+	</xref>
+</table>

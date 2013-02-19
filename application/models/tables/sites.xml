@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="sites" timestamps="yes">
+	<field name="name" type="string" size="tiny"/>
+	<field name="slug" type="string" size="tiny"/>
+	<field name="descrip" type="string" size="short"/>
+	<field name="default" type="bool"/>
+	<field name="meta_keyword" type="string" size="short"/>
+	<field name="meta_descrip" type="string" size="short"/>
+</table>
