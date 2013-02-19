@@ -6,10 +6,10 @@ implements Plutonium_Database_Table_Interface {
 	
 	protected $_name = NULL;
 	
-	protected $_table_name  = NULL;
-	protected $_table_meta  = array();
-	protected $_field_names = array();
-	protected $_field_meta  = array();
+	protected $_table_name = NULL;
+	protected $_table_meta = array();
+	protected $_table_xref = array();
+	protected $_field_meta = array();
 	
 	public function __construct($cfg) {
 		$type = 'Plutonium_Database_Table_Delegate_' . $cfg->driver;
@@ -20,11 +20,13 @@ implements Plutonium_Database_Table_Interface {
 		
 		$table_name = array($cfg->prefix);
 		
-		if ($cfg->prefix == 'mod') {
+		if ($cfg->prefix == 'mod')
 			$table_name[] = Plutonium_Module_Helper::getName();
-		}
 		
 		$table_name[] = $cfg->name;
+		
+		if (isset($cfg->suffix))
+			$table_name[] = $cfg->suffix;
 		
 		$this->_table_name = implode('_', $table_name);
 		
@@ -32,20 +34,18 @@ implements Plutonium_Database_Table_Interface {
 			'timestamps' => $cfg->timestamps == 'yes'
 		));
 		
-		$this->_field_names[] = 'id';
-		
-		$this->_field_meta['id'] = new Plutonium_Object(array(
-			'name'     => 'id',
-			'type'     => 'int',
-			'null'     => FALSE,
-			'auto'     => TRUE,
-			'unsigned' => TRUE
-		));
+		if ($cfg->suffix != 'xref') {
+			$this->_field_meta['id'] = new Plutonium_Object(array(
+				'name'     => 'id',
+				'type'     => 'int',
+				'null'     => FALSE,
+				'auto'     => TRUE,
+				'unsigned' => TRUE
+			));
+		}
 		
 		foreach ($cfg->refs as $ref) {
 			$field_name = $ref->name . '_id';
-			
-			$this->_field_names[] = $field_name;
 			
 			$this->_field_meta[$field_name] = new Plutonium_Object(array(
 				'name'     => $field_name,
@@ -58,9 +58,6 @@ implements Plutonium_Database_Table_Interface {
 		}
 		
 		if ($cfg->timestamps == 'yes') {
-			$this->_field_names[] = 'created';
-			$this->_field_names[] = 'updated';
-			
 			$this->_field_meta['created'] = new Plutonium_Object(array(
 				'name'    => 'created',
 				'type'    => 'date',
@@ -77,8 +74,6 @@ implements Plutonium_Database_Table_Interface {
 		}
 		
 		foreach ($cfg->fields as $field) {
-			$this->_field_names[] = $field->name;
-			
 			$this->_field_meta[$field->name] = new Plutonium_Object(array(
 				'name'     => $field->name,
 				'type'     => $field->type,
@@ -89,6 +84,10 @@ implements Plutonium_Database_Table_Interface {
 			));
 		}
 		
+		foreach ($cfg->xrefs as $xref) {
+			$this->_table_xref[$xref->name] = new Plutonium_Database_Table_Default($xref);
+		}
+		
 		$this->_delegate->create();
 	}
 	
@@ -96,27 +95,23 @@ implements Plutonium_Database_Table_Interface {
 		switch ($key) {
 			case 'name':
 				return $this->_name;
-			break;
 			case 'table_name':
 				return $this->_table_name;
-			break;
 			case 'table_meta':
 				return $this->_table_meta;
-			break;
+			case 'table_xref':
+				return $this->_table_xref;
 			case 'field_names':
-				return $this->_field_names;
-			break;
+				return array_keys($this->_field_meta);
 			case 'field_meta':
 				return $this->_field_meta;
-			break;
 			default:
 				return NULL;
-			break;
 		}
 	}
 	
 	public function make($data = NULL) {
-		return new Plutonium_Database_Row($this, $this->_field_names, $data);
+		return new Plutonium_Database_Row($this, $this->field_names, $data);
 	}
 	
 	public function find($args = NULL) {
