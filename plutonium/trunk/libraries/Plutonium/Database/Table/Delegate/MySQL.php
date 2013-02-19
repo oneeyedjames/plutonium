@@ -1,6 +1,7 @@
 <?php
 
-class Plutonium_Database_Table_Delegate_MySQL extends Plutonium_Database_Table_Delegate_Abstract {
+class Plutonium_Database_Table_Delegate_MySQL
+extends Plutonium_Database_Table_Delegate_Abstract {
 	public function select($args) {
 		$db = Plutonium_Database_Helper::getAdapter();
 		

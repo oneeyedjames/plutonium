@@ -12,10 +12,10 @@ abstract class Plutonium_Database_Adapter_Abstract implements Plutonium_Database
 		switch ($key) {
 			case 'driver':
 				return $this->_config->driver;
-			break;
+				break;
 			default:
 				return NULL;
-			break;
+				break;
 		}
 	}
 }

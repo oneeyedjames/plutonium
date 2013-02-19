@@ -3,13 +3,13 @@
 class Plutonium_HTML_Tag {
 	protected $_name;
 	protected $_attributes;
-	protected $_inner_html;
+	protected $_child_tags;
 	protected $_self_close;
 	
-	public function __construct($name, $attributes = array(), $inner_html = NULL, $self_close = TRUE) {
+	public function __construct($name, $attributes = array(), $child_tags = array(), $self_close = TRUE) {
 		$this->_name = $name;
 		$this->_attributes = is_array($attributes) ? $attributes : array();
-		$this->_inner_html = $inner_html;
+		$this->_child_tags = is_array($child_tags) ? $child_tags : array();
 		$this->_self_close = $self_close;
 	}
 	
@@ -80,8 +80,8 @@ class Plutonium_HTML_Tag {
 		}
 	}
 	
-	public function setInnerHTML($inner_html) {
-		$this->_inner_html = $inner_html;
+	public function addChildTag($tag) {
+		
 	}
 	
 	public function setSelfClose($self_close) {
@@ -91,11 +91,15 @@ class Plutonium_HTML_Tag {
 	public function toString() {
 		$html = '<' . strtolower($this->_name);
 		
-		foreach ($this->_attributes as $key => $value) {
+		foreach ($this->_attributes as $key => $value)
 			$html .= ' ' . $key . '="' . $value . '"';
-		}
 		
-		if (empty($this->_inner_html) && $this->_self_close) {
+		$inner_html = "";
+		
+		foreach ($this->_child_tags as $tag)
+			$inner_html .= $tag->toString();
+		
+		if (empty($inner_html) && $this->_self_close) {
 			$html .= ' />';
 		} else {
 			$html .= '>' . $this->_inner_html

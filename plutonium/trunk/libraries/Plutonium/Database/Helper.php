@@ -18,35 +18,34 @@ class Plutonium_Database_Helper {
 		$type = ucfirst($name) . 'Table';
 		
 		$path = Plutonium_Application_Helper::getPath();
+		$file = 'models' . DS . 'tables' . DS . $name;
 		
-		$file_php = $path . DS . 'tables' . DS . $name . '.php';
-		$file_xml = $path . DS . 'tables' . DS . $name . '.xml';
+		$file_php = $path . DS . $file . '.php';
+		$file_xml = $path . DS . $file . '.xml';
 		
 		if (!is_file($file_php) || !is_file($file_xml)) {
 			$path = Plutonium_Module_Helper::getPath() . DS
 				  . Plutonium_Module_Helper::getName();
 			
-			$file_php = $path . DS . 'models' . DS . 'tables' . DS . $name . '.php';
-			$file_xml = $path . DS . 'models' . DS . 'tables' . DS . $name . '.xml';
+			$file_php = $path . DS . $file . '.php';
+			$file_xml = $path . DS . $file . '.xml';
 		}
 		
 		if (is_file($file_xml)) {
 			$cfg = new Plutonium_Object();
-			
 			$cfg->driver = self::getAdapter()->driver;
 			
 			$doc = new DOMDocument();
 			$doc->preserveWhiteSpace = FALSE;
 			$doc->load($file_xml);
 			
-			//$schema = realpath(dirname(__FILE__) . DS . 'Table.xsd');
-			//$doc->schemaValidate($schema);
-			
 			$xpath = new DOMXPath($doc);
 			
-			$cfg->name = $xpath->query('/table')->item(0)->getAttribute('name');
-			$cfg->prefix = $xpath->query('/table')->item(0)->getAttribute('prefix');
-			$cfg->timestamps = $xpath->query('/table')->item(0)->getAttribute('timestamps');
+			$table = $xpath->query('/table')->item(0);
+			
+			$cfg->name       = $table->getAttribute('name');
+			$cfg->prefix     = $table->getAttribute('prefix');
+			$cfg->timestamps = $table->getAttribute('timestamps');
 			
 			if (empty($cfg->prefix)) $cfg->prefix = 'mod';
 			
@@ -66,15 +65,20 @@ class Plutonium_Database_Helper {
 			$refs = array();
 			
 			$nodes = $xpath->query('/table/ref');
-			foreach ($nodes as $node) {
+			foreach ($nodes as $ref) {
 				$refs[] = new Plutonium_Object(array(
-					'name'   => $node->getAttribute('name'),
-					'table'  => $node->getAttribute('table'),
-					'prefix' => $node->getAttribute('prefix')
+					'name'   => $ref->getAttribute('name'),
+					'table'  => $ref->getAttribute('table'),
+					'prefix' => $ref->getAttribute('prefix')
 				));
 			}
 			
 			$cfg->refs = $refs;
+			
+			$nodes = $xpath->query('/table/xref');
+			foreach ($nodes as $xref) {
+				
+			}
 			
 			if (is_file($file_php)) require_once $file_php;
 			else $type = 'Plutonium_Database_Table_Default';
@@ -83,12 +87,6 @@ class Plutonium_Database_Helper {
 		}
 		
 		return NULL;
-	}
-	
-	public static function getTableDelegate($driver, $table) {
-		$type = 'Plutonium_Database_Table_Delegate_' . $driver;
-		
-		return new $type($table);
 	}
 }
 
