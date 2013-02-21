@@ -99,16 +99,18 @@ class Plutonium_Database_Helper {
 					)
 				));
 				
-				$temp->fields = array();
+				$fields = array();
 				
 				$subnodes = $xpath->query('field', $xref);
 				foreach ($subnodes as $field) {
-					$temp->fields[] = new Plutonium_Object(array(
+					$fields[] = new Plutonium_Object(array(
 						'name' => $field->getAttribute('name'),
-						'type' => $field->getAttribure('type'),
-						'size' => $field->getAttribure('size')
+						'type' => $field->getAttribute('type'),
+						'size' => $field->getAttribute('size')
 					));
 				}
+				
+				$temp->fields = $fields;
 				
 				$xrefs[] = $temp;
 			}
