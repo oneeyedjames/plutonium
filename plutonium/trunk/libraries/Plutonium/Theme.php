@@ -65,7 +65,7 @@ class Plutonium_Theme {
 			
 			ob_end_clean();
 		} else {
-			// raise error
+			// TODO raise error
 		}
 		
 		return $this->_output;

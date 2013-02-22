@@ -1,6 +1,15 @@
 <?php
 
-abstract class Plutonium_Language_Abstract {
+class Plutonium_Language {
+	protected static $_instance = null;
+	
+	public static function &getInstance($config = null) {
+		if (is_null(self::$_instance) && !is_null($config))
+			self::$_instance = new self($config);
+		
+		return self::$_instance;
+	}
+	
 	protected $_code;
 	protected $_name;
 	protected $_phrases;
