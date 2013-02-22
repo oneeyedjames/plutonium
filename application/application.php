@@ -1,12 +1,11 @@
 <?php
 
-class HttpApplication extends Plutonium_Application_Abstract {
+class HttpApplication extends Plutonium_Application {
 	protected static $_instance = null;
 	
 	public static function &getInstance() {
-		if (is_null(self::$_instance)) {
+		if (is_null(self::$_instance))
 			self::$_instance = new self();
-		}
 		
 		return self::$_instance;
 	}
@@ -64,10 +63,6 @@ class HttpApplication extends Plutonium_Application_Abstract {
 		$registry->config->set('widgets', $widgets);
 		
 		parent::initialize();
-	}
-	
-	public function execute() {
-		parent::execute();
 	}
 }
 
