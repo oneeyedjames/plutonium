@@ -17,8 +17,7 @@ require_once 'application/request.php';
 $config = new Plutonium_Object($config);
 
 $database =& Plutonium_Database_Helper::getAdapter($config['database']);
-$language =& Plutonium_Language_Helper::getLanguage($config['language']);
-
+$language =& Plutonium_Language::getInstance($config['language']);
 $registry =& Plutonium_Registry::getInstance();
 $registry->set('config',   $config);
 $registry->set('database', $database);

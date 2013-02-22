@@ -11,7 +11,7 @@ class PagesView extends Plutonium_Module_View_Abstract {
 		
 		$this->setRef('page', $page);
 		
-		$document =& Plutonium_Document_Helper::getDocument();
+		$document =& Plutonium_Document::getInstance();
 		$document->setTitle($page->title);
 	}
 }
