@@ -1,6 +1,7 @@
 <?php
 
-class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
+class Plutonium_Object
+implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
 	protected $_vars;
 	
 	// Constructor
@@ -37,7 +38,7 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
 		$this->del($key);
 	}
 	
-	// Accessible methods
+	// Plutonium_Accessible methods
 	public function has($key) {
 		return array_key_exists($key, $this->_vars);
 	}
@@ -75,12 +76,6 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
 		$this->del($key);
 	}
 	
-	// Countable methods
-	public function count() {
-		return count($this->_vars);
-	}
-	
-	/*
 	// Iterator methods
 	public function current() {
 		return current($this->_vars);
@@ -99,9 +94,13 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
 	}
 	
 	public function valid() {
-		return $this->current() !== false;
+		return key($this->_vars) !== null;
 	}
-	*/
+	
+	// Countable method
+	public function count() {
+		return count($this->_vars);
+	}
 	
 	public function toArray() {
 		$vars = array();

@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Utility_date {
+class Plutonium_Utility_Date {
 	protected $_time;
 	
 	public function __construct($time = null) {

@@ -1,6 +1,32 @@
 <?php
 
-abstract class Plutonium_Widget_Abstract {
+class Plutonium_Widget {
+	protected static $_path = null;
+	
+	public static function getPath() {
+		if (is_null(self::$_path) && defined('P_BASE_PATH'))
+			self::$_path = realpath(P_BASE_PATH . '/widgets');
+		
+		return self::$_path;
+	}
+	
+	public static function setPath($path) {
+		self::$_path = $path;
+	}
+	
+	public static function &createInstance($name) {
+		$name = strtolower($name);
+		$file = self::getPath() . DS . $name . DS . 'widget.php';
+		$type = ucfirst($name) . 'Widget';
+		
+		if (is_file($file)) {
+			require_once $file;
+			return new $type($name);
+		}
+		
+		return new Plutonium_Widget_Default($name);
+	}
+	
 	protected $_name   = null;
 	protected $_vars   = null;
 	protected $_layout = null;
