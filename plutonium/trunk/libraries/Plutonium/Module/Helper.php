@@ -39,7 +39,7 @@ class Plutonium_Module_Helper {
 			
 			self::$_module = new $type($name);
 			
-			$language =& Plutonium_Language_Helper::getLanguage();
+			$language =& Plutonium_Language::getInstance();
 			$language->load(self::getPath() . DS . $name . DS . 'languages');
 		}
 		

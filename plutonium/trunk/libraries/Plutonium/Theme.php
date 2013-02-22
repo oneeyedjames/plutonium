@@ -24,7 +24,7 @@ class Plutonium_Theme {
 			return new $type($name);
 		}
 		
-		return new Plutonium_Theme_Default($name);
+		return new self($name);
 	}
 	
 	protected $_name   = null;
@@ -53,7 +53,7 @@ class Plutonium_Theme {
 		$layout = strtolower($request->get('layout', $this->_layout));
 		$format = strtolower($request->get('format', $this->_format));
 		
-		$file = Plutonium_Theme_Helper::getPath() . DS . $name . DS
+		$file = self::getPath() . DS . $name . DS
 		      . 'layouts' . DS . $layout . '.' . $format . '.php';
 		
 		if (is_file($file)) {

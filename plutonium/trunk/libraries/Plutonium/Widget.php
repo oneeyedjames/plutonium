@@ -14,7 +14,7 @@ class Plutonium_Widget {
 		self::$_path = $path;
 	}
 	
-	public static function &createInstance($name) {
+	public static function createInstance($name) {
 		$name = strtolower($name);
 		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
@@ -70,7 +70,7 @@ class Plutonium_Widget {
 		$layout = strtolower($this->_layout);
 		$format = strtolower($request->get('format', $this->_format));
 		
-		$file = Plutonium_Widget_Helper::getPath() . DS . $name . DS
+		$file = self::getPath() . DS . $name . DS
 		      . 'layouts' . DS . $layout . '.' . $format . '.php';
 		
 		if (is_file($file)) {
@@ -82,7 +82,7 @@ class Plutonium_Widget {
 			
 			ob_end_clean();
 		} else {
-			// raise error
+			// TODO raise error
 		}
 		
 		return $this->_output;

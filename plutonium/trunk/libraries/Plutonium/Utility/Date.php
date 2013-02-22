@@ -9,7 +9,7 @@ class Plutonium_Utility_Date {
 	
 	public function format($format, $translate = true) {
 		if ($translate) {
-			$language = Plutonium_Language_Helper::getLanguage();
+			$language = Plutonium_Language::getInstance();
 			$format   = $language->translate($format);
 		}
 		
