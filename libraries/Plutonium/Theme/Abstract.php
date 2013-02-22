@@ -1,11 +1,11 @@
 <?php
 
 abstract class Plutonium_Theme_Abstract {
-	protected $_name   = NULL;
-	protected $_layout = NULL;
-	protected $_format = NULL;
-	protected $_params = NULL;
-	protected $_output = NULL;
+	protected $_name   = null;
+	protected $_layout = null;
+	protected $_format = null;
+	protected $_params = null;
+	protected $_output = null;
 	
 	public function __construct($name) {
 		$this->_name   = $name;

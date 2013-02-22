@@ -1,9 +1,9 @@
 <?php
 
 class Plutonium_Url extends Plutonium_Object {
-	protected static $_scheme = NULL;
-	protected static $_host   = NULL;
-	protected static $_path   = NULL;
+	protected static $_scheme = null;
+	protected static $_host   = null;
+	protected static $_path   = null;
 	
 	public static function initialize($base_url) {
 		$parts = parse_url($base_url);
@@ -21,7 +21,7 @@ class Plutonium_Url extends Plutonium_Object {
 		return new self($vars);
 	}
 	
-	public function __construct($vars = NULL) {
+	public function __construct($vars = null) {
 		parent::__construct($vars);
 	}
 	

@@ -15,7 +15,7 @@ class PagesController extends Plutonium_Module_Controller_Abstract {
 		
 		$result = $database->query($sql);
 		
-		if (($id = $result->fetchResult()) !== FALSE) {
+		if (($id = $result->fetchResult()) !== false) {
 			$view->setVal('slug', $id);
 		}
 		

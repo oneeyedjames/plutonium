@@ -10,9 +10,7 @@
 function is_assoc($var) {
 	if (!is_array($var) || empty($var)) return false;
 	
-	$keys = array_keys($var);
-	
-	foreach ($keys as $key) {
+	foreach (array_keys($var) as $key) {
 		if (is_string($key)) return true;
 	}
 	
@@ -22,9 +20,7 @@ function is_assoc($var) {
 function is_range($var) {
 	if (!is_array($var) || empty($var)) return false;
 	
-	$keys = array_keys($var);
-	
-	foreach ($keys as $key) {
+	foreach (array_keys($var) as $key) {
 		if (!in_array($key, array('min', 'max'))) return false;
 	}
 	

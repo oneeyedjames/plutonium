@@ -1,8 +1,8 @@
 <?php
 
 abstract class Plutonium_Application_Abstract {
-	protected $_theme   = NULL;
-	protected $_module  = NULL;
+	protected $_theme   = null;
+	protected $_module  = null;
 	protected $_widgets = array();
 	
 	public function initialize() {

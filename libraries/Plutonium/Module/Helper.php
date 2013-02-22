@@ -1,13 +1,13 @@
 <?php
 
 class Plutonium_Module_Helper {
-	protected static $_name = NULL;
-	protected static $_path = NULL;
+	protected static $_name = null;
+	protected static $_path = null;
 	
-	protected static $_module     = NULL;
-	protected static $_controller = NULL;
+	protected static $_module     = null;
+	protected static $_controller = null;
 	protected static $_models     = array();
-	protected static $_view       = NULL;
+	protected static $_view       = null;
 	
 	public static function getName() {
 		return self::$_name;

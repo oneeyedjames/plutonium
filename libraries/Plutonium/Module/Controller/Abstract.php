@@ -1,8 +1,8 @@
 <?php
 
 abstract class Plutonium_Module_Controller_Abstract {
-	protected $_name     = NULL;
-	protected $_redirect = NULL;
+	protected $_name     = null;
+	protected $_redirect = null;
 	
 	public function __construct($name) {
 		$this->_name = $name;

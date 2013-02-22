@@ -31,7 +31,7 @@ if (!empty($path)) {
 	if (isset($path[2])) $_REQUEST['action']   = $path[2];
 	
 	if (isset($path[3])) {
-		if (($pos = strrpos($path[3], '.')) !== FALSE) {
+		if (($pos = strrpos($path[3], '.')) !== false) {
 			$_REQUEST['slug']   = substr($path[3], 0, $pos);
 			$_REQUEST['format'] = substr($path[3], $pos + 1);
 		} else {

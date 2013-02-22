@@ -1,18 +1,17 @@
 <?php
 
 class Plutonium_Response {
-	protected static $_instance = NULL;
+	protected static $_instance = null;
 	
 	public static function &getInstance() {
-		if (is_null(self::$_instance)) {
+		if (is_null(self::$_instance))
 			self::$_instance = new self();
-		}
 		
 		return self::$_instance;
 	}
 	
-	protected $_theme_output  = NULL;
-	protected $_module_output = NULL;
+	protected $_theme_output  = null;
+	protected $_module_output = null;
 	protected $_widget_output = array();
 	
 	protected $_module_start = '<div class="p_module">';
@@ -60,7 +59,7 @@ class Plutonium_Response {
 			return implode($this->_widget_delim, $outputs);
 		}
 		
-		return NULL;
+		return null;
 	}
 	
 	public function setWidgetOutput($location, $output) {

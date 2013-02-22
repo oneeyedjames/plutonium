@@ -1,14 +1,14 @@
 <?php
 
 abstract class Plutonium_Module_Abstract {
-	protected $_name   = NULL;
-	protected $_params = NULL;
-	protected $_output = NULL;
+	protected $_name   = null;
+	protected $_params = null;
+	protected $_output = null;
 	
-	protected $_resource = NULL;
-	protected $_action   = NULL;
+	protected $_resource = null;
+	protected $_action   = null;
 	
-	public function __construct($name, $params = NULL) {
+	public function __construct($name, $params = null) {
 		$this->_name = $name;
 		$this->_params = is_a($params, 'Plutonium_Object') ? $params
 					   : new Plutonium_Object($params);

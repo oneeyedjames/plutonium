@@ -1,7 +1,7 @@
 <?php
 
 abstract class Plutonium_Document_Abstract extends Plutonium_Object {
-	protected static $_instance = NULL;
+	protected static $_instance = null;
 	
 	public static function &getInstance() {
 		if (is_null(self::$_instance)) {
@@ -18,14 +18,14 @@ abstract class Plutonium_Document_Abstract extends Plutonium_Object {
 		return self::$_instance;
 	}
 	
-	protected $_type = NULL;
+	protected $_type = null;
 	protected $_lang = 'en-US';
 	
 	protected $_direction = 'ltr';
 	protected $_generator = 'Plutonium CMS';
 	
-	protected $_title   = NULL;
-	protected $_descrip = NULL;
+	protected $_title   = null;
+	protected $_descrip = null;
 	
 	public function getTitle() {
 		return $this->_title;

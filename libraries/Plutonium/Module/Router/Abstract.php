@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Module_Router_Abstract {
-	protected $_config = NULL;
+	protected $_config = null;
 	protected $_params = array();
 	protected $_values = array();
 	
@@ -22,7 +22,7 @@ class Plutonium_Module_Router_Abstract {
 		if (isset($this->_values[$key]))   return $this->_values[$key];
 		if (isset($this->_defaults[$key])) return $this->_defaults[$key];
 		
-		return NULL;
+		return null;
 	}
 	
 	abstract public function match($request);

@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Filesystem_Folder {
-	protected $_path = NULL;
+	protected $_path = null;
 	
 	public function __construct($path) {
 		$this->_path = $path;
@@ -28,7 +28,7 @@ class Plutonium_Filesystem_Folder {
 	}
 	
 	public function create() {
-		return mkdir($this->_path, 755, TRUE);
+		return mkdir($this->_path, 755, true);
 	}
 	
 	public function delete() {
@@ -36,13 +36,13 @@ class Plutonium_Filesystem_Folder {
 	}
 	
 	public function getFolders() {
-		$folders = FALSE;
+		$folders = false;
 		
 		if (is_dir($this->_path)) {
 			if ($dir = opendir($this->_path)) {
 				$folders = array();
 				
-				while (($file = readdir($dir)) !== FALSE) {
+				while (($file = readdir($dir)) !== false) {
 					if ($file != '.' && $file != '..') {
 						$path = $this->_path . DS . $file;
 						if (is_dir($path)) $folders[] = $file;
@@ -57,13 +57,13 @@ class Plutonium_Filesystem_Folder {
 	}
 	
 	public function getFiles() {
-		$folders = FALSE;
+		$folders = false;
 		
 		if (is_dir($this->_path)) {
 			if ($dir = opendir($this->_path)) {
 				$folders = array();
 				
-				while (($file = readdir($dir)) !== FALSE) {
+				while (($file = readdir($dir)) !== false) {
 					if ($file != '.' && $file != '..') {
 						$path = $this->_path . DS . $file;
 						if (is_file($path)) $folders[] = $file;

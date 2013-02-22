@@ -18,7 +18,7 @@ class Plutonium_Event_Dispatcher extends Plutonium_Object {
 		}
 	}
 	
-	public function trigger($event, $args = NULL) {
+	public function trigger($event, $args = null) {
 		if (is_null($args)) $args = array();
 		
 		foreach ($this->_listeners as $listener) {

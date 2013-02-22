@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Event_Listener {
-	protected $_dispatcher = NULL;
+	protected $_dispatcher = null;
 	
 	public function __construct(&$dispatcher) {
 		$this->_dispatcher = $dispatcher;
@@ -15,7 +15,7 @@ class Plutonium_Event_Listener {
 		if (method_exists($this, $method)) {
 			return call_user_func_array (array($this, $method), $args);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 }

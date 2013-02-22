@@ -14,7 +14,7 @@ class Plutonium_Database_Result_SQLite3 extends Plutonium_Database_Result_Abstra
 	public function seek($num) {
 		// raise error
 		
-		return FALSE;
+		return false;
 	}
 	
 	public function getNumFields() {

@@ -24,8 +24,8 @@ abstract class Plutonium_Language_Abstract {
 		}
 		
 		/*if (is_dir($path)) {
-			if (($dir = opendir($path)) !== FALSE) {
-				while (($file = readdir($dir)) !== FALSE) {
+			if (($dir = opendir($path)) !== false) {
+				while (($file = readdir($dir)) !== false) {
 					$xml = simplexml_load_file($file);
 					
 					foreach ($xml->phrase as $phrase) {

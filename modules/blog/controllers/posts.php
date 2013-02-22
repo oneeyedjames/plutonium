@@ -5,7 +5,7 @@ class PostsController extends Plutonium_Module_Controller_Abstract {
 		$model =& $this->getModel();
 		$view  =& $this->getView();
 		
-		$posts =& $model->find(NULL, array(
+		$posts =& $model->find(null, array(
 			'filters' => array(
 				':created > @created',
 				array(

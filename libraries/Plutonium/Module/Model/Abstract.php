@@ -1,9 +1,9 @@
 <?php
 
 abstract class Plutonium_Module_Model_Abstract {
-	protected $_name = NULL;
+	protected $_name = null;
 	
-	protected $_table = NULL;
+	protected $_table = null;
 	
 	public function __construct($name) {
 		$this->_name = $name;
@@ -17,14 +17,14 @@ abstract class Plutonium_Module_Model_Abstract {
 		return $this->_table;
 	}
 	
-	public function find($id = NULL, $args = NULL) {
+	public function find($id = null, $args = null) {
 		return $this->getTable()->find($id, $args);
 	}
 	
 	public function save($data) {
 		$row = $this->getTable()->make($data);
 		
-		return $row->save() ? $row : FALSE;
+		return $row->save() ? $row : false;
 	}
 	
 	public function delete($id) {

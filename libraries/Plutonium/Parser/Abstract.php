@@ -1,7 +1,7 @@
 <?php
 
 abstract class Plutonium_Parser_Abstract {
-	protected $_namespace = NULL;
+	protected $_namespace = null;
 	
 	public function __construct() {
 	}
@@ -31,7 +31,7 @@ abstract class Plutonium_Parser_Abstract {
 				
 				$data = $this->process($tag['ns'], $tag['tag'], $tag['vars']);
 				
-				if ($data !== FALSE) {
+				if ($data !== false) {
 					$stub = preg_quote($matches[0][$i]);
 					$html = preg_replace('|' . $stub . '|', $data, $html, 1);
 				}
@@ -50,7 +50,7 @@ abstract class Plutonium_Parser_Abstract {
 			}
 		}
 		
-		return FALSE;
+		return false;
 	}
 }
 

@@ -1,8 +1,8 @@
 <?php
 
 class Plutonium_Database_Adapter_SQLite3 extends Plutonium_Database_Adapter_Abstract {
-	protected $_connection = NULL;
-	protected $_result = NULL;
+	protected $_connection = null;
+	protected $_result = null;
 	
 	public function connect() {
 		$this->_connection = new SQLite3($this->_config->dbfile);

@@ -6,7 +6,7 @@ class Plutonium_HTML_Tag {
 	protected $_child_tags;
 	protected $_self_close;
 	
-	public function __construct($name, $attributes = array(), $child_tags = array(), $self_close = TRUE) {
+	public function __construct($name, $attributes = array(), $child_tags = array(), $self_close = true) {
 		$this->_name = $name;
 		$this->_attributes = is_array($attributes) ? $attributes : array();
 		$this->_child_tags = is_array($child_tags) ? $child_tags : array();
@@ -22,7 +22,7 @@ class Plutonium_HTML_Tag {
 				return $this->getAttributes();
 			break;
 			default:
-				return NULL;
+				return null;
 			break;
 		}
 	}
@@ -54,7 +54,7 @@ class Plutonium_HTML_Tag {
 		return $this->_attributes;
 	}
 	
-	public function setAttributes($attributes, $overwrite = TRUE) {
+	public function setAttributes($attributes, $overwrite = true) {
 		foreach ($attributes as $key => $value) {
 			$this->setAttribute($key, $value, $overwrite);
 		}
@@ -64,11 +64,11 @@ class Plutonium_HTML_Tag {
 		return isset($this->_attributes[$key]);
 	}
 	
-	public function getAttribute($key, $default = NULL) {
+	public function getAttribute($key, $default = null) {
 		return isset($this->_attributes[$key]) ? $this->_attributes[$key] : $default;
 	}
 	
-	public function setAttribute($key, $value, $overwrite = TRUE) {
+	public function setAttribute($key, $value, $overwrite = true) {
 		if (!isset($this->_attributes[$key]) || $overwrite) {
 			$this->_attributes[$key] = $value;
 		}

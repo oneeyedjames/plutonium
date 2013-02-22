@@ -1,12 +1,11 @@
 <?php
 
 class Plutonium_Registry extends Plutonium_Object_Filter {
-	protected static $_instance = NULL;
+	protected static $_instance = null;
 	
 	public static function &getInstance() {
-		if (is_null(self::$_instance)) {
+		if (is_null(self::$_instance))
 			self::$_instance = new self();
-		}
 		
 		return self::$_instance;
 	}
@@ -61,7 +60,7 @@ class Plutonium_Registry extends Plutonium_Object_Filter {
 			return $obj;
 		}
 		
-		return NULL;
+		return null;
 	}
 	
 	public static function fromObject($obj) {
@@ -74,7 +73,7 @@ class Plutonium_Registry extends Plutonium_Object_Filter {
 			return $obj;
 		}
 		
-		return NULL;
+		return null;
 	}
 	
 	public static function fromString($str) {
@@ -92,7 +91,7 @@ class Plutonium_Registry extends Plutonium_Object_Filter {
 			return $obj;
 		}
 		
-		return NULL;
+		return null;
 	}
 }
 
