@@ -1,14 +1,14 @@
 <?php
 
 class Plutonium_Error_Helper {
-	protected static $_levels   = NULL;
+	protected static $_levels   = null;
 	protected static $_handlers = array();
 	
 	public static function register($level, $handler) {
 		if (is_null(self::$_levels)) {
 			self::$_levels = E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE;
 		}
-		if ($level == $level & self::$_levels || $level === NULL) {
+		if ($level == $level & self::$_levels || $level === null) {
 			if (function_exists($handler)) {
 				self::$_handlers[] = array (
 					'level'   => $level,

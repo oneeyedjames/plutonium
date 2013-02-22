@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Filesystem_File {
-	protected $_path = NULL;
+	protected $_path = null;
 	
 	public function __construct($path) {
 		$this->_path = Plutonium_Filesystem_Path::clean($path);
@@ -64,7 +64,7 @@ class Plutonium_Filesystem_File {
 			return move_uploaded_file($this->_path, $path);
 		}
 		
-		return FALSE;
+		return false;
 	}
 }
 

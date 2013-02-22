@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Session implements Plutonium_Accessible {
-	protected static $_instance = NULL;
+	protected static $_instance = null;
 	
 	public static function &getInstance() {
 		if (is_null(self::$_instance)) {
@@ -22,15 +22,15 @@ class Plutonium_Session implements Plutonium_Accessible {
 		return isset($this->_namespaces[$namespace][$key]);
 	}
 	
-	public function get($key, $default = NULL, $namespace = 'default') {
+	public function get($key, $default = null, $namespace = 'default') {
 		return $this->has($key, $namespace) ? $this->_namespaces[$namespace][$key] : $default;
 	}
 	
-	public function set($key, $value = NULL, $namespace = 'default') {
+	public function set($key, $value = null, $namespace = 'default') {
 		$this->_namespaces[$namespace][$key] = $value;
 	}
 	
-	public function def($key, $value = NULL, $namespace = 'default') {
+	public function def($key, $value = null, $namespace = 'default') {
 		if (!$this->has($key, $namespace)) $this->set($key, $value, $namespace);
 	}
 	

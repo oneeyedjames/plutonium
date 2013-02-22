@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Document_Helper {
-	protected static $_document = NULL;
+	protected static $_document = null;
 	
 	public static function &getDocument() {
 		if (is_null(self::$_document)) {

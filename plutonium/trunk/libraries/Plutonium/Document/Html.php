@@ -1,8 +1,8 @@
 <?php
 
 class Plutonium_Document_Html extends Plutonium_Document_Abstract {
-	protected $_meta_descrip = NULL;
-	protected $_meta_keyword = NULL;
+	protected $_meta_descrip = null;
+	protected $_meta_keyword = null;
 	
 	protected $_style_sheets = array();
 	protected $_script_files = array();
@@ -51,11 +51,11 @@ class Plutonium_Document_Html extends Plutonium_Document_Abstract {
 				'src' => $file
 			);
 			
-			$tags[] = new Plutonium_HTML_Tag('script', $attribs, NULL, FALSE);
+			$tags[] = new Plutonium_HTML_Tag('script', $attribs, null, false);
 		}
 		
 		if (!empty($this->_title)) {
-			$tags[] = new Plutonium_HTML_Tag('title', NULL, $this->_title);
+			$tags[] = new Plutonium_HTML_Tag('title', null, $this->_title);
 		}
 		
 		$html = implode(LS, $tags);
@@ -84,10 +84,10 @@ class Plutonium_Document_Html extends Plutonium_Document_Abstract {
 		$parts = parse_url($match[0]);
 		
 		if (isset($parts['query'])) parse_str($parts['query'], $parts['query']);
-		//echo '<pre>' . htmlspecialchars(print_r($match, TRUE)) . '</pre>';
-		//echo '<pre>' . htmlspecialchars(print_r($parts, TRUE)) . '</pre>';
+		//echo '<pre>' . htmlspecialchars(print_r($match, true)) . '</pre>';
+		//echo '<pre>' . htmlspecialchars(print_r($parts, true)) . '</pre>';
 		
-		if (in_array(@$parts['path'], array(P_ROOT_URL . 'index.php', 'index.php', NULL))) {
+		if (in_array(@$parts['path'], array(P_ROOT_URL . 'index.php', 'index.php', null))) {
 			$url = P_BASE_URL;
 			
 			$keys = array('module', 'resource', 'action', 'id');

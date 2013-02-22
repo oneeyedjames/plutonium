@@ -1,7 +1,7 @@
 <?php
 
 class HttpApplication extends Plutonium_Application_Abstract {
-	protected static $_instance = NULL;
+	protected static $_instance = null;
 	
 	public static function &getInstance() {
 		if (is_null(self::$_instance)) {

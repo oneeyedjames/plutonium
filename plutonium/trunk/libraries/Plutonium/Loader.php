@@ -1,12 +1,11 @@
 <?php
 
 class Plutonium_Loader {
-	private static $_instance = NULL;
+	private static $_instance = null;
 	
 	public static function &getInstance() {
-		if (is_null(self::$_instance)) {
+		if (is_null(self::$_instance))
 			self::$_instance = new self();
-		}
 		
 		return self::$_instance;
 	}
@@ -15,7 +14,7 @@ class Plutonium_Loader {
 		self::getInstance()->import($class);
 	}
 	
-	public static function autoload($path = NULL) {
+	public static function autoload($path = null) {
 		self::getInstance()->addPath($path);
 	}
 	

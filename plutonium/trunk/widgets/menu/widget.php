@@ -10,7 +10,7 @@ class MenuWidget extends Plutonium_Widget_Abstract {
 		
 		$sql = "SELECT * FROM $table";
 		
-		if (($result = $database->query($sql)) !== FALSE) {
+		if (($result = $database->query($sql)) !== false) {
 			$pages  = $result->fetchAll('object');
 			$result->close();
 			

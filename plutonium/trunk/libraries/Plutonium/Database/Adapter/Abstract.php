@@ -1,7 +1,7 @@
 <?php
 
 abstract class Plutonium_Database_Adapter_Abstract implements Plutonium_Database_Adapter_Interface {
-	protected $_config = NULL;
+	protected $_config = null;
 	
 	public function __construct($config) {
 		$this->_config = $config;
@@ -14,7 +14,7 @@ abstract class Plutonium_Database_Adapter_Abstract implements Plutonium_Database
 				return $this->_config->driver;
 				break;
 			default:
-				return NULL;
+				return null;
 				break;
 		}
 	}

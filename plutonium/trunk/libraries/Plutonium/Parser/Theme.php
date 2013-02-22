@@ -24,7 +24,7 @@ class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
 	public function messageTag($args) {
 		$session =& Plutonium_Session::getInstance();
 		
-		if ($message = $session->get('message', NULL)) {
+		if ($message = $session->get('message', null)) {
 			$session->del('message');
 			return $message;
 		}

@@ -37,7 +37,7 @@ $request->def('module', 'site');
 require_once 'application/application.php';
 require_once 'application/error.php';
 
-Plutonium_Error_Helper::register(NULL, 'HttpErrorHandler');
+Plutonium_Error_Helper::register(null, 'HttpErrorHandler');
 
 $application =& HttpApplication::getInstance();
 $application->initialize();

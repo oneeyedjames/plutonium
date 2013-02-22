@@ -7,23 +7,23 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		
 		$table = $db->quoteSymbol($this->_table->table_name);
 		
-		$where = FALSE;
-		$order = FALSE;
-		$group = FALSE;
+		$where = false;
+		$order = false;
+		$group = false;
 		
-		$single = FALSE;
+		$single = false;
 		
 		if (is_scalar($args) && !empty($args)) {
 			$where = $db->quoteSymbol('id') . ' = '
 				   . $db->quoteString($args);
 			
-			$single = TRUE;
+			$single = true;
 		} elseif (is_array($args) && !empty($args)) {
-			$is_assoc = FALSE;
+			$is_assoc = false;
 			
 			foreach (array_keys($args) as $key) {
 				if (is_string($key)) {
-					$is_assoc = TRUE;
+					$is_assoc = true;
 					break;
 				}
 			}
@@ -62,7 +62,7 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 			return $single ? $rows[0] : $rows;
 		}
 		
-		return FALSE;
+		return false;
 	}
 	
 	public function insert(&$row) {
@@ -89,10 +89,10 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		if ($db->query($sql)) {
 			$row->id = $db->getInsertId();
 			
-			return TRUE;
+			return true;
 		}
 		
-		return FALSE;
+		return false;
 	}
 	
 	public function update(&$row) {
@@ -170,12 +170,12 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 				continue;
 			}
 			
-			if (!$field_meta->null) $type .= " NOT NULL";
+			if (!$field_meta->null) $type .= " NOT null";
 			
 			if ($field_meta->auto) $type .= " AUTO_INCREMENT";
 			
 			if ($field_meta->has('default')) {
-				$default = $field_meta->null ? 'NULL'
+				$default = $field_meta->null ? 'null'
 						 : $db->quoteString($field_meta->default);
 				
 				$type .= " DEFAULT " . $default;

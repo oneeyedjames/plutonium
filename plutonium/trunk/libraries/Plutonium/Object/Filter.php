@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Object_Filter extends Plutonium_Object {
-	public function get($key, $default = NULL, $type = NULL) {
+	public function get($key, $default = null, $type = null) {
 		$value = parent::get($key, $default);
 		
 		if (is_string($type)) {
@@ -18,51 +18,51 @@ class Plutonium_Object_Filter extends Plutonium_Object {
 		return $value;
 	}
 	
-	public function getBool($key, $default = NULL) {
+	public function getBool($key, $default = null) {
 		return $this->get($key, $default, 'bool');
 	}
 	
-	public function getInt($key, $default = NULL) {
+	public function getInt($key, $default = null) {
 		return $this->get($key, $default, 'int');
 	}
 	
-	public function getFloat($key, $default = NULL) {
+	public function getFloat($key, $default = null) {
 		return $this->get($key, $default, 'float');
 	}
 	
-	public function getString($key, $default = NULL) {
+	public function getString($key, $default = null) {
 		return $this->get($key, $default, 'string');
 	}
 	
-	public function getArray($key, $default = NULL) {
+	public function getArray($key, $default = null) {
 		return $this->get($key, $default, 'array');
 	}
 	
-	public function getObject($key, $default = NULL) {
+	public function getObject($key, $default = null) {
 		return $this->get($key, $default, 'object');
 	}
 	
-	public function getAlpha($key, $default = NULL) {
+	public function getAlpha($key, $default = null) {
 		return $this->get($key, $default, 'alpha');
 	}
 	
-	public function getAlnum($key, $default = NULL) {
+	public function getAlnum($key, $default = null) {
 		return $this->get($key, $default, 'alnum');
 	}
 	
-	public function getDigit($key, $default = NULL) {
+	public function getDigit($key, $default = null) {
 		return $this->get($key, $default, 'digit');
 	}
 	
-	public function getLower($key, $default = NULL) {
+	public function getLower($key, $default = null) {
 		return $this->get($key, $default, 'lower');
 	}
 	
-	public function getUpper($key, $default = NULL) {
+	public function getUpper($key, $default = null) {
 		return $this->get($key, $default, 'upper');
 	}
 	
-	public function getXDigit($key, $default = NULL) {
+	public function getXDigit($key, $default = null) {
 		return $this->get($key, $default, 'xdigit');
 	}
 }

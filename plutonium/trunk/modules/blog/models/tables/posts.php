@@ -6,6 +6,6 @@ class PostsTable extends Plutonium_Database_Table {
 		
 		if (!$row->id) $row->created = $row->updated;
 		
-		return TRUE;
+		return true;
 	}
 }

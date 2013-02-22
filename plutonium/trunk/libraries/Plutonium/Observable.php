@@ -10,14 +10,14 @@ abstract class Plutonium_Observable extends Plutonium_Object {
 	}
 	
 	public function detach(&$observer) {
-		if (($index = array_search($observer, $this->_observers)) !== FALSE) {
+		if (($index = array_search($observer, $this->_observers)) !== false) {
 			unset($this->_observers[$index]);
 		}
 	}
 	
 	public function notify() {
 		foreach ($this->_observers as $observer) {
-			$observer->update();
+			$observer->notify();
 		}
 	}
 	

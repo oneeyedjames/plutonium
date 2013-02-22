@@ -4,7 +4,7 @@ class Plutonium_Utility_Address {
 	public static function build($ip) {
 		$octets = explode('.', $ip);
 		
-		if (count($octets) != 4) return NULL;
+		if (count($octets) != 4) return null;
 		
 		$int = 0;
 		

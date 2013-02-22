@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Filesystem_Path {
-	protected $_path = NULL;
+	protected $_path = null;
 	
 	public function __construct($path) {
 		

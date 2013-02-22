@@ -2,11 +2,11 @@
 
 abstract class Plutonium_Database_Table_Abstract
 implements Plutonium_Database_Table_Interface {
-	protected $_delegate = NULL;
+	protected $_delegate = null;
 	
-	protected $_name = NULL;
+	protected $_name = null;
 	
-	protected $_table_name = NULL;
+	protected $_table_name = null;
 	protected $_table_meta = array();
 	protected $_table_xref = array();
 	protected $_field_meta = array();
@@ -38,9 +38,9 @@ implements Plutonium_Database_Table_Interface {
 			$this->_field_meta['id'] = new Plutonium_Object(array(
 				'name'     => 'id',
 				'type'     => 'int',
-				'null'     => FALSE,
-				'auto'     => TRUE,
-				'unsigned' => TRUE
+				'null'     => false,
+				'auto'     => true,
+				'unsigned' => true
 			));
 		}
 		
@@ -50,10 +50,10 @@ implements Plutonium_Database_Table_Interface {
 			$this->_field_meta[$field_name] = new Plutonium_Object(array(
 				'name'     => $field_name,
 				'type'     => 'int',
-				'null'     => FALSE,
-				'unsigned' => TRUE,
+				'null'     => false,
+				'unsigned' => true,
 				'default'  => 0,
-				'index'    => TRUE
+				'index'    => true
 			));
 		}
 		
@@ -61,15 +61,15 @@ implements Plutonium_Database_Table_Interface {
 			$this->_field_meta['created'] = new Plutonium_Object(array(
 				'name'    => 'created',
 				'type'    => 'date',
-				'null'    => TRUE,
-				'default' => FALSE
+				'null'    => true,
+				'default' => false
 			));
 			
 			$this->_field_meta['updated'] = new Plutonium_Object(array(
 				'name'    => 'updated',
 				'type'    => 'date',
-				'null'    => TRUE,
-				'default' => FALSE
+				'null'    => true,
+				'default' => false
 			));
 		}
 		
@@ -106,15 +106,15 @@ implements Plutonium_Database_Table_Interface {
 			case 'field_meta':
 				return $this->_field_meta;
 			default:
-				return NULL;
+				return null;
 		}
 	}
 	
-	public function make($data = NULL) {
+	public function make($data = null) {
 		return new Plutonium_Database_Row($this, $this->field_names, $data);
 	}
 	
-	public function find($args = NULL) {
+	public function find($args = null) {
 		return $this->_delegate->select($args);
 	}
 	
@@ -125,7 +125,7 @@ implements Plutonium_Database_Table_Interface {
 				 : $this->_delegate->update($row);
 		}
 		
-		return FALSE;
+		return false;
 	}
 	
 	public function delete($id) {
@@ -133,7 +133,7 @@ implements Plutonium_Database_Table_Interface {
 	}
 	
 	public function validate(&$row) {
-		return TRUE;
+		return true;
 	}
 }
 

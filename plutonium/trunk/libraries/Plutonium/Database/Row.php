@@ -1,8 +1,8 @@
 <?php
 
 class Plutonium_Database_Row {
-	protected $_table = NULL;
-	protected $_data  = NULL;
+	protected $_table = null;
+	protected $_data  = null;
 	
 	public function __construct(&$table, $data = null) {
 		$this->_table = $table;
@@ -13,7 +13,7 @@ class Plutonium_Database_Row {
 	
 	public function __get($key) {
 		return array_key_exists($key, $this->_data)
-			 ? $this->_data[$key] : NULL;
+			 ? $this->_data[$key] : null;
 	}
 	
 	public function __set($key, $value) {
@@ -23,7 +23,7 @@ class Plutonium_Database_Row {
 	
 	public function bind($data) {
 		if (is_array($data)) {
-			$this->_data = array_fill_keys($this->_table->field_names, NULL);
+			$this->_data = array_fill_keys($this->_table->field_names, null);
 			foreach ($data as $key => $value) $this->$key = $value;
 		}
 	}

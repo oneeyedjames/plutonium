@@ -31,7 +31,7 @@ class Plutonium_Database_Result_MySQL extends Plutonium_Database_Result_Abstract
 	
 	public function fetchResult($row = 0, $field = 0) {
 		if (mysql_num_rows($this->_result) <= $row ||
-			mysql_num_fields($this->_result) <= $field) return FALSE;
+			mysql_num_fields($this->_result) <= $field) return false;
 		
 		return mysql_result($this->_result, $row, $field);
 	}

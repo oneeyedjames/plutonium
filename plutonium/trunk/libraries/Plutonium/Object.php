@@ -4,7 +4,7 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
 	protected $_vars;
 	
 	// Constructor
-	public function __construct($data = NULL) {
+	public function __construct($data = null) {
 		$this->_vars = array();
 		
 		if (is_a($data, 'Plutonium_Object')) {
@@ -42,15 +42,15 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
 		return array_key_exists($key, $this->_vars);
 	}
 	
-	public function get($key, $default = NULL) {
+	public function get($key, $default = null) {
 		return $this->has($key) ? $this->_vars[$key] : $default;
 	}
 	
-	public function set($key, $value = NULL) {
+	public function set($key, $value = null) {
 		$this->_vars[$key] = $value;
 	}
 	
-	public function def($key, $value = NULL) {
+	public function def($key, $value = null) {
 		if (!$this->has($key)) $this->_vars[$key] = $value;
 	}
 	
@@ -99,7 +99,7 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
 	}
 	
 	public function valid() {
-		return $this->current() !== FALSE;
+		return $this->current() !== false;
 	}
 	*/
 	
@@ -107,9 +107,7 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Countable {
 		$vars = array();
 		
 		foreach ($this->_vars as $key => $value) {
-			$vars[$key] = is_a($value, __CLASS__)
-						? $value->toArray()
-						: $value;
+			$vars[$key] = is_a($value, __CLASS__) ? $value->toArray() : $value;
 		}
 		
 		return $vars;

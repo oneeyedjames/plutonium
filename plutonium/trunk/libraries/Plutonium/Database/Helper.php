@@ -1,9 +1,9 @@
 <?php
 
 class Plutonium_Database_Helper {
-	protected static $_adapter = NULL;
+	protected static $_adapter = null;
 	
-	public static function &getAdapter($config = NULL) {
+	public static function &getAdapter($config = null) {
 		if (is_null(self::$_adapter) && !is_null($config)) {
 			$type = 'Plutonium_Database_Adapter_' . $config->driver;
 			
@@ -36,7 +36,7 @@ class Plutonium_Database_Helper {
 			$cfg->driver = self::getAdapter()->driver;
 			
 			$doc = new DOMDocument();
-			$doc->preserveWhiteSpace = FALSE;
+			$doc->preserveWhiteSpace = false;
 			$doc->load($file_xml);
 			
 			$xpath = new DOMXPath($doc);
@@ -123,7 +123,7 @@ class Plutonium_Database_Helper {
 			return new $type($cfg);
 		}
 		
-		return NULL;
+		return null;
 	}
 }
 
