@@ -17,7 +17,7 @@ class Plutonium_Database_Helper {
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Table';
 		
-		$path = Plutonium_Application_Helper::getPath();
+		$path = Plutonium_Application::getPath();
 		$file = 'models' . DS . 'tables' . DS . $name;
 		
 		$file_php = $path . DS . $file . '.php';

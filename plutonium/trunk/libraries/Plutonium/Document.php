@@ -1,6 +1,6 @@
 <?php
 
-abstract class Plutonium_Document_Abstract extends Plutonium_Object {
+class Plutonium_Document extends Plutonium_Object {
 	protected static $_instance = null;
 	
 	public static function &getInstance() {
@@ -10,7 +10,15 @@ abstract class Plutonium_Document_Abstract extends Plutonium_Object {
 			$format = $request->get('format', 'html');
 			
 			$name = strtolower($format);
-			$type = 'Plutonium_Document_' . ucfirst($name);
+			$type = ucfirst($name) . 'Document';
+			
+			$path = Plutonium_Application::getPath() . '/documents';
+			$file = $path . DS . $name . '.php';
+			
+			if (is_file($file))
+				require_once $file;
+			else
+				$type = __CLASS__;
 			
 			self::$_instance = new $type();
 		}
@@ -20,9 +28,6 @@ abstract class Plutonium_Document_Abstract extends Plutonium_Object {
 	
 	protected $_type = null;
 	protected $_lang = 'en-US';
-	
-	protected $_direction = 'ltr';
-	protected $_generator = 'Plutonium CMS';
 	
 	protected $_title   = null;
 	protected $_descrip = null;
@@ -35,7 +40,9 @@ abstract class Plutonium_Document_Abstract extends Plutonium_Object {
 		$this->_title = $title;
 	}
 	
-	abstract public function display();
+	public function display() {
+		echo $this->_descrip;
+	}
 }
 
 ?>
