@@ -21,7 +21,7 @@ implements Plutonium_Database_Table_Interface {
 		$table_name = array($cfg->prefix);
 		
 		if ($cfg->prefix == 'mod')
-			$table_name[] = Plutonium_Module_Helper::getName();
+			$table_name[] = Plutonium_Module::getName();
 		
 		$table_name[] = $cfg->name;
 		

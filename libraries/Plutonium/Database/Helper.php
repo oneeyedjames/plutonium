@@ -24,8 +24,8 @@ class Plutonium_Database_Helper {
 		$file_xml = $path . DS . $file . '.xml';
 		
 		if (!is_file($file_php) || !is_file($file_xml)) {
-			$path = Plutonium_Module_Helper::getPath() . DS
-				  . Plutonium_Module_Helper::getName();
+			$path = Plutonium_Module::getPath() . DS
+				  . Plutonium_Module::getName();
 			
 			$file_php = $path . DS . $file . '.php';
 			$file_xml = $path . DS . $file . '.xml';

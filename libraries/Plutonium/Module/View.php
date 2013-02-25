@@ -1,13 +1,14 @@
 <?php
 
-abstract class Plutonium_Module_View_Abstract {
+class Plutonium_Module_View {
 	protected $_name   = null;
 	protected $_vars   = null;
 	protected $_layout = null;
 	protected $_format = null;
 	protected $_output = null;
+	protected $_module = null;
 	
-	public function __construct($name) {
+	public function __construct($name, $module) {
 		$this->_name = $name;
 		$this->_vars = array();
 		
@@ -15,6 +16,8 @@ abstract class Plutonium_Module_View_Abstract {
 		
 		$this->_layout = $request->get('action', 'default');
 		$this->_format = $request->get('format', 'html');
+		
+		$this->_module = $module;
 	}
 	
 	public function __get($key) {
@@ -53,9 +56,13 @@ abstract class Plutonium_Module_View_Abstract {
 		$this->_format = $format;
 	}
 	
+	public function &getModel($name = null) {
+		return $this->_module->getModel($name);
+	}
+	
 	public function display() {
-		$path   = Plutonium_Module_Helper::getPath();
-		$module = Plutonium_Module_Helper::getName();
+		$path   = $this->_module->getPath();
+		$module = $this->_module->getName();
 		
 		$name   = strtolower($this->_name);
 		$layout = strtolower($this->_layout);
@@ -63,9 +70,8 @@ abstract class Plutonium_Module_View_Abstract {
 		
 		$method = $layout . 'Layout';
 		
-		if (method_exists($this, $method)) {
+		if (method_exists($this, $method))
 			call_user_func(array($this, $method));
-		}
 		
 		$file = $path . DS . $module . DS . 'views' . DS . $name . DS
 			  . 'layouts' . DS . $layout . '.' . $format . '.php';
@@ -79,14 +85,10 @@ abstract class Plutonium_Module_View_Abstract {
 			
 			ob_end_clean();
 		} else {
-			// raise error
+			// TODO raise error
 		}
 		
 		return $this->_output;
-	}
-	
-	public function &getModel() {
-		return Plutonium_Module_Helper::getModel($this->_name);
 	}
 }
 

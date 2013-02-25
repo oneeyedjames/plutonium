@@ -6,6 +6,10 @@ class Plutonium_Module {
 	
 	protected static $_instance = null;
 	
+	public static function getName() {
+		return self::$_name;
+	}
+	
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('P_BASE_PATH'))
 			self::$_path = realpath(P_BASE_PATH . '/modules');

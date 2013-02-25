@@ -23,7 +23,7 @@ class Plutonium_Application {
 		$registry =& Plutonium_Registry::getInstance();
 		
 		$this->_theme  = Plutonium_Theme::createInstance($registry->config->get('theme'));
-		$this->_module = Plutonium_Module_Helper::getModule($request->get('module'));
+		$this->_module = Plutonium_Module::getInstance($request->get('module'));
 		
 		$registry->config->def('widgets',  array());
 		
