@@ -1,6 +1,6 @@
 <?php
 
-abstract class Plutonium_Module_Model_Abstract {
+class Plutonium_Module_Model {
 	protected $_name = null;
 	
 	protected $_table = null;
@@ -10,9 +10,8 @@ abstract class Plutonium_Module_Model_Abstract {
 	}
 	
 	public function getTable() {
-		if (is_null($this->_table)) {
+		if (is_null($this->_table))
 			$this->_table = Plutonium_Database_Helper::getTable($this->_name);
-		}
 		
 		return $this->_table;
 	}
