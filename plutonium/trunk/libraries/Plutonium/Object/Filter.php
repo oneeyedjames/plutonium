@@ -8,11 +8,10 @@ class Plutonium_Object_Filter extends Plutonium_Object {
 			$object_types = array('bool', 'boolean', 'int', 'integer', 'float', 'double', 'string', 'array', 'object');
 			$string_types = array('alpha', 'alnum', 'digit', 'lower', 'upper', 'xdigit');
 			
-			if (in_array(strtolower($type), $object_types)) {
+			if (in_array(strtolower($type), $object_types))
 				$value = Plutonium_Filter_Object::filter($value, $type);
-			} elseif (in_array(strtolower($type), $string_types)) {
+			elseif (in_array(strtolower($type), $string_types))
 				$value = Plutonium_Filter_String::filter($value, $type);
-			}
 		}
 		
 		return $value;

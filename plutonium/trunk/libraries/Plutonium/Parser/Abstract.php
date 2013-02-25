@@ -45,9 +45,8 @@ abstract class Plutonium_Parser_Abstract {
 		if ($ns == $this->_namespace) {
 			$method = strtolower($tag) . 'Tag';
 			
-			if (method_exists($this, $method)) {
+			if (method_exists($this, $method))
 				return call_user_func(array($this, $method), $args);
-			}
 		}
 		
 		return false;
