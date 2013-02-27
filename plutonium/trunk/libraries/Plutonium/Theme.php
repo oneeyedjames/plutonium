@@ -14,17 +14,12 @@ class Plutonium_Theme {
 		self::$_path = $path;
 	}
 	
-	public static function createInstance($name) {
+	public static function getInstance($name) {
 		$name = strtolower($name);
 		$file = self::getPath() . DS . $name . DS . 'theme.php';
 		$type = ucfirst($name) . 'Theme';
 		
-		if (is_file($file)) {
-			require_once $file;
-			return new $type($name);
-		}
-		
-		return new self($name);
+		return Plutonium_Loader::getClass($file, $type, __CLASS__, $name);
 	}
 	
 	protected $_name   = null;

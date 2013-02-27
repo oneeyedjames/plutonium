@@ -22,18 +22,13 @@ class Plutonium_Module {
 	}
 	
 	public static function &getInstance($name) {
-		$name = strtolower($name);
-		self::$_name = $name;
+		self::$_name = $name = strtolower($name);
 		
 		if (is_null(self::$_instance)) {
 			$type = ucfirst($name) . 'Module';
 			$file = self::getPath() . DS . $name . DS . 'module.php';
 			
-			if (is_file($file)) require_once $file;
-			
-			$type = class_exists($type) ? $type : __CLASS__;
-			
-			self::$_instance = new $type($name);
+			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__, $name);
 			
 			$language =& Plutonium_Language::getInstance();
 			$language->load(self::getPath() . DS . $name . DS . 'languages');
@@ -83,12 +78,7 @@ class Plutonium_Module {
 			$file = self::getPath() . DS . self::$_name
 				  . DS . 'controllers' . DS . $name . '.php';
 			
-			if (is_file($file)) require_once $file;
-			
-			$type = class_exists($type) ? $type
-				  : 'Plutonium_Module_Controller_Default';
-			
-			$this->_controller = new $type($name);
+			$this->_controller = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Controller', $name);
 		}
 		
 		return $this->_controller;
@@ -105,12 +95,7 @@ class Plutonium_Module {
 			$file = self::getPath() . DS . self::$_name
 				  . DS . 'models' . DS . $name . '.php';
 			
-			if (is_file($file)) require_once $file;
-			
-			$type = class_exists($type) ? $type
-				  : 'Plutonium_Module_Model_Default';
-			
-			$this->_models[$name] = new $type($name);
+			$this->_models[$name] = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Model', $name);
 		}
 		
 		return $this->_models[$name];
@@ -125,12 +110,7 @@ class Plutonium_Module {
 			$file = self::getPath() . DS . self::$_name . DS
 				  . 'views' . DS . $name . DS . 'view.php';
 			
-			if (is_file($file)) require_once $file;
-			
-			$type = class_exists($type) ? $type
-				  : 'Plutonium_Module_View_Default';
-			
-			$this->_view = new $type($name);
+			$this->_view = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_View', $name);
 		}
 		
 		return $this->_view;

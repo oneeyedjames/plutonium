@@ -117,10 +117,7 @@ class Plutonium_Database_Helper {
 			
 			$cfg->xrefs = $xrefs;
 			
-			if (is_file($file_php)) require_once $file_php;
-			else $type = 'Plutonium_Database_Table_Default';
-			
-			return new $type($cfg);
+			return Plutonium_Loader::getClass($file_php, $type, __CLASS__, $cfg);
 		}
 		
 		return null;
