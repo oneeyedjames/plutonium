@@ -21,12 +21,12 @@ foreach (array_reverse($base) as $base_slug) {
 if (in_array($path[0], array('', 'index.php'))) array_shift($path);
 
 if (!empty($host)) {
-	if (isset($host[0])) $_REQUEST['site']     = $host[0];
-	if (isset($host[1])) $_REQUEST['language'] = $host[1];
+	if (isset($host[0])) $_REQUEST['host']   = $host[0];
+	if (isset($host[1])) $_REQUEST['module'] = $host[1];
 }
 
 if (!empty($path)) {
-	if (isset($path[0])) $_REQUEST['module']   = $path[0];
+	if (isset($path[0])) $_REQUEST['language'] = $path[0];
 	if (isset($path[1])) $_REQUEST['resource'] = $path[1];
 	if (isset($path[2])) $_REQUEST['action']   = $path[2];
 	
@@ -42,6 +42,9 @@ if (!empty($path)) {
 		unset($pos);
 	}
 }
+
+header('Content-type: text/plain');
+die(print_r($_REQUEST, true));
 
 unset($uri, $base, $host, $path);
 

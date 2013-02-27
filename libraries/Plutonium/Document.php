@@ -15,12 +15,7 @@ class Plutonium_Document extends Plutonium_Object {
 			$path = Plutonium_Application::getPath() . '/documents';
 			$file = $path . DS . $name . '.php';
 			
-			if (is_file($file))
-				require_once $file;
-			else
-				$type = __CLASS__;
-			
-			self::$_instance = new $type();
+			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__);
 		}
 		
 		return self::$_instance;

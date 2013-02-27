@@ -1,6 +1,6 @@
-<?php defined('PLUTONIUM_VERSION') or die('Plutonium framework is not initialized.');
+<?php
 
-abstract class Plutonium_Database_Table_Abstract
+abstract class Plutonium_Database_Table
 implements Plutonium_Database_Table_Interface {
 	protected $_delegate = null;
 	
@@ -85,7 +85,7 @@ implements Plutonium_Database_Table_Interface {
 		}
 		
 		foreach ($cfg->xrefs as $xref) {
-			$this->_table_xref[$xref->name] = new Plutonium_Database_Table_Default($xref);
+			$this->_table_xref[$xref->name] = new self($xref);
 		}
 		
 		$this->_delegate->create();

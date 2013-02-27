@@ -10,6 +10,14 @@ class Plutonium_Loader {
 		return self::$_instance;
 	}
 	
+	public static function getClass($file, $class, $default, $args = null) {
+		if (is_file($file)) require_once $file;
+		
+		$type = class_exists($class) ? $class : $default;
+		
+		return is_null($args) new $type() : new $type($args);
+	}
+	
 	public static function load($class) {
 		self::getInstance()->import($class);
 	}
@@ -41,10 +49,12 @@ class Plutonium_Loader {
 				$filename = $path . DS . $classpath . $extension;
 				if (is_file($filename)) {
 					require_once $filename;
-					return;
+					return true;
 				}
 			}
 		}
+		
+		return false;
 	}
 }
 
