@@ -1,6 +1,7 @@
 <?php
 
-abstract class Plutonium_Database_Result_Abstract implements Plutonium_Database_Result_Interface {
+abstract class Plutonium_Database_Result_Abstract
+implements Plutonium_Database_Result_Interface {
 	protected $_result = null;
 	
 	public function __construct($result) {
