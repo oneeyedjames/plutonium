@@ -15,7 +15,7 @@ class Plutonium_Loader {
 		
 		$type = class_exists($class) ? $class : $default;
 		
-		return is_null($args) new $type() : new $type($args);
+		return is_null($args) ? new $type() : new $type($args);
 	}
 	
 	public static function load($class) {
