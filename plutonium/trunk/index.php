@@ -43,6 +43,8 @@ Plutonium_Loader::autoload(P_BASE_PATH . '/libraries');
 require_once 'application/config.php';
 require_once 'application/request.php';
 
+if (is_file('local-config.php')) require_once 'local-config.php';
+
 $config = new Plutonium_Object($config);
 
 $database =& Plutonium_Database_Helper::getAdapter($config['database']);

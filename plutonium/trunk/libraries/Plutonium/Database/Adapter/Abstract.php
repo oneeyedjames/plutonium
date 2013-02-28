@@ -1,6 +1,7 @@
 <?php
 
-abstract class Plutonium_Database_Adapter_Abstract implements Plutonium_Database_Adapter_Interface {
+abstract class Plutonium_Database_Adapter_Abstract
+implements Plutonium_Database_Adapter_Interface {
 	protected $_config = null;
 	
 	public function __construct($config) {
