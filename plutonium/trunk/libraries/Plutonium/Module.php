@@ -17,18 +17,14 @@ class Plutonium_Module {
 		return self::$_path;
 	}
 	
-	public static function setPath($path) {
-		self::$_path = $path;
-	}
-	
-	public static function &getInstance($name) {
+	public static function &getInstance($name = null) {
 		self::$_name = $name = strtolower($name);
 		
-		if (is_null(self::$_instance)) {
+		if (is_null(self::$_instance) && !is_null($name)) {
 			$type = ucfirst($name) . 'Module';
 			$file = self::getPath() . DS . $name . DS . 'module.php';
 			
-			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__, $name);
+			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__);
 			
 			$language =& Plutonium_Language::getInstance();
 			$language->load(self::getPath() . DS . $name . DS . 'languages');
@@ -37,22 +33,39 @@ class Plutonium_Module {
 		return self::$_instance;
 	}
 	
-	protected $_params = null;
-	protected $_output = null;
-	
 	protected $_resource = null;
-	protected $_action   = null;
+	protected $_output   = null;
 	
-	protected static $_controller = null;
-	protected static $_models     = array();
-	protected static $_view       = null;
+	protected $_controller = null;
+	protected $_models     = array();
+	protected $_view       = null;
 	
-	public function __construct($params = null) {
-		$this->_params = is_a($params, 'Plutonium_Object') ? $params
-					   : new Plutonium_Object($params);
-		
+	public function __construct() {
 		$this->_resource = 'default';
-		$this->_action   = 'default';
+	}
+	
+	public function initialize() {
+		$request =& Plutonium_Request::getInstance();
+		
+		$path = $request->get('path', null);
+		
+		if (!empty($path)) {
+			$request->set('resource', $this->_resource = $path[0]);
+			
+			if (isset($path[1])) {
+				if (is_numeric($path[1])) {
+					$request->set('id', intval($path[1]));
+					
+					if (isset($path[2])) {
+						$request->set('action', $path[2]);
+						$request->set('layout', $path[2]);
+					}
+				} else {
+					$request->set('action', $path[1]);
+					$request->set('layout', $path[1]);
+				}
+			}
+		}
 	}
 	
 	public function execute() {
@@ -67,6 +80,17 @@ class Plutonium_Module {
 		$this->_output = $view->display();
 		
 		return $this->_output;
+	}
+	
+	public function &getRouter() {
+		if (is_null($this->_router)) {
+			$type = ucfirst(self::$_name) . 'Router';
+			$file = self::getPath() . DS . self::$_name . DS . 'router.php';
+			
+			$this->_router = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Router');
+		}
+		
+		return $this->_router;
 	}
 	
 	public function &getController() {
