@@ -8,16 +8,16 @@ class Plutonium_Module_View {
 	protected $_output = null;
 	protected $_module = null;
 	
-	public function __construct($name, $module) {
+	public function __construct($name) {
 		$this->_name = $name;
 		$this->_vars = array();
 		
 		$request =& Plutonium_Request::getInstance();
 		
-		$this->_layout = $request->get('action', 'default');
+		$this->_layout = $request->get('layout', 'default');
 		$this->_format = $request->get('format', 'html');
 		
-		$this->_module = $module;
+		$this->_module =& Plutonium_Module::getInstance();
 	}
 	
 	public function __get($key) {

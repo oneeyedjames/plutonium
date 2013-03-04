@@ -5,9 +5,10 @@ class Plutonium_Module_Controller {
 	protected $_module   = null;
 	protected $_redirect = null;
 	
-	public function __construct($name, $module) {
-		$this->_name   = $name;
-		$this->_module = $module;
+	public function __construct($name) {
+		$this->_name = $name;
+		
+		$this->_module =& Plutonium_Module::getInstance();
 	}
 	
 	public function setRedirect($url) {
