@@ -11,8 +11,8 @@ class Plutonium_Module {
 	}
 	
 	public static function getPath() {
-		if (is_null(self::$_path) && defined('P_BASE_PATH'))
-			self::$_path = realpath(P_BASE_PATH . '/modules');
+		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
+			self::$_path = realpath(PU_PATH_BASE . '/modules');
 		
 		return self::$_path;
 	}

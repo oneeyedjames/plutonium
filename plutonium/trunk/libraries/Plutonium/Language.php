@@ -20,7 +20,7 @@ class Plutonium_Language {
 	}
 	
 	public function load() {
-		$path = P_BASE_PATH . DS . 'languages' . DS . $this->_code;
+		$path = PU_PATH_BASE . DS . 'languages' . DS . $this->_code;
 		$file = $path . DS . 'language.xml';
 		
 		if (is_file($file)) {
