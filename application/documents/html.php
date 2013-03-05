@@ -30,7 +30,7 @@ class HtmlDocument extends Plutonium_Document {
 	public function getHeader() {
 		$tags = array();
 		
-		$tags[] = new Plutonium_HTML_Tag('base', array('href' => P_BASE_URL . FS));
+		$tags[] = new Plutonium_HTML_Tag('base', array('href' => PU_URL_BASE . FS));
 		
 		$attribs = array('name' => 'description', 'content' => $this->_meta_descrip);
 		$tags[] = new Plutonium_HTML_Tag('meta', $attribs);
@@ -75,7 +75,7 @@ class HtmlDocument extends Plutonium_Document {
 			$tmpl = $parser->parse($tmpl);
 		}
 		
-		/*$pattern = '/(' . preg_quote(P_BASE_URL, '/') . '|' . preg_quote(P_ROOT_URL, '/') . ')?'
+		/*$pattern = '/(' . preg_quote(PU_URL_BASE, '/') . '|' . preg_quote(PU_URL_ROOT, '/') . ')?'
 				 . 'index\.php(\?\w+=\w+(&\w+=\w+)+)?/msi';
 		
 		$tmpl = preg_replace_callback($pattern, array($this, 'sefurl'), $tmpl);*/
@@ -90,8 +90,8 @@ class HtmlDocument extends Plutonium_Document {
 		//echo '<pre>' . htmlspecialchars(print_r($match, true)) . '</pre>';
 		//echo '<pre>' . htmlspecialchars(print_r($parts, true)) . '</pre>';
 		
-		if (in_array(@$parts['path'], array(P_ROOT_URL . 'index.php', 'index.php', null))) {
-			$url = P_BASE_URL;
+		if (in_array(@$parts['path'], array(PU_URL_ROOT . 'index.php', 'index.php', null))) {
+			$url = PU_URL_BASE;
 			
 			$keys = array('module', 'resource', 'action', 'id');
 			

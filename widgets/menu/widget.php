@@ -20,7 +20,7 @@ class MenuWidget extends Plutonium_Widget_Abstract {
 			$format  =  $request->get('format', 'html');
 			
 			foreach ($pages as $page) {
-				$page->url = P_BASE_URL . '/index.php/site/pages/details/'
+				$page->url = PU_URL_BASE . '/index.php/site/pages/details/'
 						   . $page->id . ':' . $page->slug . '.' . $format;
 			}
 		}

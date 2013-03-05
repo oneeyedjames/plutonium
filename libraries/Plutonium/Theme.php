@@ -4,8 +4,8 @@ class Plutonium_Theme {
 	protected static $_path = null;
 	
 	public static function getPath() {
-		if (is_null(self::$_path) && defined('P_BASE_PATH'))
-			self::$_path = realpath(P_BASE_PATH . '/themes');
+		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
+			self::$_path = realpath(PU_PATH_BASE . '/themes');
 		
 		return self::$_path;
 	}

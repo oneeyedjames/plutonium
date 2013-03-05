@@ -9,9 +9,9 @@ $center_width = $page_width - $left_width - $right_width;
 <html>
 	<head>
 		<p:head />
-		<link rel="stylesheet" type="text/css" href="<?php echo P_BASE_URL; ?>/themes/<?php echo $this->_name; ?>/styles/theme.css">
-		<link rel="stylesheet" type="text/css" href="<?php echo P_BASE_URL; ?>/themes/<?php echo $this->_name; ?>/styles/<?php echo $this->_layout; ?>.css">
-		<link rel="shortcut icon" type="image/png" href="<?php echo P_BASE_URL; ?>/images/icons/silk/world.png">
+		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/theme.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/<?php echo $this->_layout; ?>.css">
+		<link rel="shortcut icon" type="image/png" href="<?php echo PU_URL_BASE; ?>/images/icons/silk/world.png">
 	</head>
 	<body>
 		<div id="page">

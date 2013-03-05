@@ -17,7 +17,7 @@ class UsersController extends Plutonium_Module_Controller_Abstract {
 			if ($user) {
 				$session->set('user', $user);
 				
-				$this->setRedirect($request->get('return', P_PATH_URL));
+				$this->setRedirect($request->get('return', PU_URL_PATH));
 			} else {
 				Plutonium_Error_Helper::triggerWarning('Invalid Username/Password');
 			}
@@ -29,6 +29,6 @@ class UsersController extends Plutonium_Module_Controller_Abstract {
 		$session = Plutonium_Session::getInstance();
 		$session->del('user');
 		
-		$this->setRedirect($request->get('return', P_PATH_URL));
+		$this->setRedirect($request->get('return', PU_URL_PATH));
 	}
 }
