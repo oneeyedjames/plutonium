@@ -3,8 +3,9 @@
 class PagesController extends Plutonium_Module_Controller {
 	public function defaultAction() {
 		$view =& $this->getView();
-		$view->setLayout('details');
+		$view->layout = 'details';
 		
+		/*
 		$database = Plutonium_Database_Helper::getAdapter();
 		
 		$field = $database->quoteSymbol('id');
@@ -19,5 +20,6 @@ class PagesController extends Plutonium_Module_Controller {
 		
 			$result->close();
 		}
+		*/
 	}
 }

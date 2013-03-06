@@ -115,7 +115,7 @@ class Plutonium_Database_Table {
 	}
 	
 	public function make($data = null) {
-		return new Plutonium_Database_Row($this, $this->field_names, $data);
+		return new Plutonium_Database_Row($this, $data);
 	}
 	
 	public function find($args = null) {

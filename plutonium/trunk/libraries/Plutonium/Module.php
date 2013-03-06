@@ -1,14 +1,9 @@
 <?php
 
 class Plutonium_Module {
-	protected static $_name = null;
 	protected static $_path = null;
 	
 	protected static $_instance = null;
-	
-	public static function getName() {
-		return self::$_name;
-	}
 	
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
@@ -17,14 +12,17 @@ class Plutonium_Module {
 		return self::$_path;
 	}
 	
+	public static function getName() {
+		return is_null(self::$_instance) ? null : self::$_instance->name;
+	}
+	
 	public static function &getInstance($name = null) {
-		self::$_name = $name = strtolower($name);
-		
 		if (is_null(self::$_instance) && !is_null($name)) {
+			$name = strtolower($name);
 			$type = ucfirst($name) . 'Module';
 			$file = self::getPath() . DS . $name . DS . 'module.php';
 			
-			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__);
+			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__, $name);
 			
 			$language =& Plutonium_Language::getInstance();
 			$language->load(self::getPath() . DS . $name . DS . 'languages');
@@ -33,6 +31,7 @@ class Plutonium_Module {
 		return self::$_instance;
 	}
 	
+	protected $_name     = null;
 	protected $_resource = null;
 	protected $_output   = null;
 	
@@ -40,8 +39,25 @@ class Plutonium_Module {
 	protected $_models     = array();
 	protected $_view       = null;
 	
-	public function __construct() {
+	public function __construct($name) {
+		$this->_name = $name;
+		
 		$this->_resource = 'default';
+	}
+	
+	public function __get($key) {
+		switch ($key) {
+			case 'name':
+				return $this->_name;
+			case 'path':
+				return self::$_path . DS . strtolower($this->_name);
+			case 'resource':
+				return $this->_resource;
+		}
+	}
+	
+	public function __set($key, $value) {
+		// TODO nothing
 	}
 	
 	public function initialize() {
@@ -78,8 +94,8 @@ class Plutonium_Module {
 	
 	public function &getRouter() {
 		if (is_null($this->_router)) {
-			$type = ucfirst(self::$_name) . 'Router';
-			$file = self::getPath() . DS . self::$_name . DS . 'router.php';
+			$type = ucfirst($this->_name) . 'Router';
+			$file = self::getPath() . DS . $this->_name . DS . 'router.php';
 			
 			$this->_router = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Router');
 		}
@@ -91,9 +107,9 @@ class Plutonium_Module {
 		if (is_null($this->_controller)) {
 			$request  =& Plutonium_Request::getInstance();
 			
-			$name = strtolower($request->get('resource', $this->_resource));
+			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'Controller';
-			$file = self::getPath() . DS . self::$_name
+			$file = self::getPath() . DS . $this->_name
 				  . DS . 'controllers' . DS . $name . '.php';
 			
 			$this->_controller = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Controller', $name);
@@ -103,14 +119,11 @@ class Plutonium_Module {
 	}
 	
 	public function &getModel($name = null) {
-		if (is_null($name))
-			$name = Plutonium_Request::getInstance()->get('resource', $this->_resource);
-		
-		$name = strtolower($name);
+		$name = strtolower(is_null($name) ? $this->_resource : $name);
 		
 		if (empty($this->_models[$name])) {
 			$type = ucfirst($name) . 'Model';
-			$file = self::getPath() . DS . self::$_name
+			$file = self::getPath() . DS . $this->_name
 				  . DS . 'models' . DS . $name . '.php';
 			
 			$this->_models[$name] = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Model', $name);
@@ -123,9 +136,9 @@ class Plutonium_Module {
 		if (is_null($this->_view)) {
 			$request =& Plutonium_Request::getInstance();
 			
-			$name = strtolower($request->get('resource', $this->_resource));
+			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'View';
-			$file = self::getPath() . DS . self::$_name . DS
+			$file = self::getPath() . DS . $this->_name . DS
 				  . 'views' . DS . $name . DS . 'view.php';
 			
 			$this->_view = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_View', $name);

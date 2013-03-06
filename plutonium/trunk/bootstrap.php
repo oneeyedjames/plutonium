@@ -5,7 +5,7 @@ if (is_file('local-config.php')) require_once 'local-config.php';
 
 $base = array_reverse(explode('.', $config['system']['hostname']));
 $host = array_reverse(explode('.', $_SERVER['SERVER_NAME']));
-$path = explode(FS, parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+$path = explode(FS, trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), FS));
 
 foreach ($base as $base_slug) {
 	if ($host[0] == $base_slug || empty($host[0])) array_shift($host);

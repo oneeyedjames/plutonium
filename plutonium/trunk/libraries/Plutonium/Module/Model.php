@@ -9,15 +9,26 @@ class Plutonium_Module_Model {
 		$this->_name = $name;
 	}
 	
-	public function getTable() {
+	public function __get($key) {
+		switch ($key) {
+			case 'name':
+				return $this->_name;
+		}
+	}
+	
+	public function __set($key, $value) {
+		// TODO nothing
+	}
+	
+	public function &getTable() {
 		if (is_null($this->_table))
 			$this->_table = Plutonium_Database_Helper::getTable($this->_name);
 		
 		return $this->_table;
 	}
 	
-	public function find($id = null, $args = null) {
-		return $this->getTable()->find($id, $args);
+	public function find($args = null) {
+		return $this->getTable()->find($args);
 	}
 	
 	public function save($data) {

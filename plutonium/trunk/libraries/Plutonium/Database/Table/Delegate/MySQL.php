@@ -158,7 +158,7 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		$lines = array();
 		
 		$indexes = array();
-		header('Content-type: text/header');
+		
 		foreach ($this->_table->field_meta as $field_meta) {
 			if ($field_meta->type == 'bool') {
 				$type = 'TINYINT';
