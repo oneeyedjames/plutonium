@@ -1,6 +1,6 @@
 <?php
 
-class PagesView extends Plutonium_Module_View_Abstract {
+class PagesView extends Plutonium_Module_View {
 	public function detailsLayout() {
 		$request =& Plutonium_Request::getInstance();
 		

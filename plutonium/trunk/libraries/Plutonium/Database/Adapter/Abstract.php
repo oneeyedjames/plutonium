@@ -13,10 +13,8 @@ implements Plutonium_Database_Adapter_Interface {
 		switch ($key) {
 			case 'driver':
 				return $this->_config->driver;
-				break;
 			default:
 				return null;
-				break;
 		}
 	}
 }

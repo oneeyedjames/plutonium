@@ -2,16 +2,17 @@
 
 class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter_Abstract {
 	protected $_connection = null;
-	protected $_result = null;
+	protected $_result     = null;
 	
 	public function connect() {
-		$host = $this->_config->hostname;
-		$user = $this->_config->username;
-		$pass = $this->_config->password;
-		$db   = $this->_config->dbname;
+		if (is_null($this->_connection)) {
+			$host = $this->_config->hostname;
+			$user = $this->_config->username;
+			$pass = $this->_config->password;
+			$db   = $this->_config->dbname;
 		
-		if ($this->_connection = mysql_connect($host, $user, $pass)) {
-			mysql_select_db($db, $this->_connection);
+			if ($this->_connection = mysql_connect($host, $user, $pass))
+				mysql_select_db($db, $this->_connection);
 		}
 		
 		return is_resource($this->_connection);
@@ -50,14 +51,13 @@ class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter_Abstra
 	}
 	
 	public function query($sql, $limit = 0, $offset = 0) {
-		if ((int) $limit > 0) $sql .= ' LIMIT ' . (int) $limit;
-		if ((int) $offset > 0) $sql .= ' OFFSET ' . (int) $offset;
+		if (intval($limit)  > 0) $sql .= ' LIMIT '  . intval($limit);
+		if (intval($offset) > 0) $sql .= ' OFFSET ' . intval($offset);
 		
 		$result = mysql_query($sql, $this->_connection);
 		
 		if (is_resource($result)) {
 			$this->_result = $result;
-			
 			return new Plutonium_Database_Result_MySQL($result);
 		}
 		

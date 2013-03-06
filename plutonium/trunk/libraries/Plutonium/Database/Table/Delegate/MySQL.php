@@ -135,13 +135,30 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		return $db->query($sql);
 	}
 	
+	public function exists() {
+		$db = Plutonium_Database_Helper::getAdapter();
+		
+		$sql = "SHOW TABLES LIKE " . $db->quoteSymbol($this->_table->table_name);
+		
+		if ($result = $db->query($sql)) {
+			$exists = $result->getNumRows() > 0;
+			$result->close();
+			
+			return $exists;
+		}
+		
+		return false;
+	}
+	
 	public function create() {
 		$db = Plutonium_Database_Helper::getAdapter();
 		
 		$sql = "CREATE TABLE IF NOT EXISTS " . $db->quoteSymbol($this->_table->table_name) . " (\n";
 		
-		$indexes = array();
+		$lines = array();
 		
+		$indexes = array();
+		header('Content-type: text/header');
 		foreach ($this->_table->field_meta as $field_meta) {
 			if ($field_meta->type == 'bool') {
 				$type = 'TINYINT';
@@ -158,30 +175,35 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 			} elseif ($field_meta->type == 'float') {
 				$type = $field_meta->size == 'long' ? 'DOUBLE' : 'FLOAT';
 			} elseif ($field_meta->type == 'string') {
-				$prefix = array(
-					'short' => 'TINY',
-					'long'  => 'LONG'
-				);
+				if (intval($field_meta->length) > 0) {
+					$type = 'VARCHAR(' . intval($field_meta->length) . ')';
+				} else {
+					$prefix = array(
+						'tiny'  => 'TINY',
+						'short' => 'TINY',
+						'long'  => 'LONG'
+					);
 				
-				$type = @$prefix[$field_meta->size] . 'TEXT';
+					$type = @$prefix[$field_meta->size] . 'TEXT';
+				}
 			} elseif ($field_meta->type == 'date') {
 				$type = 'DATETIME';
 			} else {
 				continue;
 			}
 			
-			if (!$field_meta->null) $type .= " NOT null";
+			if (!$field_meta->null) $type .= " NOT NULL";
 			
 			if ($field_meta->auto) $type .= " AUTO_INCREMENT";
 			
 			if ($field_meta->has('default')) {
-				$default = $field_meta->null ? 'null'
+				$default = $field_meta->null ? 'NULL'
 						 : $db->quoteString($field_meta->default);
 				
 				$type .= " DEFAULT " . $default;
 			}
 			
-			$sql .= "\t" . $db->quoteSymbol($field_meta->name) . " " . $type . ",\n";
+			$lines[] = $db->quoteSymbol($field_meta->name) . " " . $type;
 			
 			if ($field_meta->index || $field_meta->unique) $indexes[] = new Plutonium_Object(array(
 				'name'   => $field_meta->name,
@@ -190,13 +212,18 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		}
 		
 		foreach ($indexes as $index) {
-			$sql .= "\t" . ($index->unique ? "UNIQUE " : "")
-				 .  "KEY " . $db->quoteSymbol($index->name)
-				 .  " (" . $db->quoteSymbol($index->name) . "),\n";
+			$lines[] = "\t" . ($index->unique ? "UNIQUE " : "")
+					 .  "KEY " . $db->quoteSymbol($index->name)
+					 .  " (" . $db->quoteSymbol($index->name) . ")";
 		}
 		
-		$sql .= "\tPRIMARY KEY(" . $db->quoteSymbol('id') . ")\n"
-			 .  ");";
+		if (array_key_exists('id', $this->_table->field_meta))
+			$lines[] = "\tPRIMARY KEY(" . $db->quoteSymbol('id') . ")";
+		
+		if (!empty($lines))
+			$sql .= "\t" . implode(",\n", $lines) . "\n";
+		
+		$sql .=  ");";
 		
 		return $db->query($sql);
 	}

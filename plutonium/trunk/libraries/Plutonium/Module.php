@@ -69,17 +69,11 @@ class Plutonium_Module {
 	}
 	
 	public function execute() {
-		$controller =& $this->getController();
-		$controller->execute();
-		$controller->redirect();
+		$this->getController()->execute();
 	}
 	
 	public function display() {
-		$view =& $this->getView();
-		
-		$this->_output = $view->display();
-		
-		return $this->_output;
+		return $this->_output = $this->getView()->display();
 	}
 	
 	public function &getRouter() {
@@ -98,7 +92,7 @@ class Plutonium_Module {
 			$request  =& Plutonium_Request::getInstance();
 			
 			$name = strtolower($request->get('resource', $this->_resource));
-			$type = ucfirst($resource) . 'Controller';
+			$type = ucfirst($name) . 'Controller';
 			$file = self::getPath() . DS . self::$_name
 				  . DS . 'controllers' . DS . $name . '.php';
 			

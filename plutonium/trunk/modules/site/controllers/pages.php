@@ -1,6 +1,6 @@
 <?php
 
-class PagesController extends Plutonium_Module_Controller_Abstract {
+class PagesController extends Plutonium_Module_Controller {
 	public function defaultAction() {
 		$view =& $this->getView();
 		$view->setLayout('details');
@@ -13,12 +13,11 @@ class PagesController extends Plutonium_Module_Controller_Abstract {
 		
 		$sql = "SELECT $field FROM $table WHERE $where = 0";
 		
-		$result = $database->query($sql);
+		if ($result = $database->query($sql)) {
+			if (($id = $result->fetchResult()) !== false)
+				$view->setVal('slug', $id);
 		
-		if (($id = $result->fetchResult()) !== false) {
-			$view->setVal('slug', $id);
+			$result->close();
 		}
-		
-		$result->close();
 	}
 }
