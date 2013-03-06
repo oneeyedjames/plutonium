@@ -1,7 +1,6 @@
 <?php
 
-abstract class Plutonium_Database_Table
-implements Plutonium_Database_Table_Interface {
+class Plutonium_Database_Table {
 	protected $_delegate = null;
 	
 	protected $_name = null;
@@ -78,6 +77,7 @@ implements Plutonium_Database_Table_Interface {
 				'name'     => $field->name,
 				'type'     => $field->type,
 				'size'     => $field->size,
+				'length'   => $field->length,
 				'null'     => $field->null != 'no',
 				'unsigned' => $field->unsigned == 'yes',
 				'default'  => $field->default
@@ -88,7 +88,11 @@ implements Plutonium_Database_Table_Interface {
 			$this->_table_xref[$xref->name] = new self($xref);
 		}
 		
-		$this->_delegate->create();
+		if (!$this->_delegate->exists()) {
+			if (!$this->_delegate->create()) {
+				die(Plutonium_Database_Helper::getAdapter()->getErrorMsg());
+			}
+		}
 	}
 	
 	public function __get($key) {

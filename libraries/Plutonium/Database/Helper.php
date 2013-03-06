@@ -22,7 +22,7 @@ class Plutonium_Database_Helper {
 		$file_php = $path . DS . $file . '.php';
 		$file_xml = $path . DS . $file . '.xml';
 		
-		if (!is_file($file_php) || !is_file($file_xml)) {
+		if (!is_file($file_xml)) {
 			$path = Plutonium_Module::getPath() . DS
 				  . Plutonium_Module::getName();
 			
@@ -53,9 +53,10 @@ class Plutonium_Database_Helper {
 			$nodes = $xpath->query('/table/field');
 			foreach ($nodes as $field) {
 				$fields[] = new Plutonium_Object(array(
-					'name' => $field->getAttribute('name'),
-					'type' => $field->getAttribute('type'),
-					'size' => $field->getAttribute('size'),
+					'name'   => $field->getAttribute('name'),
+					'type'   => $field->getAttribute('type'),
+					'size'   => $field->getAttribute('size'),
+					'length' => $field->getAttribute('length'),
 				));
 			}
 			
@@ -84,6 +85,7 @@ class Plutonium_Database_Helper {
 					'suffix'     => 'xref',
 					'name'       => $xref->getAttribute('name'),
 					'timestamps' => $xref->getAttribute('timestamps'),
+					'xrefs'      => array(),
 					'refs'       => array(
 						new Plutonium_Object(array(
 							'name'   => $cfg->name,
@@ -116,7 +118,7 @@ class Plutonium_Database_Helper {
 			
 			$cfg->xrefs = $xrefs;
 			
-			return Plutonium_Loader::getClass($file_php, $type, __CLASS__, $cfg);
+			return Plutonium_Loader::getClass($file_php, $type, 'Plutonium_Database_Table', $cfg);
 		}
 		
 		return null;

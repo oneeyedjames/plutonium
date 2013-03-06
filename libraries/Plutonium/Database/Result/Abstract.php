@@ -16,16 +16,12 @@ implements Plutonium_Database_Result_Interface {
 		switch ($type) {
 			case 'array':
 				return $this->fetchArray();
-			break;
 			case 'assoc':
 				return $this->fetchAssoc();
-			break;
 			case 'object':
 				return $this->fetchObject();
-			break;
 			default:
 				return false;
-			break;
 		}
 	}
 	

@@ -1,6 +1,6 @@
 <?php
 
-class SiteModule extends Plutonium_Module_Abstract {
+class SiteModule extends Plutonium_Module {
 	public function execute() {
 		$this->_resource = 'pages';
 		

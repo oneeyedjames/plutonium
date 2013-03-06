@@ -2,7 +2,7 @@
 <table name="resources" prefix="app">
 	<field name="name" type="string" size="tiny"/>
 	<field name="slug" type="string" size="tiny"/>
-	<field name="descrip" type="string" size="short"/>
+	<field name="descrip" type="string"/>
 	<field name="default" type="bool"/>
 	<ref name="module" table="modules"/>
 </table>

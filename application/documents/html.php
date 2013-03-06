@@ -1,9 +1,6 @@
 <?php
 
 class HtmlDocument extends Plutonium_Document {
-	protected $_direction = 'ltr';
-	protected $_generator = 'Plutonium CMS';
-	
 	protected $_meta_descrip = null;
 	protected $_meta_keyword = null;
 	
@@ -74,11 +71,6 @@ class HtmlDocument extends Plutonium_Document {
 		foreach ($this->_parsers as $parser) {
 			$tmpl = $parser->parse($tmpl);
 		}
-		
-		/*$pattern = '/(' . preg_quote(PU_URL_BASE, '/') . '|' . preg_quote(PU_URL_ROOT, '/') . ')?'
-				 . 'index\.php(\?\w+=\w+(&\w+=\w+)+)?/msi';
-		
-		$tmpl = preg_replace_callback($pattern, array($this, 'sefurl'), $tmpl);*/
 		
 		echo $tmpl;
 	}

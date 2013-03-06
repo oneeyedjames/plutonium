@@ -6,6 +6,7 @@ interface Plutonium_Database_Table_Delegate_Interface {
 	public function update(&$row);
 	public function delete($id);
 	
+	public function exists();
 	public function create();
 	public function modify();
 	public function drop();

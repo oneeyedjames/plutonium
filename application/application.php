@@ -50,17 +50,18 @@ class HttpApplication extends Plutonium_Application {
 			 . "WHERE $modules.$slug = $module_slug "
 			 . "ORDER BY $xref.$location, $xref.$position";
 		
-		$result  = $database->query($sql);
-		$records = $result->fetchAll('object');
-		$result->close();
+		if ($result = $database->query($sql)) {
+			$records = $result->fetchAll('object');
+			$widgets = array();
+			
+			$result->close();
+			
+			foreach ($records as $record) {
+				$widgets[$record->location][$record->position] = $record->slug;
+			}
 		
-		$widgets = array();
-		
-		foreach ($records as $record) {
-			$widgets[$record->location][$record->position] = $record->slug;
+			$registry->config->set('widgets', $widgets);
 		}
-		
-		$registry->config->set('widgets', $widgets);
 		
 		parent::initialize();
 	}
