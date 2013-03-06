@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<trans type="application" name="http" lang="es-ES">
+<trans type="application" name="http" lang="en-UK">
 	<phrase key="date_format_long" value="%d %B %Y" />
 	<phrase key="date_format_short" value="%d/%m/%Y" />
 	<phrase key="date_format_system" value="%Y-%m-%d" />
