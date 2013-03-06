@@ -11,8 +11,21 @@ class Plutonium_Module_Controller {
 		$this->_module =& Plutonium_Module::getInstance();
 	}
 	
-	public function setRedirect($url) {
-		$this->_redirect = $url;
+	public function __get($key) {
+		switch ($key) {
+			case 'name':
+				return $this->_name;
+			case 'redirect':
+				return $this->_redirect;
+		}
+	}
+	
+	public function __set($key, $value) {
+		switch ($key) {
+			case 'redirect':
+				$this->_redirect = $value;
+				break;
+		}
 	}
 	
 	public function &getModel($name = null) {

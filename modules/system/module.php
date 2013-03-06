@@ -1,10 +1,9 @@
 <?php
 
-class SystemModule extends Plutonium_Module_Abstract {
+class SystemModule extends Plutonium_Module {
 	public function execute() {
 		$this->_resource = 'users';
 		
-		//die('<pre>' . print_r($this, true) . '</pre>');
 		parent::execute();
 	}
 }

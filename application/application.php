@@ -29,6 +29,7 @@ class HttpApplication extends Plutonium_Application {
 		$result->close();
 		
 		$registry->config->set('theme', @$record->slug);
+		$registry->config->set('theme', 'charcoal');
 		
 		// Select Widgets
 		$modules   = $database->quoteSymbol('app_modules');

@@ -1,14 +1,16 @@
 <?php
-global $registry;
+$registry = Plutonium_Registry::getInstance();
+$language = Plutonium_Language::getInstance();
 
 $page_width   = 966;
-$left_width   = $this->countWidgets('left')  ? 266 : 0;
-$right_width  = $this->countWidgets('right') ? 250 : 0;
+$left_width   = $this->hasWidgets('left')  ? 266 : 0;
+$right_width  = $this->hasWidgets('right') ? 250 : 0;
 $center_width = $page_width - $left_width - $right_width;
+
 ?><!DOCTYPE html>
 <html>
 	<head>
-		<p:head />
+		<pu:head />
 		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/theme.css">
 		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/<?php echo $this->_layout; ?>.css">
 		<link rel="shortcut icon" type="image/png" href="<?php echo PU_URL_BASE; ?>/images/icons/silk/world.png">
@@ -22,43 +24,39 @@ $center_width = $page_width - $left_width - $right_width;
 				</div>
 			</div>
 			<div id="wrapper">
-				<?php if ($this->countWidgets('left')) { ?>
+				<?php if ($this->hasWidgets('left')) : ?>
 				<div id="left" style="width: <?php echo $left_width; ?>px;">
-					<div class="inside"><p:widgets location="left"></div>
+					<div class="inside"><pu:widgets location="left"></div>
 				</div>
-				<?php } ?>
+				<?php endif; ?>
 				<div id="center" style="width: <?php echo $center_width; ?>px;">
-					<?php if ($this->countWidgets('top')) { ?>
+					<?php if ($this->hasWidgets('top')) : ?>
 					<div id="top">
-						<div class="inside"><p:widgets location="top"></div>
+						<div class="inside"><pu:widgets location="top"></div>
 					</div>
-					<?php } ?>
-					<!--<pre class="inside"><?php
-						//print_r(Plutonium_Request::getInstance()->toArray());
-						//print_r(Plutonium_Session::getInstance()->toArray());
-					?></pre>-->
+					<?php endif; ?>
 					<div id="middle">
 						<div class="inside">
-							<p:message>
-							<p:module>
+							<pu:message>
+							<pu:module>
 						</div>
 					</div>
-					<?php if ($this->countWidgets('bottom')) { ?>
+					<?php if ($this->hasWidgets('bottom')) : ?>
 					<div id="bottom">
-						<div class="inside"><p:widgets location="bottom"></div>
+						<div class="inside"><pu:widgets location="bottom"></div>
 					</div>
-					<?php } ?>
+					<?php endif; ?>
 				</div>
-				<?php if ($this->countWidgets('right')) { ?>
+				<?php if ($this->hasWidgets('right')) : ?>
 				<div id="right" style="width: <?php echo $right_width; ?>px;">
-					<div class="inside"><p:widgets location="right"></div>
+					<div class="inside"><pu:widgets location="right"></div>
 				</div>
-				<?php } ?>
+				<?php endif; ?>
 				<div class="clear"></div>
 			</div>
 			<div id="footer">
 				<div class="inside" style="font-size: smaller; font-style: italic; text-align: right;">
-					<p:date format="<?php echo $registry->language->translate('date_format_long'); ?>">
+					<pu:date format="<?php echo $language->translate('date_format_long'); ?>">
 				</div>
 			</div>
 		</div>

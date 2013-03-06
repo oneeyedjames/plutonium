@@ -14,10 +14,10 @@ class Plutonium_Response {
 	protected $_module_output = null;
 	protected $_widget_output = array();
 	
-	protected $_module_start = '<div class="p_module">';
+	protected $_module_start = '<div class="pu-module">';
 	protected $_module_close = '</div>';
 	
-	protected $_widget_start = '<div class="p_widget">';
+	protected $_widget_start = '<div class="pu-widget">';
 	protected $_widget_close = '</div>';
 	protected $_widget_delim = LS;
 	

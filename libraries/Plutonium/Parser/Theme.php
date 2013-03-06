@@ -1,7 +1,7 @@
 <?php
 
 class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
-	protected $_namespace = 'p';
+	protected $_namespace = 'pu';
 	
 	public function headTag($args) {
 		$document =& Plutonium_Document::getInstance();

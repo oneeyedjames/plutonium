@@ -1,16 +1,13 @@
 <?php
 
-// Basic Contants
 define('DS', DIRECTORY_SEPARATOR);
 define('PS', PATH_SEPARATOR);
 define('LS', PHP_EOL);
 define('BS', '\\');
 define('FS', '/');
 
-// Platform Version
 define('PU_VERSION', '0.9.0');
 
-// Local Environment
 defined('PU_PATH_ROOT') or define('PU_PATH_ROOT',
 	realpath($_SERVER['DOCUMENT_ROOT']));
 defined('PU_PATH_BASE') or define('PU_PATH_BASE',

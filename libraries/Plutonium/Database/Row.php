@@ -22,7 +22,7 @@ class Plutonium_Database_Row {
 	}
 	
 	public function bind($data) {
-		if (is_array($data)) {
+		if (is_assoc($data)) {
 			$this->_data = array_fill_keys($this->_table->field_names, null);
 			foreach ($data as $key => $value) $this->$key = $value;
 		}

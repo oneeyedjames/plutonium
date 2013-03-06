@@ -1,6 +1,6 @@
 <?php
 
-class UsersModel extends Plutonium_Module_Model_Abstract {
+class UsersModel extends Plutonium_Module_Model {
 	public function lookup($username, $password) {
 		$db = $registry->database;
 		

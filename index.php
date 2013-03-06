@@ -12,6 +12,7 @@ require_once 'bootstrap.php';
 
 // Initialize Library
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/Array.php';
+require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/String.php';
 require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
 
 Plutonium_Loader::autoload(PU_PATH_BASE . '/libraries');
