@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<trans type="module" name="default" lang="en-US">
-	<phrase key="Hello, World!" value="Hello, World!" />
+<trans type="module" name="site" lang="en-US">
+	<phrase key="hello_world" value="Hello, World!" />
 </trans>

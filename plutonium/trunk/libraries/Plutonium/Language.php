@@ -19,7 +19,7 @@ class Plutonium_Language {
 		$this->_phrases = array();
 	}
 	
-	public function load() {
+	public function load($module = null) {
 		$path = PU_PATH_BASE . DS . 'languages' . DS . $this->_code;
 		$file = $path . DS . 'language.xml';
 		
@@ -32,18 +32,19 @@ class Plutonium_Language {
 			}
 		}
 		
-		/*if (is_dir($path)) {
-			if (($dir = opendir($path)) !== false) {
-				while (($file = readdir($dir)) !== false) {
-					$xml = simplexml_load_file($file);
-					
-					foreach ($xml->phrase as $phrase) {
-						$attributes = $phrase->attributes();
-						$this->_phrases[strtoupper($attributes['key'])] = $attributes['value'];
-					}
+		if (!empty($module)) {
+			$path .= DS . 'modules';
+			$file =  $path . DS . strtolower($module) . '.xml';
+			//die($file);
+			if (is_file($file)) {
+				$xml = simplexml_load_file($file);
+			
+				foreach ($xml->phrase as $phrase) {
+					$attributes = $phrase->attributes();
+					$this->_phrases[strtoupper($attributes['key'])] = (string) $attributes['value'];
 				}
 			}
-		}*/
+		}
 	}
 	
 	public function translate($key) {

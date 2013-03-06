@@ -25,7 +25,7 @@ class Plutonium_Module {
 			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__, $name);
 			
 			$language =& Plutonium_Language::getInstance();
-			$language->load(self::getPath() . DS . $name . DS . 'languages');
+			$language->load($name);
 		}
 		
 		return self::$_instance;
