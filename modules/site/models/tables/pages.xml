@@ -3,5 +3,5 @@
 	<field name="name" type="string" size="tiny"/>
 	<field name="slug" type="string" size="tiny"/>
 	<field name="body" type="string"/>
-	<ref name="parent" table="pages"/>
+	<ref name="parent" alias="children" table="pages"/>
 </table>

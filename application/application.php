@@ -15,6 +15,7 @@ class HttpApplication extends Plutonium_Application {
 		$registry =& Plutonium_Registry::getInstance();
 		$request  =& Plutonium_Request::getInstance();
 		
+		/*
 		// Select Layout
 		$field = $database->quoteSymbol('slug');
 		$table = $database->quoteSymbol('app_themes');
@@ -63,6 +64,9 @@ class HttpApplication extends Plutonium_Application {
 		
 			$registry->config->set('widgets', $widgets);
 		}
+		*/
+		
+		//$table = Plutonium_Database_Helper::getInstance()->getTable('')
 		
 		parent::initialize();
 	}

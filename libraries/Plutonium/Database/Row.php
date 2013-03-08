@@ -2,28 +2,82 @@
 
 class Plutonium_Database_Row {
 	protected $_table = null;
-	protected $_data  = null;
+	protected $_data  = array();
+	protected $_refs  = array();
+	protected $_revs  = array();
 	
 	public function __construct(&$table, $data = null) {
 		$this->_table = $table;
-		$this->_data  = array();
+		$this->_data  = array_fill_keys($table->field_names, null);
+		$this->_refs  = array_fill_keys(array_keys($table->table_refs), null);
+		$this->_revs  = array_fill_keys(array_keys($table->table_revs), null);
 		
 		$this->bind($data);
 	}
 	
 	public function __get($key) {
-		return array_key_exists($key, $this->_data)
-			 ? $this->_data[$key] : null;
+		if (array_key_exists($key, $this->_data)) {
+			return $this->_data[$key];
+		} elseif (array_key_exists($key, $this->_refs)) {
+			if (is_null($this->_refs[$key])) {
+				$ref_id = $this->_data[$key . '_id'];
+			
+				if (!empty($ref_id)) {
+					$ref_table = $this->_table->table_refs[$key];
+					$ref_table = Plutonium_Database_Helper::getTable($ref_table);
+				
+					$this->_refs[$key] = $ref_table->find($ref_id);
+					
+					if (!is_null($row = $this->_refs[$key])) {
+						// TODO add this row to ref_row's revs array
+					}
+				}
+			}
+			
+			return $this->_refs[$key];
+		} elseif (array_key_exists($key, $this->_revs)) {
+			if (is_null($this->_revs[$key])) {
+				$rev_id = $this->_data['id'];
+				
+				$rev_alias = $this->_table->table_revs[$key]->alias;
+				$rev_table = $this->_table->table_revs[$key]->table;
+				$rev_table = Plutonium_Database_Helper::getTable($rev_table);
+			
+				$this->_revs[$key] = $rev_table->find(array(
+					$rev_alias . '_id' => $rev_id
+				));
+			
+				foreach ($this->_revs[$key] as $row)
+					$row->_refs[$rev_alias] = $this;
+			}
+			
+			return $this->_revs[$key];
+		}
+		
+		return null;
 	}
 	
 	public function __set($key, $value) {
-		if (array_key_exists($key, $this->_data))
+		if (array_key_exists($key, $this->_data)) {
 			$this->_data[$key] = $value;
+		} elseif (array_key_exists($key, $this->_refs)) {
+			$this->_refs[$key] = $value;
+			$this->_data[$key . '_id'] = @$value->id;
+			
+			// TODO add this row to ref_row's revs array
+		} elseif (array_key_exists($key, $this->_revs)) {
+			$this->_revs[$key] = $value;
+			
+			// TODO set this row as each rev_row's ref
+			foreach ($value as $row) {
+				// $row->_refs[$rev_alias] = $value;
+				// $row->_data[$rev_alias . '_id'] = @$value->id;
+			}
+		}
 	}
 	
 	public function bind($data) {
 		if (is_assoc($data)) {
-			$this->_data = array_fill_keys($this->_table->field_names, null);
 			foreach ($data as $key => $value) $this->$key = $value;
 		}
 	}
