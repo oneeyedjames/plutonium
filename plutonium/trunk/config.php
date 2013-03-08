@@ -13,4 +13,7 @@ $config['database']['password'] = '';
 // Language Settings
 $config['language']['code'] = 'en-US';
 
+// Location Settings
+$config['location']['timezone'] = 'America/New_York';
+
 ?>

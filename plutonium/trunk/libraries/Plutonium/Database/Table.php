@@ -7,6 +7,8 @@ class Plutonium_Database_Table {
 	
 	protected $_table_name = null;
 	protected $_table_meta = array();
+	protected $_table_refs = array();
+	protected $_table_revs = array();
 	protected $_table_xref = array();
 	protected $_field_meta = array();
 	
@@ -44,6 +46,8 @@ class Plutonium_Database_Table {
 		}
 		
 		foreach ($cfg->refs as $ref) {
+			$this->_table_refs[$ref->name] = $ref->table;
+			
 			$field_name = $ref->name . '_id';
 			
 			$this->_field_meta[$field_name] = new Plutonium_Object(array(
@@ -86,6 +90,14 @@ class Plutonium_Database_Table {
 		
 		foreach ($cfg->xrefs as $xref) {
 			$this->_table_xref[$xref->name] = new self($xref);
+			
+			// TODO handle this elsewhere
+			/* foreach ($xref->refs as $ref) {
+				if ($ref->table != $cfg->name) {
+					$ref_table =& Plutonium_Database_Helper::getTable($ref->table);
+					$ref_table->_table_xref[$xref->name] = $this->_table_xref[$xref->name];
+				}
+			} */
 		}
 		
 		if (!$this->_delegate->exists()) {
@@ -103,6 +115,12 @@ class Plutonium_Database_Table {
 				return $this->_table_name;
 			case 'table_meta':
 				return $this->_table_meta;
+			case 'table_refs':
+				return $this->_table_refs;
+			case 'table_revs':
+				if (empty($this->_table_revs))
+					$this->_table_revs = Plutonium_Database_Helper::getRefs($this->_name);
+				return $this->_table_revs;
 			case 'table_xref':
 				return $this->_table_xref;
 			case 'field_names':

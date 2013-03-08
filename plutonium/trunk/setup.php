@@ -23,7 +23,7 @@ $database = Plutonium_Database_Helper::getAdapter($config->database);
 
 Plutonium_Database_Helper::getTable('hosts');
 Plutonium_Database_Helper::getTable('users');
-Plutonium_Database_Helper::getTable('groups');
+$groups =& Plutonium_Database_Helper::getTable('groups');
 
 Plutonium_Database_Helper::getTable('themes');
 Plutonium_Database_Helper::getTable('modules');

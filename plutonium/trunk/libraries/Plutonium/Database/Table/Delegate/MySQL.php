@@ -21,19 +21,22 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		} elseif (is_array($args) && !empty($args)) {
 			$is_assoc = false;
 			
-			foreach (array_keys($args) as $key) {
-				if (is_string($key)) {
-					$is_assoc = true;
-					break;
-				}
-			}
-			
-			if ($is_assoc) {
+			if (is_assoc($args)) {
 				$filters = array();
 				
-				foreach ($id as $field => $value) {
-					$filters[] = $db->quoteSymbol($field) . ' = '
-							   . $db->quoteString($value);
+				foreach ($args as $field => $value) {
+					if (is_array($value)) {
+						$values = array();
+				
+						foreach ($value as $subvalue)
+							$values[] = $db->quoteString($subvalue);
+						
+						if (!empty($values))
+							$filters[] = $db->quoteSymbol($field) . ' IN (' . implode(', ', $values) . ')';
+					} else {
+						$filters[] = $db->quoteSymbol($field) . ' = '
+								   . $db->quoteString($value);
+					}
 				}
 				
 				$where = empty($filters) ? '' : implode(' AND ', $filters);
@@ -47,17 +50,16 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		}
 
 		$sql = 'SELECT * '
-			 . 'FROM ' . $table . ' '
-			 . ($where ? 'WHERE ' . $where : '') . ' '
-			 . ($group ? 'GROUP BY ' . $group : '') . ' '
-			 . ($order ? 'ORDER BY ' . $order : '') . ' ';
+			 . 'FROM ' . $table
+			 . ($where ? ' WHERE ' . $where : '')
+			 . ($group ? ' GROUP BY ' . $group : '')
+			 . ($order ? ' ORDER BY ' . $order : '');
 		
-		if ($result = $db->query($sql, 1)) {
+		if ($result = $db->query($sql, intval($single))) {
 			$rows = array();
 			
-			foreach ($result->fetchAllAssoc() as $data) {
+			foreach ($result->fetchAllAssoc() as $data)
 				$rows[] = $this->_table->make($data);
-			}
 			
 			return $single ? $rows[0] : $rows;
 		}
@@ -138,7 +140,7 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 	public function exists() {
 		$db = Plutonium_Database_Helper::getAdapter();
 		
-		$sql = "SHOW TABLES LIKE " . $db->quoteSymbol($this->_table->table_name);
+		$sql = "SHOW TABLES LIKE " . $db->quoteString($this->_table->table_name);
 		
 		if ($result = $db->query($sql)) {
 			$exists = $result->getNumRows() > 0;
@@ -212,18 +214,20 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 		}
 		
 		foreach ($indexes as $index) {
-			$lines[] = "\t" . ($index->unique ? "UNIQUE " : "")
+			$lines[] = ($index->unique ? "UNIQUE " : "")
 					 .  "KEY " . $db->quoteSymbol($index->name)
 					 .  " (" . $db->quoteSymbol($index->name) . ")";
 		}
 		
 		if (array_key_exists('id', $this->_table->field_meta))
-			$lines[] = "\tPRIMARY KEY(" . $db->quoteSymbol('id') . ")";
+			$lines[] = "PRIMARY KEY(" . $db->quoteSymbol('id') . ")";
 		
 		if (!empty($lines))
-			$sql .= "\t" . implode(",\n", $lines) . "\n";
+			$sql .= "\t" . implode(",\n\t", $lines) . "\n";
 		
 		$sql .=  ");";
+		
+		echo $sql . LS;
 		
 		return $db->query($sql);
 	}

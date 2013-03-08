@@ -3,8 +3,8 @@
 class Plutonium_Parser_Utility extends Plutonium_Parser_Abstract {
 	protected $_namespace = 'pu';
 	
-	public function __construct() {
-		date_default_timezone_set('America/New_York');
+	public function __construct($config) {
+		date_default_timezone_set($config->timezone);
 	}
 	
 	public function dateTag($args) {

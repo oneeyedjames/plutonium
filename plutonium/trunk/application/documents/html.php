@@ -12,8 +12,10 @@ class HtmlDocument extends Plutonium_Document {
 	public function __construct() {
 		parent::__construct();
 		
+		$registry =& Plutonium_Registry::getInstance();
+		
 		$this->_parsers[] = new Plutonium_Parser_Theme();
-		$this->_parsers[] = new Plutonium_Parser_Utility();
+		$this->_parsers[] = new Plutonium_Parser_Utility($registry->config->location);
 	}
 		
 	public function addStyleSheet($path) {
