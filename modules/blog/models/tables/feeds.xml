@@ -2,5 +2,5 @@
 <table name="feeds">
 	<field name="name" type="string" size="tiny"/>
 	<field name="slug" type="string" size="tiny"/>
-	<ref name="user" table="users"/>
+	<ref name="user" alias="feeds" table="users"/>
 </table>

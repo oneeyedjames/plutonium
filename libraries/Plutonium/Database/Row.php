@@ -2,15 +2,19 @@
 
 class Plutonium_Database_Row {
 	protected $_table = null;
-	protected $_data  = array();
-	protected $_refs  = array();
-	protected $_revs  = array();
+	
+	protected $_data = array();
+	protected $_refs = array();
+	protected $_revs = array();
+	protected $_xref = array();
 	
 	public function __construct(&$table, $data = null) {
 		$this->_table = $table;
-		$this->_data  = array_fill_keys($table->field_names, null);
-		$this->_refs  = array_fill_keys(array_keys($table->table_refs), null);
-		$this->_revs  = array_fill_keys(array_keys($table->table_revs), null);
+		
+		$this->_data = array_fill_keys($table->field_names, null);
+		$this->_refs = array_fill_keys(array_keys($table->table_refs), null);
+		$this->_revs = array_fill_keys(array_keys($table->table_revs), null);
+		$this->_xref = array_fill_keys(array_keys($table->table_xref), null);
 		
 		$this->bind($data);
 	}
@@ -52,6 +56,16 @@ class Plutonium_Database_Row {
 			}
 			
 			return $this->_revs[$key];
+		} elseif (array_key_exists($key, $this->_xref)) {
+			if (is_null($this->_xref[$key])) {
+				$table = $this->_table->table_xref[$key];
+				
+				$this->_xref[$key] = $table->find(array(
+					$this->_table->name . '_id' => $this->_data['id']
+				));
+			}
+			
+			return $this->_xref[$key];
 		}
 		
 		return null;

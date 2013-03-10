@@ -10,9 +10,7 @@ class Plutonium_Application {
 		return self::$_path;
 	}
 	
-	public static function setPath($path) {
-		self::$_path = $path;
-	}
+	protected $_models = array();
 	
 	protected $_theme   = null;
 	protected $_module  = null;
@@ -22,16 +20,18 @@ class Plutonium_Application {
 		$request  =& Plutonium_Request::getInstance();
 		$registry =& Plutonium_Registry::getInstance();
 		
-		$this->_theme  = Plutonium_Theme::getInstance($registry->config->get('theme'));
-		$this->_module = Plutonium_Module::getInstance($request->get('module'));
+		$this->_theme  =& Plutonium_Theme::getInstance($registry->config->get('theme'));
+		$this->_module =& Plutonium_Module::getInstance($request->get('module'));
 		
-		$registry->config->def('widgets',  array());
+		$registry->config->def('widgets', array());
 		
 		foreach ($registry->config->get('widgets') as $location => $widgets) {
 			foreach ($widgets as $position => $widget) {
 				$this->_widgets[$location][$position] = Plutonium_Widget::getInstance($widget);
 			}
 		}
+		
+		$this->_module->initialize();
 	}
 	
 	public function execute() {

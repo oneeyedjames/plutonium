@@ -25,7 +25,7 @@ class Plutonium_Module {
 			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__, $name);
 			
 			$language =& Plutonium_Language::getInstance();
-			$language->load($name);
+			$language->load($name, 'modules');
 		}
 		
 		return self::$_instance;
@@ -63,7 +63,7 @@ class Plutonium_Module {
 	public function initialize() {
 		$request =& Plutonium_Request::getInstance();
 		
-		$path = $request->get('path', null);
+		$path = $request->get('path', array());
 		
 		if (!empty($path)) {
 			$request->set('resource', $this->_resource = $path[0]);
@@ -134,6 +134,7 @@ class Plutonium_Module {
 	
 	public function &getView() {
 		if (is_null($this->_view)) {
+			
 			$request =& Plutonium_Request::getInstance();
 			
 			$name = strtolower($this->_resource);

@@ -11,62 +11,74 @@ class HttpApplication extends Plutonium_Application {
 	}
 	
 	public function initialize() {
-		$database =& Plutonium_Database_Helper::getAdapter();
-		$registry =& Plutonium_Registry::getInstance();
 		$request  =& Plutonium_Request::getInstance();
+		$registry =& Plutonium_Registry::getInstance();
 		
-		/*
-		// Select Layout
-		$field = $database->quoteSymbol('slug');
-		$table = $database->quoteSymbol('app_themes');
-		$key   = $database->quoteSymbol('default');
-		$value = 1;
+		$table = Plutonium_Database_Helper::getTable('themes');
+		$rows  = $table->find(array('default' => 1));
 		
-		$sql = "SELECT $field FROM $table "
-			 . "WHERE $table.$key = $value";
+		if (!empty($rows))
+			$registry->config->set('theme', $rows[0]->slug);
 		
-		$result = $database->query($sql);
-		$record = $result->fetchObject();
-		$result->close();
-		
-		$registry->config->set('theme', @$record->slug);
-		$registry->config->set('theme', 'charcoal');
-		
-		// Select Widgets
-		$modules   = $database->quoteSymbol('app_modules');
-		$widgets   = $database->quoteSymbol('app_widgets');
-		$xref      = $database->quoteSymbol('app_module_widget_xref');
-		$id        = $database->quoteSymbol('id');
-		$slug      = $database->quoteSymbol('slug');
-		$module_id = $database->quoteSymbol('module_id');
-		$widget_id = $database->quoteSymbol('widget_id');
-		$location  = $database->quoteSymbol('location');
-		$position  = $database->quoteSymbol('position');
-		
-		$module_slug = $database->quoteString($request->get('module'));
-		
-		$sql = "SELECT $widgets.$slug, $xref.$location, $xref.$position "
-			 . "FROM $xref "
-			 . "INNER JOIN $modules ON $xref.$module_id IN ($modules.$id, 0) "
-			 . "INNER JOIN $widgets ON $xref.$widget_id = $widgets.$id "
-			 . "WHERE $modules.$slug = $module_slug "
-			 . "ORDER BY $xref.$location, $xref.$position";
-		
-		if ($result = $database->query($sql)) {
-			$records = $result->fetchAll('object');
-			$widgets = array();
+		if ($request->has('host') && !$request->has('module')) {
+			$table = Plutonium_Database_Helper::getTable('hosts');
+			$rows  = $table->find(array('slug' => $request->host));
 			
-			$result->close();
-			
-			foreach ($records as $record) {
-				$widgets[$record->location][$record->position] = $record->slug;
+			if (empty($host)) {
+				$table = Plutonium_Database_Helper::getTable('modules');
+				$rows  = $table->find(array('slug' => $request->host));
+				
+				if (!empty($rows)) {
+					$request->set('module', $request->host);
+					$request->del('host');
+				}
 			}
-		
-			$registry->config->set('widgets', $widgets);
 		}
-		*/
 		
-		//$table = Plutonium_Database_Helper::getInstance()->getTable('')
+		if (!$request->has('host')) {
+			$table = Plutonium_Database_Helper::getTable('hosts');
+			$rows  = $table->find(array('default' => 1));
+			
+			if (!empty($rows))
+				$request->set('host', $rows[0]->slug);
+		}
+		
+		if (!$request->has('module')) {
+			$table = Plutonium_Database_Helper::getTable('modules');
+			$rows  = $table->find(array('default' => 1));
+			
+			if (!empty($rows))
+				$request->set('module', $rows[0]->slug);
+		}
+		
+		// Going for broke with hard-coded defaults
+		$request->def('host',   'main');
+		$request->def('module', 'site');
+		
+		$table = Plutonium_Database_Helper::getTable('modules');
+		$rows  = $table->find(array('slug' => $request->module));
+		
+		if (!empty($rows)) {
+			$xref = $rows[0]->modules_widgets;
+			
+			if (!empty($xref)) {
+				$widgets = array();
+				
+				foreach ($xref as $row) {
+					$widget = $row->widgets;
+					
+					if (!is_null($widget)) {
+						$widgets[$row->location][$row->position] = $widget->slug;
+					}
+				}
+				
+				$registry->config->set('widgets', $widgets);
+			}
+		}
+		
+		// Going for broke with hard-coded defaults
+		$registry->config->def('theme',   'charcoal');
+		$registry->config->def('widgets', array());
 		
 		parent::initialize();
 	}

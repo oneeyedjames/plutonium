@@ -12,17 +12,20 @@ class Plutonium_Theme {
 		return self::$_path;
 	}
 	
-	public static function setPath($path) {
-		self::$_path = $path;
+	public static function getName() {
+		return is_null(self::$_instance) ? null : self::$_instance->name;
 	}
 	
-	public static function getInstance($name) {
+	public static function &getInstance($name = null) {
 		if (is_null(self::$_instance) && !is_null($name)) {
 			$name = strtolower($name);
-			$file = self::getPath() . DS . $name . DS . 'theme.php';
 			$type = ucfirst($name) . 'Theme';
-		
+			$file = self::getPath() . DS . $name . DS . 'theme.php';
+			
 			self::$_instance = Plutonium_Loader::getClass($file, $type, __CLASS__, $name);
+			
+			$language =& Plutonium_Language::getInstance();
+			$language->load($name, 'themes');
 		}
 		
 		return self::$_instance;
@@ -46,9 +49,7 @@ class Plutonium_Theme {
 	}
 	
 	public function countWidgets($location) {
-		$response =& Plutonium_Response::getInstance();
-		
-		return $response->getWidgetCount($location);
+		return Plutonium_Response::getInstance()->getWidgetCount($location);
 	}
 	
 	public function display() {
