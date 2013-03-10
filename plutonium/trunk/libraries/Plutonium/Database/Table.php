@@ -3,7 +3,10 @@
 class Plutonium_Database_Table {
 	protected $_delegate = null;
 	
-	protected $_name = null;
+	protected $_name   = null;
+	protected $_prefix = null;
+	protected $_suffix = null;
+	protected $_module = null;
 	
 	protected $_table_name = null;
 	protected $_table_meta = array();
@@ -12,30 +15,33 @@ class Plutonium_Database_Table {
 	protected $_table_xref = array();
 	protected $_field_meta = array();
 	
-	public function __construct($cfg) {
-		$type = 'Plutonium_Database_Table_Delegate_' . $cfg->driver;
+	public function __construct($config) {
+		$type = 'Plutonium_Database_Table_Delegate_' . $config->driver;
 		
 		$this->_delegate = new $type($this);
 		
-		$this->_name = $cfg->name;
+		$this->_name   = $config->name;
+		$this->_prefix = $config->prefix;
+		$this->_suffix = $config->suffix;
 		
-		$table_name = array($cfg->prefix);
 		
-		if ($cfg->prefix == 'mod')
-			$table_name[] = Plutonium_Module::getName();
+		$table_name = array($config->prefix);
 		
-		$table_name[] = $cfg->name;
+		if ($config->prefix == 'mod')
+			$table_name[] = $this->_module = Plutonium_Module::getName();
 		
-		if (isset($cfg->suffix))
-			$table_name[] = $cfg->suffix;
+		$table_name[] = $config->name;
+		
+		if (isset($config->suffix))
+			$table_name[] = $config->suffix;
 		
 		$this->_table_name = implode('_', $table_name);
 		
 		$this->_table_meta = new Plutonium_Object(array(
-			'timestamps' => $cfg->timestamps == 'yes'
+			'timestamps' => $config->timestamps == 'yes'
 		));
 		
-		if ($cfg->suffix != 'xref') {
+		if ($config->suffix != 'xref') {
 			$this->_field_meta['id'] = new Plutonium_Object(array(
 				'name'     => 'id',
 				'type'     => 'int',
@@ -45,7 +51,7 @@ class Plutonium_Database_Table {
 			));
 		}
 		
-		foreach ($cfg->refs as $ref) {
+		foreach ($config->refs as $ref) {
 			$this->_table_refs[$ref->name] = $ref->table;
 			
 			$field_name = $ref->name . '_id';
@@ -60,7 +66,7 @@ class Plutonium_Database_Table {
 			));
 		}
 		
-		if ($cfg->timestamps == 'yes') {
+		if ($config->timestamps == 'yes') {
 			$this->_field_meta['created'] = new Plutonium_Object(array(
 				'name'    => 'created',
 				'type'    => 'date',
@@ -76,7 +82,7 @@ class Plutonium_Database_Table {
 			));
 		}
 		
-		foreach ($cfg->fields as $field) {
+		foreach ($config->fields as $field) {
 			$this->_field_meta[$field->name] = new Plutonium_Object(array(
 				'name'     => $field->name,
 				'type'     => $field->type,
@@ -88,12 +94,12 @@ class Plutonium_Database_Table {
 			));
 		}
 		
-		foreach ($cfg->xrefs as $xref) {
+		foreach ($config->xrefs as $xref) {
 			$this->_table_xref[$xref->name] = new self($xref);
 			
 			// TODO handle this elsewhere
 			/* foreach ($xref->refs as $ref) {
-				if ($ref->table != $cfg->name) {
+				if ($ref->table != $config->name) {
 					$ref_table =& Plutonium_Database_Helper::getTable($ref->table);
 					$ref_table->_table_xref[$xref->name] = $this->_table_xref[$xref->name];
 				}
@@ -118,8 +124,17 @@ class Plutonium_Database_Table {
 			case 'table_refs':
 				return $this->_table_refs;
 			case 'table_revs':
-				if (empty($this->_table_revs))
+				if (empty($this->_table_revs)) {
 					$this->_table_revs = Plutonium_Database_Helper::getRefs($this->_name);
+					
+					foreach ($this->_table_revs as &$rev) {
+						$table = Plutonium_Database_Helper::getTable($rev->table);
+						
+						if ($table->_prefix == 'mod')
+							$rev->alias = $table->_module . '_' . $rev->alias;
+					}
+				}
+				
 				return $this->_table_revs;
 			case 'table_xref':
 				return $this->_table_xref;

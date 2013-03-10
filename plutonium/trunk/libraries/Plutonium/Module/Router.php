@@ -1,8 +1,7 @@
 <?php
 
 class Plutonium_Module_Router {
-	public function __construct() {
-	}
+	protected $_values = array();
 	
 	public function match($path) {
 		if (isset($path[0])) {

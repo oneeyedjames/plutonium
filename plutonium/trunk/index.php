@@ -28,8 +28,6 @@ unset($config);
 // Initialize Environment
 Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 
-Plutonium_Request::getInstance()->def('module', 'site');
-
 // Initialize Application
 require_once 'application/application.php';
 require_once 'application/error.php';

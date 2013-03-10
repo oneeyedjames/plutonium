@@ -3,6 +3,6 @@
 	<field name="name" type="string" size="tiny"/>
 	<field name="slug" type="string" size="tiny"/>
 	<field name="body" type="string"/>
-	<ref name="feed" table="feeds"/>
-	<ref name="user" table="users"/>
+	<ref name="feed" alias="posts" table="feeds"/>
+	<ref name="user" alias="posts" table="users"/>
 </table>

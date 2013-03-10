@@ -53,37 +53,44 @@ class Plutonium_Language {
 				}
 			}
 		}
-	}
-	
-	public function load($module = null) {
+		
 		$file = self::getPath() . DS . $this->_code . DS . 'language.xml';
 		
+		$this->_loadFile($file);
+	}
+	
+	public function load($name, $type) {
+		$name = strtolower($name);
+		$type = strtolower($type);
+		
+		switch ($type) {
+			case 'themes':
+			case 'modules':
+			case 'widgets':
+				$path = self::getPath() . DS . $this->_code . DS . $type;
+				$file = $path . DS . $name . '.xml';
+				$this->_loadFile($file);
+				break;
+			default:
+				// TODO raise warning
+				break;
+		}
+	}
+	
+	protected function _loadFile($file) {
 		if (is_file($file)) {
-			
 			$xml = simplexml_load_file($file);
 			
 			foreach ($xml->phrase as $phrase) {
 				$attributes = $phrase->attributes();
-				$this->_phrases[strtoupper($attributes['key'])] = (string) $attributes['value'];
+				
+				$key   = strtoupper($attributes['key']);
+				$value = (string) $attributes['value'];
+				
+				$this->_phrases[$key] = $value;
 			}
 		} else {
 			// TODO raise warning
-		}
-		
-		if (!empty($module)) {
-			$path = self::getPath() . DS . $this->_code . DS . 'modules';
-			$file = $path . DS . strtolower($module) . '.xml';
-			
-			if (is_file($file)) {
-				$xml = simplexml_load_file($file);
-			
-				foreach ($xml->phrase as $phrase) {
-					$attributes = $phrase->attributes();
-					$this->_phrases[strtoupper($attributes['key'])] = (string) $attributes['value'];
-				}
-			} else {
-				// TODO raise warning
-			}
 		}
 	}
 	

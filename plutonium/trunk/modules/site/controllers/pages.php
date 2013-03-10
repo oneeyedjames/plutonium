@@ -5,21 +5,15 @@ class PagesController extends Plutonium_Module_Controller {
 		$view =& $this->getView();
 		$view->layout = 'details';
 		
-		/*
-		$database = Plutonium_Database_Helper::getAdapter();
+		$this->detailsAction();
+	}
+	
+	public function detailsAction() {
+		$request =& Plutonium_Request::getInstance();
 		
-		$field = $database->quoteSymbol('id');
-		$table = $database->quoteSymbol('mod_site_pages');
-		$where = $database->quoteSymbol('parent_id');
+		$path = $request->get('path', array());
 		
-		$sql = "SELECT $field FROM $table WHERE $where = 0";
-		
-		if ($result = $database->query($sql)) {
-			if (($id = $result->fetchResult()) !== false)
-				$view->setVal('slug', $id);
-		
-			$result->close();
-		}
-		*/
+		if (!empty($path))
+			$this->getView()->slug = $path[0];
 	}
 }

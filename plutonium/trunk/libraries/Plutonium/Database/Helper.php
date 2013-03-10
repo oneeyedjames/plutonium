@@ -75,7 +75,6 @@ class Plutonium_Database_Helper {
 				foreach ($nodes as $node) {
 					$ref = new Plutonium_Object(array(
 						'name'   => $node->getAttribute('name'),
-						'alias'  => $node->getAttribute('alias'),
 						'table'  => $node->getAttribute('table'),
 						'prefix' => $node->getAttribute('prefix')
 					));

@@ -1,6 +1,6 @@
 <?php
 
-class LoginWidget extends Plutonium_Widget_Abstract {
+class LoginWidget extends Plutonium_Widget {
 	public function display() {
 		$request =& Plutonium_Request::getInstance();
 		$session =& Plutonium_Session::getInstance();
