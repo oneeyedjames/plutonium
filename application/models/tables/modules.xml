@@ -4,8 +4,8 @@
 	<field name="slug" type="string" size="short"/>
 	<field name="descrip" type="string"/>
 	<field name="default" type="bool"/>
-	<xref name="module_widget" table="widgets">
+	<xref name="widget" alias="module" table="widgets">
 		<field name="location" type="string" size="short"/>
-		<field name="position" type="int" size="tiny" unsigned="yes"/>
+		<field name="position" type="int" size="tiny"/>
 	</xref>
 </table>

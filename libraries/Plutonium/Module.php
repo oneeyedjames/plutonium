@@ -147,6 +147,27 @@ class Plutonium_Module {
 		
 		return $this->_view;
 	}
+	
+	public function getPermalink() {
+		$request  =& Plutonium_Request::getInstance();
+		$registry =& Plutonium_Registry::getInstance();
+		
+		$scheme = $registry->config->system->scheme;
+		
+		$host = $request->module . '.' . $request->host . '.'
+			  . $registry->config->system->hostname;
+		
+		$path = $request->resource;
+		
+		if (isset($request->id))     $path .= FS . $request->id;
+		if (isset($request->action)) $path .= FS . $request->action;
+		
+		$path .= '.' . $request->get('format', 'html');
+		
+		$link = $scheme . '://' . $host . FS . $path;
+		
+		return $link;
+	}
 }
 
 ?>

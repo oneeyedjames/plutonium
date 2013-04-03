@@ -4,7 +4,7 @@
 	<field name="slug" type="string" size="short"/>
 	<field name="descrip" type="string"/>
 	<field name="default" type="bool"/>
-	<xref name="widget_group" table="groups">
+	<xref name="group" alias="widget" table="groups">
 		<field name="grant" type="bool"/>
 	</xref>
 </table>

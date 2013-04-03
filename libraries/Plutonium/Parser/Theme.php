@@ -23,10 +23,11 @@ class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
 	
 	public function messageTag($args) {
 		$session =& Plutonium_Session::getInstance();
+		$theme   =& Plutonium_Theme::getInstance();
 		
 		if ($message = $session->get('message', null)) {
 			$session->del('message');
-			return $message;
+			return $theme->message_start . $message . $theme->message_close;
 		}
 		
 		return '';

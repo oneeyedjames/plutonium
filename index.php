@@ -10,14 +10,19 @@
 require_once 'constants.php';
 require_once 'bootstrap.php';
 
-// Initialize Library
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/Array.php';
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/String.php';
 require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
 
 Plutonium_Loader::autoload(PU_PATH_BASE . '/libraries');
 
+require_once 'application/application.php';
+require_once 'application/error.php';
+
+Plutonium_Error_Helper::register(null, 'HttpErrorHandler');
+
 $config = new Plutonium_Object($config);
+$config->system->def('scheme', parse_url(PU_URL_BASE, PHP_URL_SCHEME));
 
 Plutonium_Database_Helper::getAdapter($config->database);
 Plutonium_Language::getInstance($config->language);
@@ -25,14 +30,7 @@ Plutonium_Registry::getInstance()->set('config', $config);
 
 unset($config);
 
-// Initialize Environment
 Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
-
-// Initialize Application
-require_once 'application/application.php';
-require_once 'application/error.php';
-
-Plutonium_Error_Helper::register(null, 'HttpErrorHandler');
 
 $application =& HttpApplication::getInstance();
 $application->initialize();

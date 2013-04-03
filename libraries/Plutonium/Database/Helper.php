@@ -4,9 +4,9 @@ class Plutonium_Database_Helper {
 	protected static $_adapter = null;
 	
 	protected static $_tables = array();
+	protected static $_xref_tables = array();
 	
 	protected static $_refs = array();
-	protected static $_xref = array();
 	
 	public static function &getAdapter($config = null) {
 		if (is_null(self::$_adapter) && !is_null($config)) {
@@ -89,27 +89,35 @@ class Plutonium_Database_Helper {
 				
 				$cfg->refs = $refs;
 			
-				$xrefs = array();
+				//$xrefs = array();
 			
 				$nodes = $xpath->query('/table/xref');
 				foreach ($nodes as $node) {
-					$xref = new Plutonium_Object(array(
+					$name   = $node->getAttribute('name');
+					$alias  = $node->getAttribute('alias');
+					$table  = $node->getAttribute('table');
+					$prefix = $node->getAttribute('prefix');
+					
+					if (empty($name))   $name   = $table;
+					if (empty($alias))  $alias  = $cfg->name;
+					if (empty($prefix)) $prefix = $cfg->prefix;
+					
+					$xref_cfg = new Plutonium_Object(array(
 						'driver'     => $cfg->driver,
 						'prefix'     => $cfg->prefix,
 						'suffix'     => 'xref',
-						'name'       => $cfg->name . '_' . $node->getAttribute('table'),
+						'name'       => $alias . '_' . $name,
 						'timestamps' => $node->getAttribute('timestamps'),
-						'xrefs'      => array(),
 						'refs'       => array(
 							new Plutonium_Object(array(
-								'name'   => $cfg->name,
+								'name'   => $alias,
 								'table'  => $cfg->name,
 								'prefix' => $cfg->prefix
 							)),
 							new Plutonium_Object(array(
-								'name'   => $node->getAttribute('table'),
-								'table'  => $node->getAttribute('table'),
-								'prefix' => $node->getAttribute('prefix')
+								'name'   => $name,
+								'table'  => $table,
+								'prefix' => $prefix
 							))
 						)
 					));
@@ -125,12 +133,17 @@ class Plutonium_Database_Helper {
 						));
 					}
 				
-					$xref->fields = $fields;
-				
-					$xrefs[] = $xref;
+					$xref_cfg->fields = $fields;
+					
+					//$xrefs[] = $xref;
+					
+					$xref_table = new Plutonium_Database_Table($xref_cfg);
+					
+					self::$_xref_tables[$table][$alias] =& $xref_table;
+					self::$_xref_tables[$cfg->name][$name] =& $xref_table;
 				}
 			
-				$cfg->xrefs = $xrefs;
+				//$cfg->xrefs = $xrefs;
 			
 				self::$_tables[$name] = Plutonium_Loader::getClass($file_php, $type, 'Plutonium_Database_Table', $cfg);
 			}
@@ -146,6 +159,20 @@ class Plutonium_Database_Helper {
 			unset(self::$_refs[$table]);
 			
 			return $refs;
+		}
+		
+		return array();
+	}
+	
+	public static function getXRefs($table) {
+		if (array_key_exists($table, self::$_xref_tables)) {
+			return self::$_xref_tables[$table];
+			
+			/* $xrefs = self::$_xref_tables[$table];
+		
+			unset(self::$_xref_tables[$table]);
+			
+			return $xrefs; */
 		}
 		
 		return array();

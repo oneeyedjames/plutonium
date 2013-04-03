@@ -49,11 +49,10 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 			}
 		}
 
-		$sql = 'SELECT * '
-			 . 'FROM ' . $table
-			 . ($where ? ' WHERE ' . $where : '')
-			 . ($group ? ' GROUP BY ' . $group : '')
-			 . ($order ? ' ORDER BY ' . $order : '');
+		$sql = "SELECT * FROM $table"
+			 . ($where ? " WHERE $where" : '')
+			 . ($group ? " GROUP BY $group" : '')
+			 . ($order ? " ORDER BY $order" : '');
 		
 		if ($result = $db->query($sql, intval($single))) {
 			$rows = array();
@@ -61,7 +60,100 @@ extends Plutonium_Database_Table_Delegate_Abstract {
 			foreach ($result->fetchAllAssoc() as $data)
 				$rows[] = $this->_table->make($data);
 			
+			$result->close();
+			
 			return $single ? $rows[0] : $rows;
+		}
+		
+		return false;
+	}
+	
+	public function select_xref($xref, $args) {
+		$db = Plutonium_Database_Helper::getAdapter();
+		
+		$table = $db->quoteSymbol($this->_table->table_name);
+		$id = $db->quoteSymbol('id');
+		
+		$xref_table = $db->quoteSymbol($xref->table_name);
+		
+		foreach ($xref->table_refs as $key => $table_name) {
+			if ($table_name == $this->_table->name) {
+				$xref_id = $db->quoteSymbol($key . '_id');
+			} else {
+				$join_ref_id = $db->quoteSymbol($key . '_id');
+				$xref_alias = $key;
+			}
+		}
+		
+		$join = "$table INNER JOIN $xref_table ON "
+			  . "$table.$id = $xref_table.$xref_id";
+		
+		if (is_scalar($args) && !empty($args)) {
+			$ref_id = $db->quoteString($args);
+			$where = "$xref_table.$join_ref_id = $ref_id";
+		} elseif (is_array($args) && !empty($args)) {
+			$filters = array();
+			
+			if (array_key_exists('ref_id', $args)) {
+				$ref_id = $db->quoteString($args['ref_id']);
+				unset($args['ref_id']);
+				
+				$filters[] = "$xref_table.$join_ref_id = $ref_id";
+			}
+			
+			foreach ($args as $field => $value) {
+				// TODO handle filtering
+			}
+			
+			if (!empty($filters))
+				$where = implode(' AND ', $filters);
+		}
+		
+		$fields = array("$table.*");
+		$xref_fields = array();
+		
+		foreach ($xref->field_meta as $field_meta) {
+			$is_ref = false;
+			
+			foreach ($xref->table_refs as $ref_alias => $ref_table) {
+				if ($ref_alias . '_id' == $field_meta->name) {
+					$is_ref = true;
+					break;
+				}
+			}
+			
+			if (!$is_ref) {
+				$field = $db->quoteSymbol($field_meta->name);
+				$alias = $db->quoteSymbol('xref_' . $xref_alias . '_' . $field_meta->name);
+				
+				$fields[] = "$xref_table.$field AS $alias";
+				
+				$xref_fields[] = $db->stripSymbol($alias);
+			}
+		}
+		
+		$fields = implode(', ', $fields);
+		
+		$sql = "SELECT $fields FROM $join"
+			 . (!empty($where) ? " WHERE $where" : '');
+		
+		if ($result = $db->query($sql)) {
+			$rows = array();
+			
+			foreach ($result->fetchAllAssoc() as $data) {
+				$xref_data = array();
+				
+				foreach ($xref_fields as $xref_field) {
+					$field = str_replace('xref_' . $xref_alias . '_', '', $xref_field);
+					$xref_data[$xref_alias][$field] = $data[$xref_field];
+				}
+				
+				$rows[] = $this->_table->make($data, $xref_data);
+			}
+			
+			$result->close();
+			
+			return $rows;
 		}
 		
 		return false;

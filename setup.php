@@ -27,6 +27,6 @@ Plutonium_Database_Helper::getTable('groups');
 
 Plutonium_Database_Helper::getTable('themes');
 Plutonium_Database_Helper::getTable('modules');
-Plutonium_Database_Helper::getTable('widgets');
+Plutonium_Database_Helper::getTable('widgets')->find(1)->module(array());
 
 ?>

@@ -18,39 +18,59 @@ class Plutonium_Language {
 		
 		return self::$_instance;
 	}
-	
-	protected $_code;
+
 	protected $_name;
+	protected $_code;
+	protected $_locale;
 	protected $_phrases;
 	
 	public function __construct($config) {
-		$this->_code    = strtolower($config->code);
+		$code   = $config->code;
+		$locale = null;
+		
+		if (strpos($code, '-') !== false)
+			list($code, $locale) = explode('-', $code);
+		
+		$this->_code   = $config->code   = strtolower($code);
+		$this->_locale = $config->locale = strtoupper($locale);
+		
 		$this->_phrases = array();
 		
-		$path = self::getPath() . DS . $this->_code;
+		$path = self::getPath() . DS . $this->_code . '-' . $this->_locale;
 		
 		if (!is_dir($path)) {
-			$code = explode('-', $config->code);
-			$path = self::getPath() . DS . $code[0];
+			$message = sprintf("Could not find language pack, %s-%s.",
+					$config->code, $config->locale);
+			
+			$path = self::getPath() . DS . $this->_code;
 			
 			if (is_dir($path)) {
-				$this->_code = $code[0];
+				$this->_locale = null;
 				
-				// TODO raise warning
+				$error = sprintf("%s Instead, using %s.", $message, $this->_code);
+				
+				trigger_error($error, E_USER_WARNING);
 			} elseif ($dir = @opendir(self::getPath())) {
 				while (($file = readdir($dir)) !== false) {
-					if (is_dir(self::getPath() . DS . $file)) {
-						$code2 = explode('-', $file);
+					if (is_dir(self::getPath() . DS . $file) && strpos($file, '-') !== false) {
+						list($code, $locale) = explode('-', $file);
 						
-						if ($code[0] == $code2[0]) {
-							$this->_code = $file;
-				
-							// TODO raise warning
+						if ($this->_code == strtolower($code)) {
+							$this->_locale = strtoupper($locale);
+							
+							$error = sprintf("%s Instead, using %s-%s.",
+								$message, $this->_code, $this->_locale);
+							
+							trigger_error($error, E_USER_WARNING);
 							
 							break;
 						}
 					}
 				}
+				
+				closedir($dir);
+			} else {
+				trigger_error($message, E_USER_WARNING);
 			}
 		}
 		
