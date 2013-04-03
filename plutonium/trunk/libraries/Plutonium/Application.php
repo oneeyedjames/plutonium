@@ -10,8 +10,6 @@ class Plutonium_Application {
 		return self::$_path;
 	}
 	
-	protected $_models = array();
-	
 	protected $_theme   = null;
 	protected $_module  = null;
 	protected $_widgets = array();
@@ -20,17 +18,11 @@ class Plutonium_Application {
 		$request  =& Plutonium_Request::getInstance();
 		$registry =& Plutonium_Registry::getInstance();
 		
-		$this->_theme  =& Plutonium_Theme::getInstance($registry->config->get('theme'));
-		$this->_module =& Plutonium_Module::getInstance($request->get('module'));
+		$theme  = $registry->config->get('theme');
+		$module = $request->get('module');
 		
-		$registry->config->def('widgets', array());
-		
-		foreach ($registry->config->get('widgets') as $location => $widgets) {
-			foreach ($widgets as $position => $widget) {
-				$this->_widgets[$location][$position] = Plutonium_Widget::getInstance($widget);
-			}
-		}
-		
+		$this->_theme  =& Plutonium_Theme::getInstance($theme);
+		$this->_module =& Plutonium_Module::getInstance($module);
 		$this->_module->initialize();
 	}
 	
@@ -50,6 +42,10 @@ class Plutonium_Application {
 		
 		$document =& Plutonium_Document::getInstance();
 		$document->display();
+	}
+	
+	public function addWidget($location, $name) {
+		$this->_widgets[$location][] = Plutonium_Widget::getInstance($name);
 	}
 }
 

@@ -50,6 +50,14 @@ class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter_Abstra
 		return "`" . $sym . "`";
 	}
 	
+	public function stripString($str) {
+		return trim($str, "'");
+	}
+	
+	public function stripSymbol($sym) {
+		return trim($sym, "`");
+	}
+	
 	public function query($sql, $limit = 0, $offset = 0) {
 		if (intval($limit)  > 0) $sql .= ' LIMIT '  . intval($limit);
 		if (intval($offset) > 0) $sql .= ' OFFSET ' . intval($offset);

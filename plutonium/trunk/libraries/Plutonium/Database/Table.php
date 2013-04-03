@@ -10,10 +10,11 @@ class Plutonium_Database_Table {
 	
 	protected $_table_name = null;
 	protected $_table_meta = array();
-	protected $_table_refs = array();
-	protected $_table_revs = array();
-	protected $_table_xref = array();
 	protected $_field_meta = array();
+	
+	protected $_table_refs  = array();
+	protected $_table_revs  = array();
+	protected $_table_xrefs = array();
 	
 	public function __construct($config) {
 		$type = 'Plutonium_Database_Table_Delegate_' . $config->driver;
@@ -23,7 +24,6 @@ class Plutonium_Database_Table {
 		$this->_name   = $config->name;
 		$this->_prefix = $config->prefix;
 		$this->_suffix = $config->suffix;
-		
 		
 		$table_name = array($config->prefix);
 		
@@ -94,23 +94,9 @@ class Plutonium_Database_Table {
 			));
 		}
 		
-		foreach ($config->xrefs as $xref) {
-			$this->_table_xref[$xref->name] = new self($xref);
-			
-			// TODO handle this elsewhere
-			/* foreach ($xref->refs as $ref) {
-				if ($ref->table != $config->name) {
-					$ref_table =& Plutonium_Database_Helper::getTable($ref->table);
-					$ref_table->_table_xref[$xref->name] = $this->_table_xref[$xref->name];
-				}
-			} */
-		}
-		
-		if (!$this->_delegate->exists()) {
-			if (!$this->_delegate->create()) {
-				die(Plutonium_Database_Helper::getAdapter()->getErrorMsg());
-			}
-		}
+		// TODO raise error
+		if (!$this->_delegate->exists() && !$this->_delegate->create())
+			die(Plutonium_Database_Helper::getAdapter()->getErrorMsg());
 	}
 	
 	public function __get($key) {
@@ -121,6 +107,10 @@ class Plutonium_Database_Table {
 				return $this->_table_name;
 			case 'table_meta':
 				return $this->_table_meta;
+			case 'field_names':
+				return array_keys($this->_field_meta);
+			case 'field_meta':
+				return $this->_field_meta;
 			case 'table_refs':
 				return $this->_table_refs;
 			case 'table_revs':
@@ -136,23 +126,26 @@ class Plutonium_Database_Table {
 				}
 				
 				return $this->_table_revs;
-			case 'table_xref':
-				return $this->_table_xref;
-			case 'field_names':
-				return array_keys($this->_field_meta);
-			case 'field_meta':
-				return $this->_field_meta;
+			case 'table_xrefs':
+				if (empty($this->_table_xrefs))
+					$this->_table_xrefs = Plutonium_Database_Helper::getXRefs($this->_name);
+				
+				return $this->_table_xrefs;
 			default:
 				return null;
 		}
 	}
 	
-	public function make($data = null) {
-		return new Plutonium_Database_Row($this, $data);
+	public function make($data = null, $xref_data = null) {
+		return new Plutonium_Database_Row($this, $data, $xref_data);
 	}
 	
 	public function find($args = null) {
 		return $this->_delegate->select($args);
+	}
+	
+	public function find_xref($xref, $args = null) {
+		return $this->_delegate->select_xref($this->table_xrefs[$xref], $args);
 	}
 	
 	public function save(&$row) {

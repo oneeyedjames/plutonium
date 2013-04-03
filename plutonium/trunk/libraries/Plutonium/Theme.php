@@ -37,11 +37,40 @@ class Plutonium_Theme {
 	protected $_params = null;
 	protected $_output = null;
 	
+	protected $_message_start = '<div class="pu-message">';
+	protected $_message_close = '</div>';
+	
+	protected $_module_start = '<div class="pu-module">';
+	protected $_module_close = '</div>';
+	
+	protected $_widget_start = '<div class="pu-widget">';
+	protected $_widget_close = '</div>';
+	protected $_widget_delim = LS;
+	
 	public function __construct($name) {
 		$this->_name   = $name;
 		$this->_layout = 'default';
 		$this->_format = 'html';
 		$this->_params = new Plutonium_Object();
+	}
+	
+	public function __get($key) {
+		switch ($key) {
+			case 'message_start':
+				return $this->_message_start;
+			case 'message_close':
+				return $this->_message_close;
+			case 'module_start':
+				return $this->_module_start;
+			case 'module_close':
+				return $this->_module_close;
+			case 'widget_start':
+				return $this->_widget_start;
+			case 'widget_close':
+				return $this->_widget_close;
+			case 'widget_delim':
+				return $this->_widget_delim;
+		}
 	}
 	
 	public function hasWidgets($location) {

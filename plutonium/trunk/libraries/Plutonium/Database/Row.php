@@ -2,21 +2,27 @@
 
 class Plutonium_Database_Row {
 	protected $_table = null;
+	protected $_data  = array();
+	protected $_refs  = array();
+	protected $_revs  = array();
+	protected $_xrefs = array();
 	
-	protected $_data = array();
-	protected $_refs = array();
-	protected $_revs = array();
-	protected $_xref = array();
+	protected $_xref_data = null;
 	
-	public function __construct(&$table, $data = null) {
+	public function __construct(&$table, $data = null, $xref_data = null) {
 		$this->_table = $table;
+		$this->_data  = array_fill_keys($table->field_names, null);
+		$this->_refs  = array_fill_keys(array_keys($table->table_refs), null);
+		$this->_revs  = array_fill_keys(array_keys($table->table_revs), null);
+		$this->_xrefs = array_fill_keys(array_keys($table->table_xrefs), null);
 		
-		$this->_data = array_fill_keys($table->field_names, null);
-		$this->_refs = array_fill_keys(array_keys($table->table_refs), null);
-		$this->_revs = array_fill_keys(array_keys($table->table_revs), null);
-		$this->_xref = array_fill_keys(array_keys($table->table_xref), null);
+		$this->_xref_data = new Plutonium_Object();
 		
 		$this->bind($data);
+		
+		if (!empty($xref_data)) {
+			$this->_bind_xref($xref_data);
+		}
 	}
 	
 	public function __get($key) {
@@ -56,16 +62,29 @@ class Plutonium_Database_Row {
 			}
 			
 			return $this->_revs[$key];
-		} elseif (array_key_exists($key, $this->_xref)) {
-			if (is_null($this->_xref[$key])) {
-				$table = $this->_table->table_xref[$key];
+		} elseif (array_key_exists($key, $this->_xrefs)) {
+			if (is_null($this->_xrefs[$key])) {
+				$this->_xrefs[$key] = $this->__call($key, array());
 				
-				$this->_xref[$key] = $table->find(array(
-					$this->_table->name . '_id' => $this->_data['id']
-				));
+				/* $table = $this->_table->table_xref[$key];
+				
+				foreach ($table->table_refs as $alias => $ref_table) {
+					if ($alias != $key && $ref_table == $this->_table->name) {
+						$xref_id = $alias . '_id';
+						break;
+					}
+				}
+				
+				if (!empty($xref_id)) {
+					$this->_xrefs[$key] = $table->find(array(
+						$xref_id => $this->_data['id']
+					));	
+				} */
 			}
 			
-			return $this->_xref[$key];
+			return $this->_xrefs[$key];
+		} elseif ($key == 'xref') {
+			return $this->_xref_data;
 		}
 		
 		return null;
@@ -90,9 +109,42 @@ class Plutonium_Database_Row {
 		}
 	}
 	
+	/**
+	 * TODO work out fetch on cross-reference
+	 */
+	public function __call($name, $args) {
+		if (array_key_exists($name, $this->_xrefs)) {
+			$xref = $this->_table->table_xrefs[$name];
+			$xref_args = empty($args) ? $this->_data['id'] : $args[0];
+			
+			if (is_array($xref_args)) $xref_args['ref_id'] = $this->_data['id'];
+			
+			foreach ($xref->table_refs as $ref_alias => $ref_table) {
+				if ($ref_alias != $name && $ref_table == $this->_table->name) {
+					$xref_name = $ref_alias;
+				} else {
+					$xref_id = $ref_alias . '_id';
+					$table = Plutonium_Database_Helper::getTable($ref_table);
+				}
+			}
+			
+			return $table->find_xref($xref_name, $xref_args);
+		}
+		
+		return null;
+	}
+	
 	public function bind($data) {
 		if (is_assoc($data)) {
 			foreach ($data as $key => $value) $this->$key = $value;
+		}
+	}
+	
+	protected function _bind_xref($xref_data) {
+		if (is_assoc($xref_data)) {
+			foreach ($xref_data as $xref => $data) {
+				$this->_xref_data[$xref] = $this->_table->table_xrefs[$xref]->make($data);
+			}
 		}
 	}
 	

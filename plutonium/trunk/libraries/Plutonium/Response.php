@@ -14,13 +14,6 @@ class Plutonium_Response {
 	protected $_module_output = null;
 	protected $_widget_output = array();
 	
-	protected $_module_start = '<div class="pu-module">';
-	protected $_module_close = '</div>';
-	
-	protected $_widget_start = '<div class="pu-widget">';
-	protected $_widget_close = '</div>';
-	protected $_widget_delim = LS;
-	
 	protected function __construct() {
 	}
 	
@@ -33,9 +26,11 @@ class Plutonium_Response {
 	}
 	
 	public function getModuleOutput() {
-		return $this->_module_start
+		$theme =& Plutonium_Theme::getInstance();
+		
+		return $theme->module_start
 			 . $this->_module_output
-			 . $this->_module_close;
+			 . $theme->module_close;
 	}
 	
 	public function setModuleOutput($output) {
@@ -48,15 +43,17 @@ class Plutonium_Response {
 	
 	public function getWidgetOutput($location) {
 		if (isset($this->_widget_output[$location])) {
-			$outputs =  array();
+			$theme =& Plutonium_Theme::getInstance();
+			
+			$outputs = array();
 			
 			foreach (array_keys($this->_widget_output[$location]) as $position) {
-				$outputs[] = $this->_widget_start
+				$outputs[] = $theme->widget_start
 						   . $this->_widget_output[$location][$position]
-						   . $this->_widget_close;
+						   . $theme->widget_close;
 			}
 			
-			return implode($this->_widget_delim, $outputs);
+			return implode($theme->widget_delim, $outputs);
 		}
 		
 		return null;
