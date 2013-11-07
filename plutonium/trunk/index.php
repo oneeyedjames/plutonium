@@ -1,14 +1,14 @@
 <?php
 /**
- * @version   0.9.0
+ * @version   0.1.0
  * @package   Plutonium
  * @author    J Andrew Scott
  * @copyright Copyright (C) 2010 J Andrew Scott. All rights reserved.
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once 'constants.php';
-require_once 'bootstrap.php';
+require_once 'includes/constants.php';
+require_once 'includes/bootstrap.php';
 
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/Array.php';
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/String.php';

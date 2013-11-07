@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<module name="site">
-	<resource name="pages"/>
-	<resource name="forms"/>
-	<resource name="submissions"/>
-</module>
