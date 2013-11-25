@@ -5,6 +5,8 @@ class Plutonium_Module {
 
 	protected static $_instance = null;
 
+	protected static $_default_resource = null;
+
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
 			self::$_path = realpath(PU_PATH_BASE . '/modules');
@@ -43,8 +45,6 @@ class Plutonium_Module {
 
 	public function __construct($name) {
 		$this->_name = $name;
-
-		$this->_resource = 'default';
 	}
 
 	public function __get($key) {
@@ -58,15 +58,25 @@ class Plutonium_Module {
 		}
 	}
 
-	public function __set($key, $value) {
-		// TODO nothing
-	}
-
 	public function initialize() {
 		$request =& Plutonium_Request::getInstance();
 
-		$this->getRouter()->match();
-		$this->_resource = $request->get('resource', null);
+		switch ($request->method) {
+			case 'POST':
+				$request->def('action', 'create');
+				break;
+			case 'PUT':
+				$request->def('action', 'update');
+				break;
+			case 'DELETE':
+				$request->def('action', 'delete');
+				break;
+		}
+
+		$this->getRouter()->match($request->path);
+		$this->_resource = $request->get('resource', self::$_default_resource);
+
+		$request->def('resource', self::$_default_resource);
 	}
 
 	public function execute() {
@@ -90,8 +100,6 @@ class Plutonium_Module {
 
 	public function &getController() {
 		if (is_null($this->_controller)) {
-			$request  =& Plutonium_Request::getInstance();
-
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'Controller';
 			$file = self::getPath() . DS . $this->_name
@@ -119,9 +127,6 @@ class Plutonium_Module {
 
 	public function &getView() {
 		if (is_null($this->_view)) {
-
-			$request =& Plutonium_Request::getInstance();
-
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'View';
 			$file = self::getPath() . DS . $this->_name . DS
