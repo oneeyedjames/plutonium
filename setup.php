@@ -7,8 +7,19 @@
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once 'constants.php';
-require_once 'config.php';
+if (is_file('includes/config.php'))
+	return;
+
+require_once 'includes/constants.php';
+
+$const = get_defined_constants(true);
+
+ksort($const['user']);
+
+header('Content-type: text/plain');
+print_r($const['user']);
+
+/* require_once 'config.php';
 
 if (is_file('local-config.php')) require_once 'local-config.php';
 
@@ -27,6 +38,6 @@ Plutonium_Database_Helper::getTable('groups');
 
 Plutonium_Database_Helper::getTable('themes');
 Plutonium_Database_Helper::getTable('modules');
-Plutonium_Database_Helper::getTable('widgets')->find(1)->module(array());
+Plutonium_Database_Helper::getTable('widgets')->find(1)->module(array()); */
 
 ?>

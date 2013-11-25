@@ -19,26 +19,19 @@ class Plutonium_Module_Router {
 		if (isset($path[0]))
 			$request->set('resource', $path[0]);
 
-		if ($request->has('resource')) {
-			if (isset($path[1])) {
-				if (is_numeric($path[1])) {
-					$request->set('id', intval($path[1]));
+		if (isset($path[1])) {
+			if (is_numeric($path[1])) {
+				$request->set('id', intval($path[1]));
 
-					if (isset($path[2])) {
-						$key = in_array($path[2], array('update', 'delete'))
-							 ? 'action' : 'layout';
-
-						$request->set($key, $path[2]);
-					} else {
-						$request->def('layout', 'details');
-					}
-				} else {
-					$key = $path[1] == 'create' ? 'action' : 'layout';
-					$request->set($key, $path[1]);
-				}
+				if (isset($path[2]))
+					$request->set('layout', $path[2]);
+				else
+					$request->def('layout', 'details');
 			} else {
-				$request->def('layout', 'default');
+				$request->set('layout', $path[1]);
 			}
+		} else {
+			$request->def('layout', 'default');
 		}
 	}
 

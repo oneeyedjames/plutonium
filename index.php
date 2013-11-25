@@ -8,7 +8,15 @@
  */
 
 require_once 'includes/constants.php';
-require_once 'includes/bootstrap.php';
+
+if (!is_file('includes/config.php')) {
+	require_once 'setup.php';
+	exit;
+} else {
+	require_once 'includes/config.php';
+	if (is_file('includes/local-config.php'))
+		require_once 'includes/local-config.php';
+}
 
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/Array.php';
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/String.php';
