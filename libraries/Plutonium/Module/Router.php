@@ -3,54 +3,43 @@
 class Plutonium_Module_Router {
 	protected $_module = null;
 
-	public function __construct() {
-		$this->_module =& Plutonium_Module::getInstance();
+	public function __construct($module) {
+		$this->_module = $module;
 	}
 
-	public function match($path = null) {
-		$request =& Plutonium_Request::getInstance();
-
-		if (is_null($path))
-			$path = $request->get('path', '');
-
-		$path = trim($path, FS);
-		$path = empty($path) ? array() : explode(FS, $path);
+	public function match($path) {
+		$path = empty($path) ? array() : explode(FS, trim($path, FS));
+		$vars = array();
 
 		if (isset($path[0]))
-			$request->set('resource', $path[0]);
+			$vars['resource'] = $path[0];
 
 		if (isset($path[1])) {
 			if (is_numeric($path[1])) {
-				$request->set('id', intval($path[1]));
+				$vars['id'] = intval($path[1]);
 
 				if (isset($path[2]))
-					$request->set('layout', $path[2]);
+					$vars['layout'] = $path[2];
 				else
-					$request->def('layout', 'details');
+					$vars['layout'] = 'details';
 			} else {
-				$request->set('layout', $path[1]);
+				$vars['layout'] = $path[1];
 			}
 		} else {
-			$request->def('layout', 'default');
+			$vars['layout'] = 'default';
 		}
+
+		return $vars;
 	}
 
-	public function build($args = null) {
-		if (is_null($args))
-			$args =& Plutonium_Request::getInstance();
-
+	public function build($args) {
 		$path = '';
 
 		if (isset($args->resource)) {
 			$path = $args->resource;
 
-			if (isset($args->id))
-				$path .= FS . $args->id;
-
-			if (isset($args->action))
-				$path .= FS . $args->action;
-			elseif (isset($args->layout))
-				$path .= FS . $args->layout;
+			if (isset($args->id))     $path .= FS . $args->id;
+			if (isset($args->layout)) $path .= FS . $args->layout;
 		}
 
 		return $path;

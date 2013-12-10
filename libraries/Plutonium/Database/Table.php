@@ -28,7 +28,7 @@ class Plutonium_Database_Table {
 		$table_name = array($config->prefix);
 
 		if ($config->prefix == 'mod')
-			$table_name[] = $this->_module = Plutonium_Module::getName();
+			$table_name[] = $this->_module = $config->module;
 
 		$table_name[] = $config->name;
 

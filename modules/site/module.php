@@ -7,7 +7,7 @@ class SiteModule extends Plutonium_Module {
 	}
 
 	public function execute() {
-		$document =& Plutonium_Document::getInstance();
+		$document = $this->_application->document;
 		$document->addStyleSheet('modules/site/styles/module.css');
 
 		parent::execute();

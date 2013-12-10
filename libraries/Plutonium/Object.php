@@ -12,9 +12,9 @@ implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
 			$this->_vars = $data->_vars;
 		} elseif (is_array($data)) {
 			foreach ($data as $key => $value) {
-				if (is_scalar($value) || is_resource($value)) {
+				if (is_scalar($value) || is_object($value) || is_resource($value)) {
 					$this->set($key, $value);
-				} elseif (is_array($value) || is_object($value)) {
+				} elseif (is_array($value)) {
 					$this->set($key, new Plutonium_Object($value));
 				}
 			}
@@ -110,14 +110,6 @@ implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
 
 		return $vars;
 	}
-}
-
-interface Plutonium_Accessible {
-	public function has($key);
-	public function get($key, $default = null);
-	public function set($key, $value = null);
-	public function def($key, $value = null);
-	public function del($key);
 }
 
 ?>

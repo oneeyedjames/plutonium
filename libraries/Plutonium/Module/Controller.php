@@ -4,13 +4,12 @@ class Plutonium_Module_Controller {
 	protected $_name     = null;
 	protected $_module   = null;
 	protected $_redirect = null;
-	
-	public function __construct($name) {
-		$this->_name = $name;
-		
-		$this->_module =& Plutonium_Module::getInstance();
+
+	public function __construct($args) {
+		$this->_name   = $args->name;
+		$this->_module = $args->module;
 	}
-	
+
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
@@ -19,7 +18,7 @@ class Plutonium_Module_Controller {
 				return $this->_redirect;
 		}
 	}
-	
+
 	public function __set($key, $value) {
 		switch ($key) {
 			case 'redirect':
@@ -27,24 +26,24 @@ class Plutonium_Module_Controller {
 				break;
 		}
 	}
-	
-	public function &getModel($name = null) {
+
+	public function getModel($name = null) {
 		return $this->_module->getModel($name);
 	}
-	
-	public function &getView() {
+
+	public function getView() {
 		return $this->_module->getView();
 	}
-	
+
 	public function execute() {
-		$request =& Plutonium_Request::getInstance();
-		
+		$request = $this->_module->request;
+
 		$action = strtolower($request->get('action', 'default'));
 		$method = $action . 'Action';
-		
+
 		if (method_exists($this, $method))
 			call_user_func(array($this, $method));
-		
+
 		if (!empty($this->_redirect))
 			header('Location: ' . $this->_redirect);
 	}

@@ -1,12 +1,13 @@
 <?php
 
 class Plutonium_Module_Model {
-	protected $_name = null;
+	protected $_name   = null;
+	protected $_table  = null;
+	protected $_module = null;
 
-	protected $_table = null;
-
-	public function __construct($name) {
-		$this->_name = $name;
+	public function __construct($args) {
+		$this->_name   = $args->name;
+		$this->_module = $args->module;
 	}
 
 	public function __get($key) {
@@ -20,9 +21,9 @@ class Plutonium_Module_Model {
 		// TODO nothing
 	}
 
-	public function &getTable() {
+	public function getTable() {
 		if (is_null($this->_table))
-			$this->_table = Plutonium_Database_Helper::getTable($this->_name);
+			$this->_table = Plutonium_Database_Helper::getTable($this->_name, $this->_module->name);
 
 		return $this->_table;
 	}

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Copy this file to config.php and edit its values for your server environment.
+ */
+
 // System Configuration Parameters
 $config['system']['hostname'] = '';
 

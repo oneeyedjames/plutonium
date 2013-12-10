@@ -14,8 +14,7 @@ class IncludesTest extends PHPUnit_Framework_TestCase {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$_SERVER['REQUEST_URI']    = '/';
 
-		require_once $this->_path . '/includes/constants.php';
-		require_once $this->_path . '/includes/bootstrap.php';
+		require_once $this->_path . '/constants.php';
 	}
 
 	public function testConstants() {
@@ -31,10 +30,6 @@ class IncludesTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotEmpty(PU_URL_BASE);
 
 		$this->assertTrue(defined('PU_URL_PATH'));
-	}
-
-	public function testBootstrap() {
-		$this->assertTrue(false);
 	}
 }
 

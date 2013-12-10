@@ -7,15 +7,14 @@
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once 'includes/constants.php';
+require_once 'constants.php';
 
-if (!is_file('includes/config.php')) {
+if (is_file('config.php'))
+	require_once 'config.php';
+
+if (!isset($config)) {
 	require_once 'setup.php';
 	exit;
-} else {
-	require_once 'includes/config.php';
-	if (is_file('includes/local-config.php'))
-		require_once 'includes/local-config.php';
 }
 
 require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/Array.php';
@@ -33,15 +32,12 @@ $config = new Plutonium_Object($config);
 $config->system->def('scheme', parse_url(PU_URL_BASE, PHP_URL_SCHEME));
 
 Plutonium_Database_Helper::getAdapter($config->database);
-Plutonium_Language::getInstance($config->language);
 Plutonium_Registry::getInstance()->set('config', $config);
-
-unset($config);
 
 Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 
 $application =& HttpApplication::getInstance();
-$application->initialize();
+$application->initialize($config);
 $application->execute();
 
 ?>
