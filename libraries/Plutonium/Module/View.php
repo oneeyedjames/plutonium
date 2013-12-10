@@ -91,8 +91,7 @@ class Plutonium_Module_View {
 	}
 
 	public function translate($text) {
-		// TODO implement translation
-		return $text;
+		return $this->_module->application->language->translate($text);
 	}
 }
 

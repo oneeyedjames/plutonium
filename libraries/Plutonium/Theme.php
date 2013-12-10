@@ -103,8 +103,7 @@ class Plutonium_Theme {
 	}
 
 	public function translate($text) {
-		// TODO implement translation
-		return $text;
+		return $this->_application->language->translate($text);
 	}
 }
 
