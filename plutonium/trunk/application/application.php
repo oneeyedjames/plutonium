@@ -10,12 +10,8 @@ class HttpApplication extends Plutonium_Application {
 		return self::$_instance;
 	}
 
-	protected $_cache_valid;
-	protected $_cache_path;
-
-	public function initialize() {
-		$request  =& Plutonium_Request::getInstance();
-		$registry =& Plutonium_Registry::getInstance();
+	public function initialize($config) {
+		$request = $this->getRequest($config->system);
 
 		// Validate host/module dilemma
 		if ($request->has('host') && !$request->has('module')) {
@@ -52,21 +48,21 @@ class HttpApplication extends Plutonium_Application {
 		}
 
 		// Lookup default theme
-		if (!$registry->config->has('theme')) {
+		if (!$config->has('theme')) {
 			$table = Plutonium_Database_Helper::getTable('themes');
 			$rows  = $table->find(array('default' => 1));
 
 			if (!empty($rows))
-				$registry->config->set('theme', $rows[0]->slug);
+				$config->set('theme', $rows[0]->slug);
 		}
 
 		// Go for broke with hard-coded defaults
 		$request->def('host',   'main');
 		$request->def('module', 'site');
 
-		$registry->config->def('theme', 'charcoal');
+		$config->def('theme', 'charcoal');
 
-		parent::initialize();
+		parent::initialize($config);
 
 		/* TODO Caching is complicated
 

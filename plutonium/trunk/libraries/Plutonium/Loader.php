@@ -1,13 +1,19 @@
 <?php
 
-class Plutonium_Loader {
-	private static $_instance = null;
+final class Plutonium_Loader {
+	private static $_registered = false;
 
-	public static function &getInstance() {
-		if (is_null(self::$_instance))
-			self::$_instance = new self();
+	private static function register() {
+		if (!self::$_registered)
+			spl_autoload_register(array(__CLASS__, 'import'));
+	}
 
-		return self::$_instance;
+	public static function addPath($path) {
+		set_include_path(get_include_path() . PS . realpath($path));
+	}
+
+	public static function addExtension($extension) {
+		spl_autoload_extensions(spl_autoload_extensions() . ',' . $extension);
 	}
 
 	public static function getClass($file, $class, $default, $args = null) {
@@ -19,26 +25,16 @@ class Plutonium_Loader {
 	}
 
 	public static function load($class) {
-		self::getInstance()->import($class);
+		self::register();
+		self::import($class);
 	}
 
 	public static function autoload($path = null) {
-		self::getInstance()->addPath($path);
+		self::register();
+		self::addPath($path);
 	}
 
-	protected function __construct() {
-		spl_autoload_register(array($this, 'import'));
-	}
-
-	public function addPath($path) {
-		set_include_path(get_include_path() . PS . realpath($path));
-	}
-
-	public function addExtension($extension) {
-		spl_autoload_extensions(spl_autoload_extensions() . ',' . $extension);
-	}
-
-	public function import($class) {
+	public static function import($class) {
 		$paths      = explode(PS,  get_include_path());
 		$extensions = explode(',', spl_autoload_extensions());
 

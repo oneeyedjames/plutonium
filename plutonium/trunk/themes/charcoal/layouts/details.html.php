@@ -1,14 +1,8 @@
 <?php
-$registry =& Plutonium_Registry::getInstance();
-$language =& Plutonium_Language::getInstance();
-
-$request =& Plutonium_Request::getInstance();
-
 $page_width   = 966;
 $left_width   = $this->hasWidgets('left')  ? 266 : 0;
 $right_width  = $this->hasWidgets('right') ? 250 : 0;
 $center_width = $page_width - $left_width - $right_width;
-
 ?><!DOCTYPE html>
 <html>
 	<head>
@@ -58,7 +52,7 @@ $center_width = $page_width - $left_width - $right_width;
 			</div>
 			<div id="footer">
 				<div class="inside" style="font-size: smaller; font-style: italic; text-align: right;">
-					<pu:date format="<?php echo $language->translate('datetime_format_long'); ?>">
+					<pu:date format="<?php echo $this->translate('datetime_format_long'); ?>">
 				</div>
 			</div>
 		</div>

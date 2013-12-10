@@ -1,20 +1,11 @@
 <?php
 
 class Plutonium_Request implements Plutonium_Accessible {
-	protected static $_instance = null;
-
-	public static function &getInstance() {
-		if (is_null(self::$_instance))
-			self::$_instance = new self();
-
-		return self::$_instance;
-	}
-
 	protected $_uri    = null;
 	protected $_method = null;
 	protected $_hashes = array();
 
-	protected function __construct() {
+	public function __construct($config) {
 		$this->_uri    = $_SERVER['REQUEST_URI'];
 		$this->_method = $_SERVER['REQUEST_METHOD'];
 		$this->_hashes = array(
@@ -27,15 +18,13 @@ class Plutonium_Request implements Plutonium_Accessible {
 			'cookies' => $_COOKIE
 		);
 
-		$this->_initMethod();
-		$this->_initHost();
-		$this->_initPath();
+		$this->_initMethod($this->get('_method', '', 'get'));
+		$this->_initHost($config->hostname);
+		$this->_initPath(parse_url($this->_uri, PHP_URL_PATH));
 	}
 
-	protected function _initMethod() {
-		$method = $this->get('_method', null, 'post');
-
-		switch ($this->method) {
+	protected function _initMethod($method) {
+		switch ($this->_method) {
 			case 'POST':
 				if (in_array($method, array('PUT', 'DELETE')))
 					$this->_method = $method;
@@ -47,14 +36,12 @@ class Plutonium_Request implements Plutonium_Accessible {
 		}
 	}
 
-	protected function _initHost() {
-		$registry =& Plutonium_Registry::getInstance();
-
-		$base = $registry->config->system->hostname;
+	protected function _initHost($host) {
+		$base = $host;
 		$host = $this->get('SERVER_NAME', null, 'server');
 
-		$base = array_reverse(explode('.', $base));
-		$host = array_reverse(explode('.', $host));
+		$base = array_reverse(explode('.', trim($base)));
+		$host = array_reverse(explode('.', trim($host)));
 
 		// TODO Support mapped domains
 		foreach ($base as $base_slug) {
@@ -68,15 +55,15 @@ class Plutonium_Request implements Plutonium_Accessible {
 		}
 	}
 
-	protected function _initPath() {
+	protected function _initPath($path) {
 		$path = explode(FS, trim(parse_url($this->uri, PHP_URL_PATH), FS));
 
 		if (!empty($path)) {
-			$last = array_pop($path);
+			$last =& $path[count($path) - 1];
 
 			if (($pos = strrpos($last, '.')) !== false) {
 				$this->set('format', substr($last, $pos + 1));
-				array_push($path, substr($last, 0, $pos));
+				$last = substr($last, 0, $pos);
 			}
 
 			$this->set('path', implode(FS, $path));

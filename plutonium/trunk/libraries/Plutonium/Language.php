@@ -3,20 +3,11 @@
 class Plutonium_Language {
 	protected static $_path = null;
 
-	protected static $_instance = null;
-
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
 			self::$_path = realpath(PU_PATH_BASE . '/languages');
 
 		return self::$_path;
-	}
-
-	public static function &getInstance($config = null) {
-		if (is_null(self::$_instance) && !is_null($config))
-			self::$_instance = new self($config);
-
-		return self::$_instance;
 	}
 
 	protected $_name;

@@ -13,9 +13,7 @@ class Plutonium_Url extends Plutonium_Object {
 		if (isset($parts['path']))   self::$_path   = trim($parts['path'], FS);
 	}
 
-	public static function getInstance() {
-		$request =& Plutonium_Request::getInstance();
-
+	public static function newInstance($request) {
 		$vars = $request->toArray('post') + $request->toArray('get');
 
 		return new self($vars);
@@ -32,10 +30,12 @@ class Plutonium_Url extends Plutonium_Object {
 	public function toString() {
 		$url = self::$_scheme . '://' . self::$_host . FS . self::$_path;
 
-		if ($this->has('module'))   $url .= FS . $this->get('module');
+		// TODO module is now part of hostname
+		//if ($this->has('module'))   $url .= FS . $this->get('module');
+
 		if ($this->has('resource')) $url .= FS . $this->get('resource');
+		if ($this->has('id'))       $url .= FS . $this->get('id');
 		if ($this->has('layout'))   $url .= FS . $this->get('layout');
-		if ($this->has('slug'))     $url .= FS . $this->get('slug');
 		if ($this->has('format'))   $url .= FS . $this->get('format');
 
 		return $url;
