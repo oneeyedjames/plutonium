@@ -53,6 +53,8 @@ class Plutonium_Module {
 				return $this->_resource;
 			case 'request':
 				return $this->_application->request;
+			case 'application':
+				return $this->_application;
 		}
 	}
 
