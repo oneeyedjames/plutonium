@@ -36,8 +36,8 @@ Plutonium_Registry::getInstance()->set('config', $config);
 
 Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 
-$application =& HttpApplication::getInstance();
-$application->initialize($config);
+$application = new HttpApplication($config);
+$application->initialize();
 $application->execute();
 
 ?>

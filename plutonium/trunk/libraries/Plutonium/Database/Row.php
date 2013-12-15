@@ -107,9 +107,7 @@ class Plutonium_Database_Row {
 		}
 	}
 
-	/**
-	 * TODO work out fetch on cross-reference
-	 */
+	// TODO work out fetch on cross-reference
 	public function __call($name, $args) {
 		if (array_key_exists($name, $this->_xrefs)) {
 			$xref = $this->_table->table_xrefs[$name];

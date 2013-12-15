@@ -26,15 +26,19 @@ class Plutonium_Error_Helper {
 		foreach (self::$_handlers as $handler) {
 			if (is_object($handler)) {
 				if (method_exists($handler, 'handle')) {
-					$handler->handle($level, $message);
+					if ($handler->handle($level, $message))
+						return true;
 				}
 			} elseif (is_array($handler)) {
 				if ($handler['level'] == $level &&
 					function_exists($handler['handler'])) {
-					call_user_func($handler['handler'], $level, $message);
+					if (call_user_func($handler['handler'], $level, $message))
+						return true;
 				}
 			}
 		}
+
+		return false;
 	}
 
 	public static function triggerError($message) {

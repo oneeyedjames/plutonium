@@ -3,18 +3,16 @@
 class HttpApplication extends Plutonium_Application {
 	protected static $_instance = null;
 
-	public static function &getInstance() {
-		if (is_null(self::$_instance))
-			self::$_instance = new self();
+	/* public static function getInstance($config = null) {
+		if (is_null(self::$_instance) && !is_null($config))
+			self::$_instance = new self($config);
 
 		return self::$_instance;
-	}
+	} */
 
-	public function initialize($config) {
-		$request = $this->getRequest($config->system);
-
+	public function initialize() {
 		// Validate host/module dilemma
-		if ($request->has('host') && !$request->has('module')) {
+		if (isset($this->request->host) && !isset($this->request->module)) {
 			$table = Plutonium_Database_Helper::getTable('hosts');
 			$rows  = $table->find(array('slug' => $request->host));
 
@@ -23,62 +21,50 @@ class HttpApplication extends Plutonium_Application {
 				$rows  = $table->find(array('slug' => $request->host));
 
 				if (!empty($rows)) {
-					$request->set('module', $request->host);
-					$request->del('host');
+					$this->request->module = $this->request->host;
+					unset($this->request->host);
 				}
 			}
 		}
 
 		// Lookup default host
-		if (!$request->has('host')) {
+		if (!isset($this->request->host)) {
 			$table = Plutonium_Database_Helper::getTable('hosts');
 			$rows  = $table->find(array('default' => 1));
 
 			if (!empty($rows))
-				$request->set('host', $rows[0]->slug);
+				$this->request->host = $rows[0]->slug;
 		}
 
 		// Lookup default module
-		if (!$request->has('module')) {
+		if (!isset($this->request->module)) {
 			$table = Plutonium_Database_Helper::getTable('modules');
 			$rows  = $table->find(array('default' => 1));
 
 			if (!empty($rows))
-				$request->set('module', $rows[0]->slug);
+				$this->request->module = $rows[0]->slug;
 		}
 
 		// Lookup default theme
-		if (!$config->has('theme')) {
+		if (!isset($this->config->theme)) {
 			$table = Plutonium_Database_Helper::getTable('themes');
 			$rows  = $table->find(array('default' => 1));
 
 			if (!empty($rows))
-				$config->set('theme', $rows[0]->slug);
+				$this->config->theme = $rows[0]->slug;
 		}
 
 		// Go for broke with hard-coded defaults
-		$request->def('host',   'main');
-		$request->def('module', 'site');
+		$this->request->def('host',   'main');
+		$this->request->def('module', 'site');
 
-		$config->def('theme', 'charcoal');
+		$this->config->def('theme', 'charcoal');
 
-		parent::initialize($config);
-
-		/* TODO Caching is complicated
-
-		$url = parse_url($this->_module->getPermalink());
-
-		$this->_cache_path = PU_PATH_BASE . '/cache'
-			. FS . $url['host'] . $url['path'];
-
-		$this->_cache_valid = file_exists($this->_cache_path) &&
-			filemtime($this->_cache_path) > time() - 900;
-
-		if ($this->_cache_valid) return; */
+		parent::initialize();
 
 		// Load widgets
 		$table = Plutonium_Database_Helper::getTable('modules');
-		$rows  = $table->find(array('slug' => $request->module));
+		$rows  = $table->find(array('slug' => $this->request->module));
 
 		if (!empty($rows)) {
 			$widgets = array();
@@ -88,36 +74,6 @@ class HttpApplication extends Plutonium_Application {
 				$this->addWidget($xref->location, $widget->slug);
 			}
 		}
-	}
-
-	public function execute() {
-		parent::execute();
-
-		/* TODO Revisit caching later
-
-		if ($this->_cache_valid) {
-			$content = file_get_contents($this->_cache_path);
-		} else {
-			if (!file_exists(dirname($this->_cache_path)))
-				mkdir(dirname($this->_cache_path), 0755, true);
-
-			if (!file_exists(dirname($this->_cache_path)))
-				Plutonium_Error_Helper::triggerWarning('Could not write to cache: ' . dirname($this->_cache_path));
-
-			ob_start();
-			ob_clean();
-
-			parent::execute();
-
-			$content = ob_get_clean();
-
-			if (file_exists(dirname($this->_cache_path)))
-				file_put_contents($this->_cache_path, $content);
-
-			ob_end_clean();
-		}
-
-		echo $content; */
 	}
 }
 

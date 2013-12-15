@@ -4,7 +4,7 @@ class PagesView extends Plutonium_Module_View {
 	public function detailsLayout() {
 		$request = $this->_module->request;
 
-		$model =& $this->getModel();
+		$model = $this->getModel();
 
 		$slug = $this->getVar('slug', $request->get('slug', ''));
 
@@ -17,7 +17,7 @@ class PagesView extends Plutonium_Module_View {
 
 		$this->setRef('page', $page);
 
-		$document =& HttpApplication::getInstance()->document;
+		$document = $this->_module->application->document;
 		$document->setTitle($page->title);
 	}
 }
