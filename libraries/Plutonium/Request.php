@@ -81,6 +81,17 @@ class Plutonium_Request implements Plutonium_Accessible {
 		}
 	}
 
+	public function __set($key, $value) {
+		switch ($key) {
+			case 'uri':
+			case 'method':
+				break;
+			default:
+				$this->set($key, $value);
+				break;
+		}
+	}
+
 	public function __isset($key) {
 		switch ($key) {
 			case 'uri':
@@ -88,6 +99,17 @@ class Plutonium_Request implements Plutonium_Accessible {
 				return true;
 			default:
 				return $this->has($key);
+		}
+	}
+
+	public function __unset($key) {
+		switch ($key) {
+			case 'uri':
+			case 'method':
+				break;
+			default:
+				$this->del($key);
+				break;
 		}
 	}
 

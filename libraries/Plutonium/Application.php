@@ -10,6 +10,8 @@ class Plutonium_Application {
 		return self::$_path;
 	}
 
+	protected $_config = null;
+
 	protected $_theme   = null;
 	protected $_module  = null;
 	protected $_widgets = array();
@@ -21,61 +23,108 @@ class Plutonium_Application {
 	protected $_language = null;
 	protected $_document = null;
 
+	public function __construct($config) {
+		$this->_config = $config;
+	}
+
 	public function __get($key) {
 		switch ($key) {
+			case 'config':
+				return $this->_config;
 			case 'theme':
+				return $this->_getTheme($this->_config);
 			case 'module':
+				return $this->_getModule($this->request);
 			case 'widgets':
+				return $this->_widgets;
 			case 'session':
+				return $this->_getSession();
 			case 'request':
+				return $this->_getRequest($this->_config);
 			case 'response':
+				return $this->_getResponse();
 			case 'language':
+				return $this->_getLanguage($this->_config);
 			case 'document':
-				$property = '_' . $key;
-				return $this->$property;
+				return $this->_getDocument($this->_config, $this->request);
 		}
 	}
 
-	public function initialize($config) {
-		$request = $this->getRequest($config);
+	protected function _getTheme($config) {
+		if (is_null($this->_theme) && !is_null($config))
+			$this->_theme = Plutonium_Theme::newInstance($this, $config->theme);
 
-		//$this->_request = new Plutonium_Request($config);
-		$this->_session  = new Plutonium_Session();
-		$this->_response = new Plutonium_Response();
+		return $this->_theme;
+	}
 
-		$format = $this->_request->get('format', 'html');
+	protected function _getModule($request) {
+		if (is_null($this->_module) && !is_null($request))
+			$this->_module = Plutonium_Module::newInstance($this, $request->module);
 
-		$this->_language = new Plutonium_Language($config->language);
-		$this->_document = Plutonium_Document::newInstance($format, $config);
+		return $this->_module;
+	}
 
-		$this->_theme = Plutonium_Theme::newInstance($this, $config->theme);
+	protected function _getSession() {
+		if (is_null($this->_session))
+			$this->_session = new Plutonium_Session();
 
-		$this->_module = Plutonium_Module::newInstance($this, $request->module);
-		$this->_module->initialize();
+		return $this->_session;
+	}
+
+	protected function _getRequest($config) {
+		if (is_null($this->_request) && !is_null($config))
+			$this->_request = new Plutonium_Request($config->system);
+
+		return $this->_request;
+	}
+
+	protected function _getResponse() {
+		if (is_null($this->_response))
+			$this->_response = new Plutonium_Response();
+
+		return $this->_response;
+	}
+
+	protected function _getLanguage($config) {
+		if (is_null($this->_language) && !is_null($config))
+			$this->_language = new Plutonium_Language($config->language);
+
+		return $this->_language;
+	}
+
+	protected function _getDocument($config, $request) {
+		if (is_null($this->_document) && !is_null($config)) {
+			$format = !is_null($request) ? $request->get('format', 'html') : 'html';
+
+			$args = new Plutonium_Object(array(
+				'application' => $this,
+				'location'    => $config->location
+			));
+
+			$this->_document = Plutonium_Document::newInstance($format, $args);
+		}
+
+		return $this->_document;
+	}
+
+	public function initialize() {
+		$this->module->initialize();
 	}
 
 	public function execute() {
-		$this->_module->execute();
+		$this->module->execute();
 
-		$this->_response->setModuleOutput($this->_module->display());
+		$this->response->setModuleOutput($this->module->display());
 
-		foreach ($this->_widgets as $location => $widgets) {
+		foreach ($this->widgets as $location => $widgets) {
 			foreach ($widgets as $position => $widget) {
-				$this->_response->setWidgetOutput($location, $widget->display());
+				$this->response->setWidgetOutput($location, $widget->display());
 			}
 		}
 
-		$this->_response->setThemeOutput($this->_theme->display());
+		$this->response->setThemeOutput($this->theme->display());
 
-		$this->_document->display();
-	}
-
-	// TODO find a better way to initialize the request from child classes
-	public function getRequest($config) {
-		if (is_null($this->_request))
-			$this->_request = new Plutonium_Request($config);
-
-		return $this->_request;
+		$this->document->display();
 	}
 
 	public function addWidget($location, $name) {

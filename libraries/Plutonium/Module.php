@@ -155,18 +155,15 @@ class Plutonium_Module {
 		return $this->_view;
 	}
 
-	// TODO get rid of registry singleton
 	public function getPermalink() {
 		$request = $this->_application->request;
 
-		$registry =& Plutonium_Registry::getInstance();
+		$scheme = parse_url(PU_URL_BASE, PHP_URL_SCHEME);
+		$domain = $this->_application->config->system->hostname;
 
-		$scheme = $registry->config->system->scheme;
+		$host = $request->module . '.' . $request->host . '.' . $domain;
 
-		$host = $request->module . '.' . $request->host . '.'
-			  . $registry->config->system->hostname;
-
-		$path = $this->getRouter()->build();
+		$path = $this->getRouter()->build($request);
 
 		if (!empty($path))
 			$path .= '.' . $request->get('format', 'html');

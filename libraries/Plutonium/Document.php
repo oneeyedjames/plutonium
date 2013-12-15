@@ -11,11 +11,24 @@ class Plutonium_Document extends Plutonium_Object {
 		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
+	protected $_application = null;
+
 	protected $_type = null;
 	protected $_lang = 'en-US';
 
 	protected $_title   = null;
 	protected $_descrip = null;
+
+	public function __construct($args) {
+		$this->_application = $args->application;
+	}
+
+	public function __get($key) {
+		switch ($key) {
+			case 'application':
+				return $this->_application;
+		}
+	}
 
 	public function getTitle() {
 		return $this->_title;

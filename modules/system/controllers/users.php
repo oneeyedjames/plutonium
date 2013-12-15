@@ -4,8 +4,8 @@ class UsersController extends Plutonium_Module_Controller {
 	public function loginAction() {
 		global $registry;
 
+		$request = $this->module->request;
 		$session = new Plutonium_Session();
-		$request = Plutonium_Request::getInstance();
 
 		$data = $request->get('data');
 
@@ -19,13 +19,13 @@ class UsersController extends Plutonium_Module_Controller {
 
 				$this->redirect = $request->get('return', PU_URL_PATH);
 			} else {
-				Plutonium_Error_Helper::triggerWarning('Invalid Username/Password');
+				trigger_error('Invalid Username/Password', E_USER_WARNING);
 			}
 		}
 	}
 
 	public function logoutAction() {
-		$request = Plutonium_Request::getInstance();
+		$request = $this->module->request;
 		$session = new Plutonium_Session();
 		$session->del('user');
 

@@ -4,14 +4,11 @@ abstract class Plutonium_Error_Handler_Abstract {
 	public function handle($level, $message) {
 		switch ($level) {
 			case E_USER_ERROR:
-				$this->handleError($message);
-				break;
+				return $this->handleError($message);
 			case E_USER_WARNING:
-				$this->handleWarning($message);
-				break;
+				return $this->handleWarning($message);
 			case E_USER_NOTICE:
-				$this->handleNotice($message);
-				break;
+				return $this->handleNotice($message);
 		}
 	}
 

@@ -12,10 +12,8 @@ class HtmlDocument extends Plutonium_Document {
 	public function __construct($args) {
 		parent::__construct($args);
 
-		$application = HttpApplication::getInstance();
-
-		$this->_parsers[] = new Plutonium_Parser_Theme($application);
-		$this->_parsers[] = new Plutonium_Parser_Utility($application, $args->location);
+		$this->_parsers[] = new Plutonium_Parser_Theme($this->application);
+		$this->_parsers[] = new Plutonium_Parser_Utility($this->application, $args->location);
 	}
 
 	public function addStyleSheet($path) {
@@ -66,13 +64,12 @@ class HtmlDocument extends Plutonium_Document {
 	}
 
 	public function display() {
-		$response = HttpApplication::getInstance()->response;
+		$response = $this->_application->response;
 
 		$tmpl = $response->getThemeOutput();
 
-		foreach ($this->_parsers as $parser) {
+		foreach ($this->_parsers as $parser)
 			$tmpl = $parser->parse($tmpl);
-		}
 
 		echo $tmpl;
 	}
@@ -81,8 +78,6 @@ class HtmlDocument extends Plutonium_Document {
 		$parts = parse_url($match[0]);
 
 		if (isset($parts['query'])) parse_str($parts['query'], $parts['query']);
-		//echo '<pre>' . htmlspecialchars(print_r($match, true)) . '</pre>';
-		//echo '<pre>' . htmlspecialchars(print_r($parts, true)) . '</pre>';
 
 		if (in_array(@$parts['path'], array(PU_URL_ROOT . 'index.php', 'index.php', null))) {
 			$url = PU_URL_BASE;
