@@ -157,18 +157,15 @@ class Plutonium_Module {
 
 	public function getPermalink() {
 		$request = $this->_application->request;
+		$config  = $this->_application->config->system;
 
-		$scheme = parse_url(PU_URL_BASE, PHP_URL_SCHEME);
-		$domain = $this->_application->config->system->hostname;
-
-		$host = $request->module . '.' . $request->host . '.' . $domain;
-
+		$host = $request->module . '.' . $request->host . '.' . $config->hostname;
 		$path = $this->getRouter()->build($request);
 
 		if (!empty($path))
 			$path .= '.' . $request->get('format', 'html');
 
-		$link = $scheme . '://' . $host . FS . $path;
+		$link = $config->scheme . '://' . $host . '/' . $path;
 
 		return $link;
 	}

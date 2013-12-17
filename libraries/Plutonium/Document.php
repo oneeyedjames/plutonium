@@ -1,12 +1,19 @@
 <?php
 
 class Plutonium_Document extends Plutonium_Object {
+	protected static $_path = null;
+
+	public static function getPath() {
+		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
+			self::$_path = realpath(Plutonium_Application::getPath() . '/documents');
+
+		return self::$_path;
+	}
+
 	public static function newInstance($format, $args) {
 		$name = strtolower($format);
 		$type = ucfirst($name) . 'Document';
-
-		$path = Plutonium_Application::getPath() . '/documents';
-		$file = $path . DS . $name . '.php';
+		$file = self::getPath() . DS . $name . '.php';
 
 		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
 	}

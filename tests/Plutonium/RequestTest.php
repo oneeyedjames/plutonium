@@ -4,7 +4,7 @@ class IncludesTest extends PHPUnit_Framework_TestCase {
 	static $config;
 
 	public function setUp() {
-		$pu_path = dirname(dirname(__FILE__));
+		$pu_path = dirname(dirname(dirname(__FILE__)));
 
 		$_SERVER['DOCUMENT_ROOT'] = $pu_path;
 		$_SERVER['SCRIPT_FILENAME'] = $pu_path . '/index.php';
@@ -35,7 +35,7 @@ class IncludesTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($request->method, 'POST');
 
-		$_GET['_method'] = 'PUT';
+		$_REQUEST['_method'] = 'PUT';
 
 		$request = new Plutonium_Request(self::$config->system);
 
