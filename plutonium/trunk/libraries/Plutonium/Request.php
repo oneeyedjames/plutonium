@@ -18,7 +18,7 @@ class Plutonium_Request implements Plutonium_Accessible {
 			'cookies' => $_COOKIE
 		);
 
-		$this->_initMethod($this->get('_method', '', 'get'));
+		$this->_initMethod($this->get('_method', 'GET'));
 		$this->_initHost($config->hostname);
 		$this->_initPath(parse_url($this->_uri, PHP_URL_PATH));
 	}
@@ -26,8 +26,10 @@ class Plutonium_Request implements Plutonium_Accessible {
 	protected function _initMethod($method) {
 		switch ($this->_method) {
 			case 'POST':
-				if (in_array($method, array('PUT', 'DELETE')))
+				if (in_array($method, array('PUT', 'DELETE'))) {
 					$this->_method = $method;
+					$this->del('_method');
+				}
 				break;
 			case 'PUT':
 				parse_str(file_get_contents('php://input', $query));
@@ -62,11 +64,11 @@ class Plutonium_Request implements Plutonium_Accessible {
 			$last =& $path[count($path) - 1];
 
 			if (($pos = strrpos($last, '.')) !== false) {
-				$this->set('format', substr($last, $pos + 1));
+				$this->format = substr($last, $pos + 1);
 				$last = substr($last, 0, $pos);
 			}
 
-			$this->set('path', implode(FS, $path));
+			$this->path = implode(FS, $path);
 		}
 	}
 

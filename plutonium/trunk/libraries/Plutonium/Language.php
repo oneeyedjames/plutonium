@@ -17,62 +17,51 @@ class Plutonium_Language {
 
 	public function __construct($config) {
 		$code   = $config->code;
-		$locale = null;
+		$locale = $config->locale;
 
-		if (strpos($code, '-') !== false)
-			list($code, $locale) = explode('-', $code);
+		if (strpos($code, '-') !== false) {
+			if (is_null($locale))
+				list($code, $locale) = explode('-', $code);
+			else
+				list($code, $null) = explode('-', $code);
+		}
 
 		$this->_code   = $config->code   = strtolower($code);
 		$this->_locale = $config->locale = strtoupper($locale);
 
 		$this->_phrases = array();
 
-		$path = self::getPath() . DS . $this->_code . '-' . $this->_locale;
-
-		if (!is_dir($path)) {
-			$message = sprintf("Could not find language pack, %s-%s.",
-					$config->code, $config->locale);
-
-			$path = self::getPath() . DS . $this->_code;
-
-			if (is_dir($path)) {
-				$this->_locale = null;
-
-				$error = sprintf("%s Instead, using %s.", $message, $this->_code);
-
-				trigger_error($error, E_USER_WARNING);
-			} elseif ($dir = @opendir(self::getPath())) {
-				while (($file = readdir($dir)) !== false) {
-					if (is_dir(self::getPath() . DS . $file) && strpos($file, '-') !== false) {
-						list($code, $locale) = explode('-', $file);
-
-						if ($this->_code == strtolower($code)) {
-							$this->_locale = strtoupper($locale);
-
-							$error = sprintf("%s Instead, using %s-%s.",
-								$message, $this->_code, $this->_locale);
-
-							trigger_error($error, E_USER_WARNING);
-
-							break;
-						}
-					}
-				}
-
-				closedir($dir);
-			} else {
-				trigger_error($message, E_USER_WARNING);
-			}
+		if ($path = $this->_getPath($code)) {
+			$this->_loadFile($path . DS . 'language.xml');
+		} else {
+			$message = sprintf("Could not find language resource: %s.", $code);
+			trigger_error($message, E_USER_WARNING);
 		}
 
-		$this->_name = $this->_code;
+		if (!empty($locale)) {
+			if ($path = $this->_getPath($code, $locale)) {
+				$this->_loadFile($path . DS . 'language.xml');
+			} else {
+				$message = sprintf("Could not find language resource: %s-%s.", $code, $locale);
+				trigger_error($message, E_USER_NOTICE);
+			}
+		}
+	}
 
-		if (!is_null($this->_locale))
-			$this->_name .= '-' . $this->_locale;
+	public function __get($key) {
+		switch ($key) {
+			case 'name':
+				$name = $this->_code;
 
-		$file = self::getPath() . DS . $this->_name . DS . 'language.xml';
+				if (!empty($this->_locale))
+					$name .= '-' . $this->_locale;
 
-		$this->_loadFile($file);
+				return $name;
+			case 'code':
+				return $this->_code;
+			case 'locale':
+				return $this->_locale;
+		}
 	}
 
 	public function load($name, $type) {
@@ -83,9 +72,23 @@ class Plutonium_Language {
 			case 'themes':
 			case 'modules':
 			case 'widgets':
-				$path = self::getPath() . DS . $this->_name . DS . $type;
+				$path = self::getPath() . DS . $this->code . DS . $type;
 				$file = $path . DS . $name . '.xml';
-				$this->_loadFile($file);
+
+				if (!$this->_loadFile($file)) {
+					$message = sprintf("Resource does not exist: %s", $file);
+					trigger_error($message, E_USER_WARNING);
+				}
+
+				if (!is_null($this->locale)) {
+					$path = self::getPath() . DS . $this->name . DS . $type;
+					$file = $path . DS . $name . '.xml';
+
+					if (!$this->_loadFile($file)) {
+						$message = sprintf("Resource does not exist: %s", $file);
+						trigger_error($message, E_USER_WARNING);
+					}
+				}
 				break;
 			default:
 				$error = sprintf("Invalid language resource type: %s", $type);
@@ -106,10 +109,20 @@ class Plutonium_Language {
 
 				$this->_phrases[$key] = $value;
 			}
-		} else {
-			$error = sprintf("Resource does not exist: %s", $file);
-			trigger_error($error, E_USER_WARNING);
+
+			return true;
 		}
+
+		return false;
+	}
+
+	protected function _getPath($code, $locale = null) {
+		$path = self::getPath() . DS . $code;
+
+		if (!is_null($locale))
+			$path .= '-' . $locale;
+
+		return is_dir($path) ? $path : false;
 	}
 
 	public function translate($key) {

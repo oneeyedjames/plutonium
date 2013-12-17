@@ -28,10 +28,14 @@ class Plutonium_Url extends Plutonium_Object {
 	}
 
 	public function toString() {
-		$url = self::$_scheme . '://' . self::$_host . FS . self::$_path;
+		$host = self::$_host;
 
-		// TODO module is now part of hostname
-		//if ($this->has('module'))   $url .= FS . $this->get('module');
+		if (isset($this->module))
+			$host = $this->module . '.' . $host;
+
+		// TODO add site name
+
+		$url = self::$_scheme . '://' . $host . FS . self::$_path;
 
 		if ($this->has('resource')) $url .= FS . $this->get('resource');
 		if ($this->has('id'))       $url .= FS . $this->get('id');

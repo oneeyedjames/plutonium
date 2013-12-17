@@ -9,7 +9,7 @@ final class Plutonium_Loader {
 	}
 
 	public static function addPath($path) {
-		set_include_path(get_include_path() . PS . realpath($path));
+		set_include_path(get_include_path() . PATH_SEPARATOR . realpath($path));
 	}
 
 	public static function addExtension($extension) {
@@ -35,17 +35,17 @@ final class Plutonium_Loader {
 	}
 
 	public static function import($class) {
-		$paths      = explode(PS,  get_include_path());
+		$paths      = explode(PATH_SEPARATOR,  get_include_path());
 		$extensions = explode(',', spl_autoload_extensions());
 
-		$classpath = str_replace('_', DS, $class);
+		$classpath = str_replace('_', DIRECTORY_SEPARATOR, $class);
 
 		foreach ($paths as $path) {
 			foreach ($extensions as $extension) {
-				$filename = $path . DS . $classpath . $extension;
+				$filename = $path . DIRECTORY_SEPARATOR . $classpath . $extension;
 				if (is_file($filename)) {
 					require_once $filename;
-					return true;
+					return $classpath;
 				}
 			}
 		}

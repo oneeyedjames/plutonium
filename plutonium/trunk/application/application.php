@@ -3,13 +3,6 @@
 class HttpApplication extends Plutonium_Application {
 	protected static $_instance = null;
 
-	/* public static function getInstance($config = null) {
-		if (is_null(self::$_instance) && !is_null($config))
-			self::$_instance = new self($config);
-
-		return self::$_instance;
-	} */
-
 	public function initialize() {
 		// Validate host/module dilemma
 		if (isset($this->request->host) && !isset($this->request->module)) {

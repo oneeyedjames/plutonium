@@ -1,0 +1,9 @@
+<phpunit bootstrap="tests/bootstrap.php">
+	<testsuites>
+		<testsuite name="Plutonium_Library">
+			<!--<directory>tests</directory>-->
+			<file>tests/Plutonium/LoaderTest.php</file>
+			<file>tests/Plutonium/LanguageTest.php</file>
+		</testsuite>
+	</testsuites>
+</phpunit>
