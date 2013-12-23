@@ -1,8 +1,15 @@
 <phpunit bootstrap="tests/bootstrap.php">
 	<testsuites>
 		<testsuite name="Plutonium_Library">
-			<!--<directory>tests</directory>-->
-			<file>tests/Plutonium/LoaderTest.php</file>
+			<!--<file>tests/Plutonium/LoaderTest.php</file>-->
+
+			<file>tests/Plutonium/ObjectTest.php</file>
+			<file>tests/Plutonium/Object/FilterTest.php</file>
+
+			<file>tests/Plutonium/SessionTest.php</file>
+			<file>tests/Plutonium/RequestTest.php</file>
+			<file>tests/Plutonium/ResponseTest.php</file>
+
 			<file>tests/Plutonium/LanguageTest.php</file>
 		</testsuite>
 	</testsuites>

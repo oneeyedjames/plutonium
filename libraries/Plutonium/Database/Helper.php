@@ -8,7 +8,7 @@ class Plutonium_Database_Helper {
 
 	protected static $_refs = array();
 
-	public static function &getAdapter($config = null) {
+	public static function getAdapter($config = null) {
 		if (is_null(self::$_adapter) && !is_null($config)) {
 			$type = 'Plutonium_Database_Adapter_' . $config->driver;
 			self::$_adapter = new $type($config);

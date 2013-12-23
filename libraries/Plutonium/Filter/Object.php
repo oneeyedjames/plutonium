@@ -24,27 +24,32 @@ class Plutonium_Filter_Object extends Plutonium_Filter_Abstract {
 	}
 
 	public static function filterBool($value) {
-		return (bool) $value;
+		return is_scalar($value) ? (bool) $value : null;
 	}
 
 	public static function filterInt($value) {
-		return (int) $value;
+		return is_scalar($value) ? (int) $value : null;
 	}
 
 	public static function filterFloat($value) {
-		return (float) $value;
+		return is_scalar($value) ? (float) $value : null;
 	}
 
 	public static function filterString($value) {
-		return (string) $value;
+		return is_scalar($value) ? (string) $value : null;
 	}
 
 	public static function filterArray($value) {
-		return (array) $value;
+		if (is_array($value))
+			return $value;
+		elseif (is_object($value))
+			return (array) $value;
+		else
+			return null;
 	}
 
 	public static function filterObject($value) {
-		return (object) $value;
+		return is_array($value) || is_object($value) ? (object) $value : null;
 	}
 }
 

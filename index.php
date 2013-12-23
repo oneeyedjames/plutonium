@@ -17,11 +17,10 @@ if (!isset($config)) {
 	exit;
 }
 
-require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/Array.php';
-require_once PU_PATH_BASE . '/libraries/Plutonium/Functions/String.php';
 require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
 
 Plutonium_Loader::autoload(PU_PATH_BASE . '/libraries');
+Plutonium_Loader::importDirectory('Plutonium/Functions');
 
 require_once 'application/application.php';
 require_once 'application/error.php';
@@ -32,7 +31,6 @@ $config = new Plutonium_Object($config);
 $config->system->def('scheme', parse_url(PU_URL_BASE, PHP_URL_SCHEME));
 
 Plutonium_Database_Helper::getAdapter($config->database);
-Plutonium_Registry::getInstance()->set('config', $config);
 
 Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 

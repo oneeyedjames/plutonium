@@ -21,7 +21,7 @@ class Plutonium_Document extends Plutonium_Object {
 	protected $_application = null;
 
 	protected $_type = null;
-	protected $_lang = 'en-US';
+	protected $_lang = null;
 
 	protected $_title   = null;
 	protected $_descrip = null;

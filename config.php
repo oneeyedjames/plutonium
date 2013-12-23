@@ -11,11 +11,10 @@ $config['database']['username'] = 'developer';
 $config['database']['password'] = '';
 
 // Language Settings
-$config['language']['code'] = 'en-US';
-//$config['language']['code'] = 'en-UK';
+$config['language']['code']   = 'en';
+$config['language']['locale'] = 'us';
 
 // Location Settings
 $config['location']['timezone'] = 'America/New_York';
-//$config['location']['timezone'] = 'Europe/London';
 
 ?>
