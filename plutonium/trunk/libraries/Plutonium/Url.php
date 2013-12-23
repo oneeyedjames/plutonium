@@ -2,14 +2,14 @@
 
 class Plutonium_Url extends Plutonium_Object {
 	protected static $_scheme = null;
-	protected static $_host   = null;
+	protected static $_domain = null;
 	protected static $_path   = null;
 
 	public static function initialize($base_url) {
 		$parts = parse_url($base_url);
 
 		if (isset($parts['scheme'])) self::$_scheme = $parts['scheme'];
-		if (isset($parts['host']))   self::$_host   = $parts['host'];
+		if (isset($parts['host']))   self::$_domain = $parts['host'];
 		if (isset($parts['path']))   self::$_path   = trim($parts['path'], FS);
 	}
 
@@ -28,7 +28,7 @@ class Plutonium_Url extends Plutonium_Object {
 	}
 
 	public function toString() {
-		$host = self::$_host;
+		$host = self::$_domain;
 
 		if (isset($this->module))
 			$host = $this->module . '.' . $host;

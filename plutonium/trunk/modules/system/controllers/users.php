@@ -2,8 +2,6 @@
 
 class UsersController extends Plutonium_Module_Controller {
 	public function loginAction() {
-		global $registry;
-
 		$request = $this->module->request;
 		$session = new Plutonium_Session();
 

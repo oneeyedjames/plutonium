@@ -9,12 +9,12 @@ class Plutonium_Filter_String extends Plutonium_Filter_Abstract {
 				return self::filterAlnum($value);
 			case 'digit':
 				return self::filterDigit($value);
+			case 'xdigit':
+				return self::filterXDigit($value);
 			case 'lower':
 				return self::filterLower($value);
 			case 'upper':
 				return self::filterUpper($value);
-			case 'xdigit':
-				return self::filterXDigit($value);
 			default:
 				return $value;
 		}
@@ -32,16 +32,16 @@ class Plutonium_Filter_String extends Plutonium_Filter_Abstract {
 		return preg_replace('/[^0-9]/', '', $value);
 	}
 
+	public static function filterXDigit($value) {
+		return preg_replace('/[^A-F0-9]/i', '', $value);
+	}
+
 	public static function filterLower($value) {
 		return preg_replace('/[^a-z]/', '', $value);
 	}
 
 	public static function filterUpper($value) {
 		return preg_replace('/[^A-Z]/', '', $value);
-	}
-
-	public static function filterXDigit($value) {
-		return preg_replace('/[^A-F0-9]/i', '', $value);
 	}
 }
 

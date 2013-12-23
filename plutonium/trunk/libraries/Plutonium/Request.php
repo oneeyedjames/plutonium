@@ -47,8 +47,12 @@ class Plutonium_Request implements Plutonium_Accessible {
 
 		// TODO Support mapped domains
 		foreach ($base as $base_slug) {
-			if ($host[0] == $base_slug || empty($host[0])) array_shift($host);
-			else die('Improperly formed hostname');
+			$host_slug = array_shift($host);
+
+			if ($host_slug != $base_slug && !empty($host_slug)) {
+				trigger_error('Improperly formed hostname', E_USER_ERROR);
+				break;
+			}
 		}
 
 		if (!empty($host)) {

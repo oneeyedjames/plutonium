@@ -9,11 +9,19 @@ final class Plutonium_Loader {
 	}
 
 	public static function addPath($path) {
-		set_include_path(get_include_path() . PATH_SEPARATOR . realpath($path));
+		set_include_path(get_include_path() . PS . realpath($path));
+	}
+
+	public static function getPaths() {
+		return explode(PS, get_include_path());
 	}
 
 	public static function addExtension($extension) {
 		spl_autoload_extensions(spl_autoload_extensions() . ',' . $extension);
+	}
+
+	public static function getExtensions() {
+		return explode(',', spl_autoload_extensions());
 	}
 
 	public static function getClass($file, $class, $default, $args = null) {
@@ -35,17 +43,40 @@ final class Plutonium_Loader {
 	}
 
 	public static function import($class) {
-		$paths      = explode(PATH_SEPARATOR,  get_include_path());
-		$extensions = explode(',', spl_autoload_extensions());
+		return self::importFile(str_replace('_', DS, $class));
+	}
 
-		$classpath = str_replace('_', DIRECTORY_SEPARATOR, $class);
+	public static function importFile($rel_path) {
+		foreach (self::getPaths() as $lib_path) {
+			foreach (self::getExtensions() as $ext) {
+				$abs_path = $lib_path . DS . $rel_path . $ext;
 
-		foreach ($paths as $path) {
-			foreach ($extensions as $extension) {
-				$filename = $path . DIRECTORY_SEPARATOR . $classpath . $extension;
-				if (is_file($filename)) {
-					require_once $filename;
-					return $classpath;
+				if (is_file($abs_path)) {
+					require_once $abs_path;
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public static function importDirectory($rel_path) {
+		foreach (self::getPaths() as $lib_path) {
+			$abs_path = realpath($lib_path . DS . $rel_path);
+
+			if (is_dir($abs_path)) {
+				if ($dir = @opendir($abs_path)) {
+					while (($file = readdir($dir)) !== false) {
+						$ext = pathinfo($file, PATHINFO_EXTENSION);
+
+						if (in_array('.' . $ext, self::getExtensions()))
+							require_once $abs_path . DS . $file;
+					}
+
+					closedir($dir);
+
+					return true;
 				}
 			}
 		}

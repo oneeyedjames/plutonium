@@ -1,23 +1,17 @@
 <?php
 
-class Plutonium_Object
-implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
+class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
 	protected $_vars;
 
 	// Constructor
 	public function __construct($data = null) {
 		$this->_vars = array();
 
-		if (is_a($data, 'Plutonium_Object')) {
+		if (is_a($data, __CLASS__)) {
 			$this->_vars = $data->_vars;
-		} elseif (is_array($data)) {
-			foreach ($data as $key => $value) {
-				if (is_scalar($value) || is_object($value) || is_resource($value)) {
-					$this->set($key, $value);
-				} elseif (is_array($value)) {
-					$this->set($key, new Plutonium_Object($value));
-				}
-			}
+		} elseif (is_assoc($data)) {
+			foreach ($data as $key => $value)
+				$this->set($key, $value);
 		}
 	}
 
@@ -48,7 +42,7 @@ implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
 	}
 
 	public function set($key, $value = null) {
-		$this->_vars[$key] = $value;
+		$this->_vars[$key] = is_assoc($value) ? new self($value) : $value;
 	}
 
 	public function def($key, $value = null) {
@@ -100,15 +94,6 @@ implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
 	// Countable method
 	public function count() {
 		return count($this->_vars);
-	}
-
-	public function toArray() {
-		$vars = array();
-
-		foreach ($this->_vars as $key => $value)
-			$vars[$key] = is_a($value, __CLASS__) ? $value->toArray() : $value;
-
-		return $vars;
 	}
 }
 
