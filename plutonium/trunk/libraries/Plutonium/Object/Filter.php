@@ -1,17 +1,23 @@
 <?php
 
 class Plutonium_Object_Filter extends Plutonium_Object {
+	protected $_filters = array();
+
+	public function __construct($data = null) {
+		parent::__construct($data);
+
+		$this->_filters[] = new Plutonium_Filter_Object();
+		$this->_filters[] = new Plutonium_Filter_String();
+	}
+
 	public function get($key, $default = null, $type = null) {
 		$value = parent::get($key, $default);
 
 		if (is_string($type)) {
-			$object_types = array('bool', 'boolean', 'int', 'integer', 'float', 'double', 'string', 'array', 'object');
-			$string_types = array('alpha', 'alnum', 'digit', 'xdigit', 'lower', 'upper');
-
-			if (in_array(strtolower($type), $object_types))
-				$value = Plutonium_Filter_Object::filter($value, $type);
-			elseif (in_array(strtolower($type), $string_types))
-				$value = Plutonium_Filter_String::filter($value, $type);
+			foreach ($this->_filters as $filter) {
+				if ($filter->canHandle($type))
+					return $filter->filter($value, $type);
+			}
 		}
 
 		return $value;
@@ -58,11 +64,11 @@ class Plutonium_Object_Filter extends Plutonium_Object {
 	}
 
 	public function getLower($key, $default = null) {
-		return $this->get($key, $default, 'lower');
+		return $this->get($key, $default, 'lcase');
 	}
 
 	public function getUpper($key, $default = null) {
-		return $this->get($key, $default, 'upper');
+		return $this->get($key, $default, 'ucase');
 	}
 }
 
