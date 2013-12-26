@@ -19,7 +19,8 @@ function is_range($var) {
 }
 
 function array_peek(&$array) {
-	return $array[count($array) - 1];
+	$values = array_values($array);
+	return $values[count($array) - 1];
 }
 
 ?>

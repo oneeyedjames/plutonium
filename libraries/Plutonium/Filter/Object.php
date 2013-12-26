@@ -1,45 +1,35 @@
 <?php
 
 class Plutonium_Filter_Object extends Plutonium_Filter_Abstract {
-	public static function filter($value, $type) {
-		switch (strtolower($type)) {
-			case 'bool':
-			case 'boolean':
-				return self::filterBool($value);
-			case 'int':
-			case 'integer':
-				return self::filterInt($value);
-			case 'float':
-			case 'double':
-				return self::filterFloat($value);
-			case 'string':
-				return self::filterString($value);
-			case 'array':
-				return self::filterArray($value);
-			case 'object':
-				return self::filterObject($value);
-			default:
-				return $value;
-		}
-	}
-
-	public static function filterBool($value) {
+	public function boolFilter($value) {
 		return is_scalar($value) ? (bool) $value : null;
 	}
 
-	public static function filterInt($value) {
+	public function booleanFilter($value) {
+		return $this->boolFilter($value);
+	}
+
+	public function intFilter($value) {
 		return is_scalar($value) ? (int) $value : null;
 	}
 
-	public static function filterFloat($value) {
+	public function integerFilter($value) {
+		return $this->intFilter($value);
+	}
+
+	public function floatFilter($value) {
 		return is_scalar($value) ? (float) $value : null;
 	}
 
-	public static function filterString($value) {
+	public function doubleFilter($value) {
+		return $this->floatFilter($value);
+	}
+
+	public function stringFilter($value) {
 		return is_scalar($value) ? (string) $value : null;
 	}
 
-	public static function filterArray($value) {
+	public function arrayFilter($value) {
 		if (is_array($value))
 			return $value;
 		elseif (is_object($value))
@@ -48,7 +38,7 @@ class Plutonium_Filter_Object extends Plutonium_Filter_Abstract {
 			return null;
 	}
 
-	public static function filterObject($value) {
+	public function objectFilter($value) {
 		return is_array($value) || is_object($value) ? (object) $value : null;
 	}
 }

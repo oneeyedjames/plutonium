@@ -1,46 +1,27 @@
 <?php
 
 class Plutonium_Filter_String extends Plutonium_Filter_Abstract {
-	public static function filter($value, $type) {
-		switch (strtolower($type)) {
-			case 'alpha':
-				return self::filterAlpha($value);
-			case 'alnum':
-				return self::filterAlnum($value);
-			case 'digit':
-				return self::filterDigit($value);
-			case 'xdigit':
-				return self::filterXDigit($value);
-			case 'lower':
-				return self::filterLower($value);
-			case 'upper':
-				return self::filterUpper($value);
-			default:
-				return $value;
-		}
-	}
-
-	public static function filterAlpha($value) {
+	public function alphaFilter($value) {
 		return preg_replace('/[^A-Z]/i', '', $value);
 	}
 
-	public static function filterAlnum($value) {
+	public function alnumFilter($value) {
 		return preg_replace('/[^A-Z0-9]/i', '', $value);
 	}
 
-	public static function filterDigit($value) {
+	public function digitFilter($value) {
 		return preg_replace('/[^0-9]/', '', $value);
 	}
 
-	public static function filterXDigit($value) {
+	public function xdigitFilter($value) {
 		return preg_replace('/[^A-F0-9]/i', '', $value);
 	}
 
-	public static function filterLower($value) {
+	public function lcaseFilter($value) {
 		return preg_replace('/[^a-z]/', '', $value);
 	}
 
-	public static function filterUpper($value) {
+	public function ucaseFilter($value) {
 		return preg_replace('/[^A-Z]/', '', $value);
 	}
 }
