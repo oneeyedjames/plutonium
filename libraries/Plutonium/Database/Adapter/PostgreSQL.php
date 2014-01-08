@@ -11,13 +11,13 @@ class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
 		$pass = $this->_config->password;
 		$db   = $this->_config->dbname;
 
-		$conn_str = "host=" . $host . " "
-		          . "port=" . $port . " "
-		          . "user=" . $user . " "
-				  . "password=" . $pass . " "
-				  . "dbname=" . $db . " ";
+		$conn_str = "host='" . $host . "' "
+		          . "port='" . $port . "' "
+		          . "user='" . $user . "' "
+				  . "password='" . $pass . "' "
+				  . "dbname='" . $db . "' ";
 
-		$this->_connection = pg_connect($host, $user, $pass);
+		$this->_connection = pg_connect($conn_str);
 
 		return is_resource($this->_connection);
 	}
