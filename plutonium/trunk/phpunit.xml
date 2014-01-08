@@ -1,9 +1,11 @@
 <phpunit bootstrap="tests/bootstrap.php">
 	<testsuites>
 		<testsuite name="Plutonium_Library">
-			<!--<file>tests/Plutonium/LoaderTest.php</file>-->
+			<file>tests/IncludesTest.php</file>
 
 			<file>tests/Plutonium/FunctionsTest.php</file>
+
+			<file>tests/Plutonium/Utility/AddressTest.php</file>
 
 			<file>tests/Plutonium/ObjectTest.php</file>
 			<file>tests/Plutonium/Object/FilterTest.php</file>

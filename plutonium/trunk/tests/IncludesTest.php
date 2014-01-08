@@ -1,20 +1,12 @@
 <?php
 
 class IncludesTest extends PHPUnit_Framework_TestCase {
-	private $_path;
-	private $_host = 'plutonium.dev';
-
 	public function setUp() {
-		$this->_path = dirname(dirname(__FILE__));
-
-		$_SERVER['DOCUMENT_ROOT'] = $this->_path;
-		$_SERVER['SCRIPT_FILENAME'] = $this->_path . '/index.php';
-		$_SERVER['SERVER_NAME'] = $this->_host;
+		$_SERVER['SCRIPT_FILENAME'] = realpath(PU_PATH_BASE . '/index.php');
+		$_SERVER['SERVER_NAME'] = 'plutonium.dev';
 
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$_SERVER['REQUEST_URI']    = '/';
-
-		require_once $this->_path . '/constants.php';
 	}
 
 	public function testConstants() {
