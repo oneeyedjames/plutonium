@@ -80,7 +80,7 @@ class Plutonium_Language {
 					trigger_error($message, E_USER_WARNING);
 				}
 
-				if (!is_null($this->locale)) {
+				if (!empty($this->locale)) {
 					$path = self::getPath() . DS . $this->name . DS . $type;
 					$file = $path . DS . $name . '.xml';
 
@@ -119,7 +119,7 @@ class Plutonium_Language {
 	protected function _getPath($code, $locale = null) {
 		$path = self::getPath() . DS . $code;
 
-		if (!is_null($locale))
+		if (!empty($locale))
 			$path .= '-' . $locale;
 
 		return is_dir($path) ? $path : false;

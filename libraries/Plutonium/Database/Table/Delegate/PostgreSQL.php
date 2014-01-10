@@ -2,12 +2,6 @@
 
 class Plutonium_Database_Table_Delegate_PostgreSQL
 extends Plutonium_Database_Table_Delegate {
-	public function select($args) {
-		// TODO method stub
-	}
-
-
-
 	public function exists() {
 		$table = $this->quoteSymbol('pg_class');
 		$field = $this->quoteSymbol('relname');

@@ -15,13 +15,14 @@ class Plutonium_Utility_Address {
 	public static function parseInt($int) {
 		$octets = array();
 
-		for ($i = 0, $n = 4; $i < $n; $i++) {
-			$j = $n - $i - 1;
-			$mask = 0xFF * pow(0x100, $j);
-			$octets[$i] = ($int & $mask) / pow(0x100, $j);
+		for ($i = 0; $i < 4; $i++) {
+			$factor = pow(0x100, $i);
+			$mask   = 0xFF * $factor;
+
+			$octets[$i] = ($int & $mask) / $factor;
 		}
 
-		return $octets;
+		return array_reverse($octets);
 	}
 
 	public static function parseString($str) {
@@ -43,12 +44,12 @@ class Plutonium_Utility_Address {
 	}
 
 	public function toInt() {
+		$octets = array_reverse($this->_octets);
+
 		$int = 0;
 
-		for ($i = 0, $n = 4; $i < $n; $i++) {
-			$j = $n - $i - 1;
-			$int += $this->_octets[$i] * pow(0x100, $j);
-		}
+		for ($i = 0; $i < 4; $i++)
+			$int += $octets[$i] * pow(0x100, $i);
 
 		return $int;
 	}

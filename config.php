@@ -1,5 +1,5 @@
 <?php
-
+/*
 // System Configuration Parameters
 $config['system']['hostname'] = 'plutonium.dev';
 
@@ -16,5 +16,5 @@ $config['language']['locale'] = 'us';
 
 // Location Settings
 $config['location']['timezone'] = 'America/New_York';
-
+*/
 ?>

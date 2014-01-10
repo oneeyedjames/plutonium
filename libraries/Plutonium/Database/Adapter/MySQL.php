@@ -1,9 +1,6 @@
 <?php
 
 class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter {
-	protected $_connection = null;
-	protected $_result     = null;
-
 	public function connect() {
 		if (is_null($this->_connection)) {
 			$host = $this->_config->hostname;
@@ -20,6 +17,15 @@ class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter {
 
 	public function close() {
 		mysql_close($this->_connection);
+	}
+
+	public function query($sql) {
+		$result = mysql_query($sql, $this->_connection);
+
+		if (is_resource($result))
+			return new Plutonium_Database_Result_MySQL($result);
+
+		return $result;
 	}
 
 	public function getAffectedRows() {
@@ -56,20 +62,6 @@ class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter {
 
 	public function stripSymbol($sym) {
 		return trim($sym, "`");
-	}
-
-	public function query($sql, $limit = 0, $offset = 0) {
-		if (intval($limit)  > 0) $sql .= ' LIMIT '  . intval($limit);
-		if (intval($offset) > 0) $sql .= ' OFFSET ' . intval($offset);
-
-		$result = mysql_query($sql, $this->_connection);
-
-		if (is_resource($result)) {
-			$this->_result = $result;
-			return new Plutonium_Database_Result_MySQL($result);
-		}
-
-		return $result;
 	}
 }
 

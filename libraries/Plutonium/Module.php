@@ -18,7 +18,7 @@ class Plutonium_Module {
 		$file = self::getPath() . DS . $name . DS . 'module.php';
 		$args = new Plutonium_Object(array(
 			'application' => $application,
-			'name' => $name
+			'name'        => $name
 		));
 
 		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);

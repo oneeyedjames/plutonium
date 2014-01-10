@@ -17,10 +17,6 @@ class Plutonium_Module_Model {
 		}
 	}
 
-	public function __set($key, $value) {
-		// TODO nothing
-	}
-
 	public function getTable() {
 		if (is_null($this->_table))
 			$this->_table = Plutonium_Database_Helper::getTable($this->_name, $this->_module->name);

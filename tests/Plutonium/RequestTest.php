@@ -4,15 +4,17 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	var $config;
 
 	public function setUp() {
-		$_SERVER['DOCUMENT_ROOT'] = PU_PATH_BASE;
-		$_SERVER['SCRIPT_FILENAME'] = PU_PATH_BASE . '/index.php';
-
-		$_SERVER['SERVER_NAME'] = 'plutonium.dev';
-
 		$config['system']['hostname'] = 'plutonium.dev';
 
 		if (is_null($this->config))
 			$this->config = new Plutonium_Object($config);
+	}
+
+	public function tearDown() {
+		$_SERVER['SERVER_NAME'] = 'plutonium.dev';
+
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+		$_SERVER['REQUEST_URI']    = '/';
 	}
 
 	public function testMethod() {

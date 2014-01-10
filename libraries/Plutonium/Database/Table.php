@@ -94,9 +94,10 @@ class Plutonium_Database_Table {
 			));
 		}
 
-		// TODO raise error
-		if (!$this->_delegate->exists() && !$this->_delegate->create())
-			die(Plutonium_Database_Helper::getAdapter()->getErrorMsg());
+		if (!$this->_delegate->exists() && !$this->_delegate->create()) {
+			$message = Plutonium_Database_Helper::getAdapter()->getErrorMsg();
+			trigger_error($message, E_USER_ERROR);
+		}
 	}
 
 	public function __get($key) {
@@ -146,7 +147,7 @@ class Plutonium_Database_Table {
 		return $this->_delegate->select_xref($this->table_xrefs[$xref], $args);
 	}
 
-	public function save(&$row) {
+	public function save($row) {
 		if ($this->validate($row)) {
 			return is_null($row->id)
 				 ? $this->_delegate->insert($row)
@@ -160,7 +161,7 @@ class Plutonium_Database_Table {
 		return $this->_delegate->delete($id);
 	}
 
-	public function validate(&$row) {
+	public function validate($row) {
 		return true;
 	}
 }

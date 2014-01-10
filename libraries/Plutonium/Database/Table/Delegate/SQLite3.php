@@ -2,12 +2,6 @@
 
 class Plutonium_Database_Table_Delegate_SQLite3
 extends Plutonium_Database_Table_Delegate {
-	public function select($args) {
-		// TODO method stub
-	}
-
-
-
 	public function exists() {
 		$field1 = $this->quoteSymbol('type');
 		$value2 = $this->quoteString('table');
