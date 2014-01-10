@@ -3,9 +3,13 @@
 abstract class Plutonium_Database_Adapter {
 	protected $_config = null;
 
+	protected $_connection = null;
+
 	public function __construct($config) {
 		$this->_config = $config;
-		$this->connect();
+
+		if (!$this->connect())
+			trigger_error("Unable to connect to database.", E_USER_ERROR);
 	}
 
 	public function __get($key) {
@@ -18,6 +22,8 @@ abstract class Plutonium_Database_Adapter {
 	abstract public function connect();
 	abstract public function close();
 
+	abstract public function query($sql);
+
 	abstract public function getAffectedRows();
 	abstract public function getInsertId();
 	abstract public function getErrorNum();
@@ -28,7 +34,6 @@ abstract class Plutonium_Database_Adapter {
 	abstract public function quoteSymbol($sym);
 	abstract public function stripString($str);
 	abstract public function stripSymbol($sym);
-	abstract public function query($sql, $limit = 0, $offset = 0);
 }
 
 ?>

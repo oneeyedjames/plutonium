@@ -96,7 +96,8 @@ class Plutonium_Theme {
 
 			ob_end_clean();
 		} else {
-			// TODO raise error
+			$message = sprintf("Resource does not exist: %s.", $file);
+			trigger_error($message, E_USER_ERROR);
 		}
 
 		return $this->_output;

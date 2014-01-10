@@ -12,15 +12,15 @@ require_once 'constants.php';
 if (is_file('config.php'))
 	require_once 'config.php';
 
-if (!isset($config)) {
-	require_once 'setup.php';
-	exit;
-}
-
 require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
 
 Plutonium_Loader::autoload(PU_PATH_BASE . '/libraries');
 Plutonium_Loader::importDirectory('Plutonium/Functions');
+
+if (!isset($config)) {
+	require_once 'setup.php';
+	exit;
+}
 
 require_once 'application/application.php';
 require_once 'application/error.php';

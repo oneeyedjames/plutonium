@@ -1,26 +1,31 @@
 <?php
-/**
- * @version   0.1.0
- * @package   Plutonium
- * @author    J Andrew Scott
- * @copyright Copyright (C) 2010 J Andrew Scott. All rights reserved.
- * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
- */
 
 if (isset($config)) exit;
 
-$const = get_defined_constants(true);
+if (!defined(PU_PATH_BASE)) {
+	require_once 'constants.php';
+	require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
 
-ksort($const['user']);
+	Plutonium_Loader::autoload(PU_PATH_BASE . '/libraries');
+	Plutonium_Loader::importDirectory('Plutonium/Functions');
+}
 
-header('Content-type: text/plain');
-print_r($const['user']);
+require_once PU_PATH_BASE . '/application/setup/application.php';
+require_once PU_PATH_BASE . '/application/setup/error.php';
 
-/*
- * TODO
- * Autoload library functions/classes
- * Bootstrap application object
- *
+Plutonium_Error_Helper::register(null, 'SetupErrorHandler');
+
+$config = new Plutonium_Object(array(
+	'system'   => array('hostname' => $_SERVER['SERVER_NAME']),
+	'location' => array('timezone' => timezone_name_from_abbr('UTC')),
+	'language' => array('code' => 'en')
+));
+
+$application = new SetupApplication($config);
+$application->initialize();
+$application->execute();
+
+/* TODO Autoload library functions/classes
 
 $database = Plutonium_Database_Helper::getAdapter($config->database);
 

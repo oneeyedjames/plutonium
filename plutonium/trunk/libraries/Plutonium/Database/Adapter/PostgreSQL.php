@@ -1,7 +1,6 @@
 <?php
 
 class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
-	protected $_connection = null;
 	protected $_result = null;
 
 	public function connect() {
@@ -26,6 +25,17 @@ class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
 		return pg_close($this->_connection);
 	}
 
+	public function query($sql) {
+		$result = pg_query($this->_connection, $sql);
+
+		if (is_resource($result)) {
+			$this->_result = $result;
+			return new Plutonium_Database_Result_PostgreSQL($result);
+		}
+
+		return $result;
+	}
+
 	public function getAffectedRows() {
 		return pg_affected_rows($this->_result);
 	}
@@ -35,7 +45,7 @@ class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
 	}
 
 	public function getErrorNum() {
-		return 0;
+		return -1;
 	}
 
 	public function getErrorMsg() {
@@ -54,19 +64,12 @@ class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
 		return '"' . $sym . '"';
 	}
 
-	public function query($sql, $limit = 0, $offset = 0) {
-		if ((int) $limit > 0) $sql .= ' LIMIT ' . (int) $limit;
-		if ((int) $offset > 0) $sql .= ' OFFSET ' . (int) $offset;
+	public function stripString($str) {
+		return trim($str, "'");
+	}
 
-		$result = pg_query($this->_connection, $sql);
-
-		if (is_resource($result)) {
-			$this->_result = $result;
-
-			return new Plutonium_Database_Result_PostgreSQL($result);
-		}
-
-		return $result;
+	public function stripSymbol($sym) {
+		return trim($sym, '"');
 	}
 }
 
