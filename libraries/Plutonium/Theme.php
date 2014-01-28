@@ -107,5 +107,3 @@ class Plutonium_Theme {
 		return $this->_application->language->translate($text);
 	}
 }
-
-?>

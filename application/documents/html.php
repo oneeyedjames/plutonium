@@ -96,5 +96,3 @@ class HtmlDocument extends Plutonium_Document {
 		return $url;
 	}
 }
-
-?>

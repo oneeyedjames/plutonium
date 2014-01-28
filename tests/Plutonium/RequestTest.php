@@ -69,5 +69,3 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 		$this->assertNull($request->format);
 	}
 }
-
-?>

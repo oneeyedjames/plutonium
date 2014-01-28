@@ -1,6 +1,6 @@
 <?php
 
-abstract class Plutonium_Error_Handler_Abstract {
+abstract class Plutonium_Error_Handler {
 	public function handle($level, $message) {
 		switch ($level) {
 			case E_USER_ERROR:
@@ -18,5 +18,3 @@ abstract class Plutonium_Error_Handler_Abstract {
 
 	abstract public function handleNotice($message);
 }
-
-?>

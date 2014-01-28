@@ -25,5 +25,3 @@ class Plutonium_Filter_String extends Plutonium_Filter_Abstract {
 		return preg_replace('/[^A-Z]/', '', $value);
 	}
 }
-
-?>

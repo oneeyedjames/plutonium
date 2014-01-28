@@ -34,5 +34,3 @@ class Plutonium_Session implements Plutonium_Accessible {
 		return isset($this->_namespaces[$namespace]) ? $this->_namespaces[$namespace] : array();
 	}
 }
-
-?>

@@ -163,5 +163,3 @@ class Plutonium_Database_Row {
 		return (object) $this->_data;
 	}
 }
-
-?>

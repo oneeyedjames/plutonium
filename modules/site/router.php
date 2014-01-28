@@ -12,5 +12,3 @@ class SiteRouter extends Plutonium_Module_Router {
 		return $vars;
 	}
 }
-
-?>

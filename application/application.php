@@ -69,5 +69,3 @@ class HttpApplication extends Plutonium_Application {
 		}
 	}
 }
-
-?>

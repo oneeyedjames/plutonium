@@ -102,5 +102,3 @@ extends Plutonium_Database_Table_Delegate {
 		// TODO method stub
 	}
 }
-
-?>

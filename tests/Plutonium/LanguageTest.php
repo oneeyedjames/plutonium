@@ -35,5 +35,3 @@ class LanguageTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('US', $language->locale);
 	}
 }
-
-?>

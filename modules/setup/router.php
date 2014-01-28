@@ -8,5 +8,3 @@ class SetupRouter extends Plutonium_Module_Router {
 		return $vars;
 	}
 }
-
-?>

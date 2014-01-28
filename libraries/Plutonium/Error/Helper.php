@@ -53,5 +53,3 @@ class Plutonium_Error_Helper {
 		self::trigger(E_USER_NOTICE, $message);
 	}
 }
-
-?>

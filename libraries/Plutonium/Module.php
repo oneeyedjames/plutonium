@@ -170,5 +170,3 @@ class Plutonium_Module {
 		return $link;
 	}
 }
-
-?>

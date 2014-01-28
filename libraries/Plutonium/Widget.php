@@ -94,5 +94,3 @@ class Plutonium_Widget {
 		return $this->_output;
 	}
 }
-
-?>

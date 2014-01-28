@@ -42,5 +42,3 @@ class Plutonium_Filter_Object extends Plutonium_Filter_Abstract {
 		return is_array($value) || is_object($value) ? (object) $value : null;
 	}
 }
-
-?>

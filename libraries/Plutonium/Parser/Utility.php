@@ -22,5 +22,3 @@ class Plutonium_Parser_Utility extends Plutonium_Parser_Abstract {
 		return strftime($format, $time);
 	}
 }
-
-?>

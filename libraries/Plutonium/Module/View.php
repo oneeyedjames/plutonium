@@ -95,5 +95,3 @@ class Plutonium_Module_View {
 		return $this->_module->application->language->translate($text);
 	}
 }
-
-?>

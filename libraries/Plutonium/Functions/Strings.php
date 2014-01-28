@@ -17,5 +17,3 @@ function slugify($string) {
 
 	return strtolower(preg_replace($pattern, $replace, $string));
 }
-
-?>

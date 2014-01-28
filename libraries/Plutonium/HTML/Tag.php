@@ -104,5 +104,3 @@ class Plutonium_HTML_Tag {
 		return $html;
 	}
 }
-
-?>

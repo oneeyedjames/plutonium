@@ -44,5 +44,3 @@ class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
 		return '';
 	}
 }
-
-?>

@@ -177,5 +177,3 @@ class Plutonium_Database_Helper {
 		return array();
 	}
 }
-
-?>

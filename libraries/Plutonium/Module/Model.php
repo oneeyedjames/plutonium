@@ -40,5 +40,3 @@ class Plutonium_Module_Model {
 		return $row->delete();
 	}
 }
-
-?>

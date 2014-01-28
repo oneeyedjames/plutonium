@@ -45,5 +45,3 @@ class Plutonium_Module_Router {
 		return $path;
 	}
 }
-
-?>

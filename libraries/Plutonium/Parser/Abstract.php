@@ -55,5 +55,3 @@ abstract class Plutonium_Parser_Abstract {
 		return false;
 	}
 }
-
-?>

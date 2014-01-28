@@ -71,5 +71,3 @@ class Plutonium_Object_Filter extends Plutonium_Object {
 		return $this->get($key, $default, 'ucase');
 	}
 }
-
-?>

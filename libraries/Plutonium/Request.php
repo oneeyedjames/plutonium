@@ -143,5 +143,3 @@ class Plutonium_Request implements Plutonium_Accessible {
 		return isset($this->_hashes[$hash]) ? $this->_hashes[$hash] : null;
 	}
 }
-
-?>
