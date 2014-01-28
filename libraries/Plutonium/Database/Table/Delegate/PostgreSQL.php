@@ -59,12 +59,13 @@ extends Plutonium_Database_Table_Delegate {
 			case 'bool':
 				return 'boolean';
 			case'int':
-				if ($field_meta->size == 'short')
-					return 'smallint';
-				elseif ($field_meta->size == 'long')
-					return $field_meta->auto ? 'bigserial' : 'bigint';
-				else
-					return $field_meta->auto ? 'serial' : 'integer';
+				if ($field_meta->auto) {
+					$prefix = array('long' => 'big');
+					return @$prefix[$field_meta->size] . 'serial';
+				} else {
+					$prefix = array('short' => 'small', 'long' => 'big');
+					return @$prefix[$field_meta->size] . 'int';
+				}
 			case 'float':
 				return $field_meta->size == 'long' ? 'double precision' : 'real';
 			case 'string':
