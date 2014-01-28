@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copy this file to config.php and edit its values for your server environment.
  */
@@ -19,5 +18,3 @@ $config['language']['code'] = 'en-US';
 
 // Location Settings
 $config['location']['timezone'] = 'America/New_York';
-
-?>

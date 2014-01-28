@@ -16,5 +16,3 @@ $config['language']['locale'] = 'us';
 
 // Location Settings
 $config['location']['timezone'] = 'America/New_York';
-
-?>

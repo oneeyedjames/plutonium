@@ -37,5 +37,3 @@ Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 $application = new HttpApplication($config);
 $application->initialize();
 $application->execute();
-
-?>
