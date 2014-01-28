@@ -42,5 +42,3 @@ class SessionTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('baz', $session->get('foo', 'bar', 'other'));
 	}
 }
-
-?>

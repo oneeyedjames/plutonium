@@ -17,5 +17,3 @@ abstract class Plutonium_Filter_Abstract {
 		return false;
 	}
 }
-
-?>

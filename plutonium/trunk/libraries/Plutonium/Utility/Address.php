@@ -58,5 +58,3 @@ class Plutonium_Utility_Address {
 		return implode('.', $this->_octets);
 	}
 }
-
-?>

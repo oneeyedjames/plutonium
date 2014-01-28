@@ -130,5 +130,3 @@ class Plutonium_Language {
 		     ? $this->_phrases[strtoupper($key)] : $key;
 	}
 }
-
-?>

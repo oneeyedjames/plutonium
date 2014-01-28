@@ -22,5 +22,3 @@ function array_peek(&$array) {
 	$values = array_values($array);
 	return $values[count($array) - 1];
 }
-
-?>

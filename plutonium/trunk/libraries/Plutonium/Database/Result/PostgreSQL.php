@@ -33,5 +33,3 @@ class Plutonium_Database_Result_PostgreSQL extends Plutonium_Database_Result {
 		return pg_fetch_result($this->_result, $row, $field);
 	}
 }
-
-?>

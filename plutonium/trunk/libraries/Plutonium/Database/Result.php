@@ -59,5 +59,3 @@ abstract class Plutonium_Database_Result {
 		return $this->fetchAll('object');
 	}
 }
-
-?>

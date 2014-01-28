@@ -16,5 +16,3 @@ class IncludesTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(defined('PU_URL_PATH'));
 	}
 }
-
-?>

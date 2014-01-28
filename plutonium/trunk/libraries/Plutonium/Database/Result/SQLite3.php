@@ -55,5 +55,3 @@ class Plutonium_Database_Result_SQLite3 extends Plutonium_Database_Result {
 		}
 	}
 }
-
-?>

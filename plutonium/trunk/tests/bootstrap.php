@@ -22,5 +22,3 @@ define('PU_PATH_FUNC', realpath(PU_PATH_LIB . '/Plutonium/Functions'));
 require_once PU_PATH_BASE . '/constants.php';
 require_once PU_PATH_FUNC . '/Strings.php';
 require_once PU_PATH_FUNC . '/Arrays.php';
-
-?>

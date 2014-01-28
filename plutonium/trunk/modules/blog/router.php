@@ -7,5 +7,3 @@ class BlogRouter extends Plutonium_Module_Router {
 		parent::match($path);
 	}
 }
-
-?>

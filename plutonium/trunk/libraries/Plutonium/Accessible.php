@@ -7,5 +7,3 @@ interface Plutonium_Accessible {
 	public function def($key, $value = null);
 	public function del($key);
 }
-
-?>

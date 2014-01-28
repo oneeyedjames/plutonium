@@ -20,5 +20,3 @@ class LoaderTest extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf('Plutonium_Url', $url);
 	}
 }
-
-?>

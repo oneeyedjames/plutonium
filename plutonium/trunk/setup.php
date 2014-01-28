@@ -38,5 +38,3 @@ Plutonium_Database_Helper::getTable('modules');
 Plutonium_Database_Helper::getTable('widgets')->find(1)->module(array());
 
  */
-
-?>

@@ -64,5 +64,3 @@ class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter {
 		return trim($sym, "`");
 	}
 }
-
-?>

@@ -13,5 +13,3 @@ class SetupErrorHandler extends Plutonium_Error_Handler_Abstract {
 		return true;
 	}
 }
-
-?>

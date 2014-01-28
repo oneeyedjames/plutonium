@@ -72,5 +72,3 @@ class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
 		return trim($sym, '"');
 	}
 }
-
-?>

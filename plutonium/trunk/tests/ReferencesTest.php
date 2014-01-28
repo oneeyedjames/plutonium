@@ -122,5 +122,3 @@ class ReferencesTest extends PHPUnit_Framework_TestCase {
 		return $this->var;
 	}
 }
-
-?>

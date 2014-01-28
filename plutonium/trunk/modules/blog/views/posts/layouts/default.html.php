@@ -4,7 +4,7 @@
 </style>
 <h3><?php echo count($this->posts); ?> Posts</h3>
 <br />
-<?php foreach ($this->posts as $post) { ?>
+<?php foreach ($this->posts as $post) : ?>
 <div class="post">
 	<pre><?php echo $post->feed->name; ?></pre>
 	<div class="subject"><?php echo $post->subject; ?></div>
@@ -15,9 +15,9 @@
 	</div>
 	<br />
 	<div class="message"><?php echo $post->message; ?></div>
-	<?php if ($post->updated > $post->created) { ?>
+	<?php if ($post->updated > $post->created) : ?>
 	<br />
 	<div class="date">Updated <?php echo $post->updated; ?></div>
-	<?php } ?>
+	<?php endif; ?>
 </div>
-<?php } ?>
+<?php endforeach; ?>

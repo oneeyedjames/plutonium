@@ -56,5 +56,3 @@ class Plutonium_Database_Adapter_SQLite3 extends Plutonium_Database_Adapter {
 		return trim($sym, '"');
 	}
 }
-
-?>

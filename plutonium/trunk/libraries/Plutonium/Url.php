@@ -45,5 +45,3 @@ class Plutonium_Url extends Plutonium_Object {
 		return $url;
 	}
 }
-
-?>

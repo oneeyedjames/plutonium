@@ -84,5 +84,3 @@ final class Plutonium_Loader {
 		return false;
 	}
 }
-
-?>

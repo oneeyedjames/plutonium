@@ -36,5 +36,3 @@ class Plutonium_Database_Result_MySQL extends Plutonium_Database_Result {
 		return mysql_result($this->_result, $row, $field);
 	}
 }
-
-?>

@@ -53,5 +53,3 @@ class Plutonium_Response {
 		$this->_widget_output[$location][] = $output;
 	}
 }
-
-?>

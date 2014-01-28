@@ -61,5 +61,3 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse(is_range($rangePlus));
 	}
 }
-
-?>

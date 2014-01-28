@@ -49,5 +49,3 @@ class Plutonium_Document extends Plutonium_Object {
 		echo $this->_descrip;
 	}
 }
-
-?>

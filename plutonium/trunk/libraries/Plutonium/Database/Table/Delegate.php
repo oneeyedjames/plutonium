@@ -314,5 +314,3 @@ abstract class Plutonium_Database_Table_Delegate {
 		return $this->query($sql);
 	}
 }
-
-?>

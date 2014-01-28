@@ -10,5 +10,3 @@ class SetupApplication extends Plutonium_Application {
 		parent::initialize();
 	}
 }
-
-?>

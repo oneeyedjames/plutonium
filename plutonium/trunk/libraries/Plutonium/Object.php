@@ -96,5 +96,3 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Iterator, C
 		return count($this->_vars);
 	}
 }
-
-?>

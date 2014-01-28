@@ -44,5 +44,3 @@ class FilterClass extends PHPUnit_Framework_TestCase {
 		$this->assertSame('FB', $object->getUpper('string'));
 	}
 }
-
-?>

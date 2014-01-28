@@ -131,5 +131,3 @@ class Plutonium_Application {
 		$this->_widgets[$location][] = Plutonium_Widget::newInstance($this, $name);
 	}
 }
-
-?>

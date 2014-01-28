@@ -48,5 +48,3 @@ class Plutonium_Module_Controller {
 			header('Location: ' . $this->_redirect);
 	}
 }
-
-?>

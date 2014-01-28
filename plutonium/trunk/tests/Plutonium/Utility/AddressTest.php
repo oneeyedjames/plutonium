@@ -38,5 +38,3 @@ class AddressTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('127.0.0.1', $address->toString());
 	}
 }
-
-?>

@@ -35,5 +35,3 @@ abstract class Plutonium_Database_Adapter {
 	abstract public function stripString($str);
 	abstract public function stripSymbol($sym);
 }
-
-?>

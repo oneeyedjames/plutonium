@@ -1,6 +1,6 @@
 <?php
 
-class HttpErrorHandler extends Plutonium_Error_Handler_Abstract {
+class HttpErrorHandler extends Plutonium_Error_Handler {
 	public function handleError($message) {
 		die($message);
 	}
@@ -19,5 +19,3 @@ class HttpErrorHandler extends Plutonium_Error_Handler_Abstract {
 		return true;
 	}
 }
-
-?>
