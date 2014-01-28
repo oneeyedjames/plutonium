@@ -6,6 +6,6 @@
 	<field name="default" type="bool"/>
 	<xref name="widget" alias="module" table="widgets">
 		<field name="location" type="string" size="short"/>
-		<field name="position" type="int" size="tiny"/>
+		<field name="position" type="int" size="short"/>
 	</xref>
 </table>
