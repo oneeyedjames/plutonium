@@ -56,6 +56,10 @@ extends Plutonium_Database_Table_Delegate {
 		return $this->query($sql);
 	}
 
+	protected function _createFieldType($field_meta) {
+		// TODO implement column types
+	}
+
 	public function modify() {
 		// TODO method stub
 	}

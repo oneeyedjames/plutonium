@@ -9,7 +9,7 @@ class Plutonium_Database_Row {
 
 	protected $_xref_data = null;
 
-	public function __construct(&$table, $data = null, $xref_data = null) {
+	public function __construct($table, $data = null, $xref_data = null) {
 		$this->_table = $table;
 		$this->_data  = array_fill_keys($table->field_names, null);
 		$this->_refs  = array_fill_keys(array_keys($table->table_refs), null);
@@ -20,9 +20,8 @@ class Plutonium_Database_Row {
 
 		$this->bind($data);
 
-		if (!empty($xref_data)) {
+		if (!empty($xref_data))
 			$this->_bind_xref($xref_data);
-		}
 	}
 
 	public function __get($key) {

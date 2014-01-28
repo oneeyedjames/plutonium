@@ -24,5 +24,3 @@ defined('PU_URL_PATH') or define('PU_URL_PATH', $path);
 defined('PU_URL_BASE') or define('PU_URL_BASE', PU_URL_ROOT . PU_URL_PATH);
 
 unset($scheme, $host, $path);
-
-?>
