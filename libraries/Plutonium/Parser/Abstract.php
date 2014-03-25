@@ -1,7 +1,7 @@
 <?php
 
 abstract class Plutonium_Parser_Abstract {
-	protected $_namespace = null;
+	protected $_namespace = 'pu';
 
 	protected $_application = null;
 
@@ -23,16 +23,16 @@ abstract class Plutonium_Parser_Abstract {
 				$tag = array(
 					'ns'   => $matches['ns'][$i],
 					'tag'  => $matches['tag'][$i],
-					'vars' => array()
+					'args' => array()
 				);
 
 				if ($subcount = preg_match_all($subpattern, $matches['args'][$i], $submatches)) {
 					for ($j = 0; $j < $subcount; $j++) {
-						$tag['vars'][$submatches['key'][$j]] = $submatches['value'][$j];
+						$tag['args'][$submatches['key'][$j]] = $submatches['value'][$j];
 					}
 				}
 
-				$data = $this->process($tag['ns'], $tag['tag'], $tag['vars']);
+				$data = $this->process($tag['ns'], $tag['tag'], $tag['args']);
 
 				if ($data !== false) {
 					$stub = preg_quote($matches[0][$i]);
