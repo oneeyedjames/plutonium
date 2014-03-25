@@ -1,6 +1,15 @@
 <?php
 
 class Plutonium_Request implements Plutonium_Accessible {
+	protected static $_method_map = array(
+		'GET'  => array('HEAD'),
+		'POST' => array('PUT', 'DELETE')
+	);
+
+	protected static function isMapped($method, $alias) {
+		return in_array($method, self::$_method_map[$alias]);
+	}
+
 	protected $_uri    = null;
 	protected $_method = null;
 	protected $_hashes = array();
@@ -18,21 +27,29 @@ class Plutonium_Request implements Plutonium_Accessible {
 			'cookies' => $_COOKIE
 		);
 
-		$this->_initMethod($this->get('_method', 'GET'));
+		$this->_initMethod();
 		$this->_initHost($config->hostname);
-		$this->_initPath(parse_url($this->_uri, PHP_URL_PATH));
+		$this->_initPath();
+		$this->_initFormat();
 	}
 
-	protected function _initMethod($method) {
+	protected function _initMethod() {
 		switch ($this->_method) {
+			case 'GET':
 			case 'POST':
-				if (in_array($method, array('PUT', 'DELETE'))) {
-					$this->_method = $method;
-					$this->del('_method');
+				$hash = strtolower($this->_method);
+
+				if ($method = $this->get('_method', false, $hash)) {
+					if (self::isMapped($method, $this->_method)) {
+						$this->del('_method', $hash);
+						$this->del('_method');
+
+						$this->_method = $method;
+					}
 				}
 				break;
 			case 'PUT':
-				parse_str(file_get_contents('php://input', $query));
+				parse_str(file_get_contents('php://input'), $query);
 				$this->_hashes['default'] = array_merge_recursive($_REQUEST, $query);
 				break;
 		}
@@ -61,7 +78,7 @@ class Plutonium_Request implements Plutonium_Accessible {
 		}
 	}
 
-	protected function _initPath($path) {
+	protected function _initPath() {
 		$path = explode(FS, trim(parse_url($this->uri, PHP_URL_PATH), FS));
 
 		if (!empty($path)) {
@@ -73,6 +90,38 @@ class Plutonium_Request implements Plutonium_Accessible {
 			}
 
 			$this->path = implode(FS, $path);
+		}
+	}
+
+	protected function _initFormat() {
+		if (isset($_SERVER['HTTP_ACCEPT'])) {
+			$accept = explode(',', $_SERVER['HTTP_ACCEPT']);
+
+			foreach ($accept as $type) {
+				switch ($type) {
+					case 'text/plain':
+						$this->def('format', 'txt');
+						return;
+					case 'text/html':
+					case 'application/xhtml+xml':
+						$this->def('format', 'html');
+						return;
+					case 'text/xml':
+					case 'application/xml': // unofficial
+						$this->def('format', 'xml');
+						return;
+					case 'text/json': // unofficial
+					case 'application/json':
+						$this->def('format', 'json');
+						return;
+					case 'application/rss+xml':
+						$this->def('format', 'rss');
+						return;
+					case 'application/atom+xml':
+						$this->def('format', 'atom');
+						return;
+				}
+			}
 		}
 	}
 

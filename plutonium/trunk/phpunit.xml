@@ -15,6 +15,11 @@
 			<file>tests/Plutonium/ResponseTest.php</file>
 
 			<file>tests/Plutonium/LanguageTest.php</file>
+			<!--<file>tests/Plutonium/DocumentTest.php</file>-->
+
+			<!--<file>tests/Plutonium/ThemeTest.php</file>-->
+			<!--<file>tests/Plutonium/ModuleTest.php</file>-->
+			<!--<file>tests/Plutonium/WidgetTest.php</file>-->
 		</testsuite>
 	</testsuites>
 </phpunit>

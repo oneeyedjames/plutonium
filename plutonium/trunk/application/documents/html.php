@@ -14,6 +14,7 @@ class HtmlDocument extends Plutonium_Document {
 
 		$this->_parsers[] = new Plutonium_Parser_Theme($this->application);
 		$this->_parsers[] = new Plutonium_Parser_Utility($this->application, $args->location);
+		$this->_parsers[] = new Plutonium_Parser_Language($this->_application);
 	}
 
 	public function addStyleSheet($path) {

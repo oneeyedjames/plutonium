@@ -1,14 +1,6 @@
 <?php
 
 class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
-	protected $_namespace = 'pu';
-
-	protected $_application = null;
-
-	public function __construct($application) {
-		$this->_application = $application;
-	}
-
 	public function headTag($args) {
 		return $this->_application->document->getHeader();
 	}
@@ -36,9 +28,14 @@ class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
 		$session = $this->_application->session;
 		$theme   = $this->_application->theme;
 
-		if ($message = $session->get('message', null)) {
+		if ($session->has('message')) {
+			$output = $theme->message_start
+					. $session->message
+					. $theme->message_close;
+
 			$session->del('message');
-			return $theme->message_start . $message . $theme->message_close;
+
+			return $output;
 		}
 
 		return '';
