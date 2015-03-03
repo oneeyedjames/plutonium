@@ -98,6 +98,19 @@ class Plutonium_Request implements Plutonium_Accessible {
 			$accept = explode(',', $_SERVER['HTTP_ACCEPT']);
 
 			foreach ($accept as $type) {
+				$terms = array();
+
+				if (strpos($type, ';') !== false) {
+					list($type, $query) = explode(';', $type, 2);
+
+					$query = explode(';', trim($query));
+
+					foreach ($query as $term) {
+						list($key, $value) = explode('=', $term);
+						$terms[trim($key)] = trim($value);
+					}
+				}
+
 				switch ($type) {
 					case 'text/plain':
 						$this->def('format', 'txt');
