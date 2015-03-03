@@ -38,7 +38,7 @@ class Plutonium_Widget {
 
 	public function __construct($args) {
 		$this->_application = $args->application;
-		//$this->_application->language->load($args->name, 'widgets');
+		$this->_application->locale->load($args->name, 'widgets');
 
 		$this->_name   = $args->name;
 		$this->_vars   = array();

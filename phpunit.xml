@@ -13,9 +13,9 @@
 			<file>tests/Plutonium/SessionTest.php</file>
 			<file>tests/Plutonium/RequestTest.php</file>
 			<file>tests/Plutonium/ResponseTest.php</file>
-
-			<file>tests/Plutonium/LanguageTest.php</file>
 			<!--<file>tests/Plutonium/DocumentTest.php</file>-->
+
+			<file>tests/Plutonium/LocaleTest.php</file>
 
 			<!--<file>tests/Plutonium/ThemeTest.php</file>-->
 			<!--<file>tests/Plutonium/ModuleTest.php</file>-->

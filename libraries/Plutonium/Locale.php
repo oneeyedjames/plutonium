@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Language {
+class Plutonium_Locale {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -10,39 +10,42 @@ class Plutonium_Language {
 		return self::$_path;
 	}
 
-	protected $_name;
-	protected $_code;
-	protected $_locale;
+	protected $_language;
+	protected $_country;
 	protected $_phrases;
 
 	public function __construct($config) {
-		$code   = $config->code;
-		$locale = $config->locale;
+		if (is_string($config))
+			$config = $this->_parseString($config);
+		elseif (is_array($config))
+			$config = new Plutonium_Object($config);
 
-		if (strpos($code, '-') !== false) {
-			if (is_null($locale))
-				list($code, $locale) = explode('-', $code);
-			else
-				list($code, $null) = explode('-', $code);
+		if (is_a($config, 'Plutonium_Object')) {
+			$this->_language = strtolower($config->language);
+			$this->_country  = strtoupper($config->country);
 		}
-
-		$this->_code   = $config->code   = strtolower($code);
-		$this->_locale = $config->locale = strtoupper($locale);
 
 		$this->_phrases = array();
 
-		if ($path = $this->_getPath($code)) {
+		if ($path = $this->_getPath($this->_language)) {
 			$this->_loadFile($path . DS . 'language.xml');
 		} else {
-			$message = sprintf("Could not find language resource: %s.", $code);
+			$message = sprintf("Could not find language resource: %s.",
+				$this->_language
+			);
+
 			trigger_error($message, E_USER_WARNING);
 		}
 
-		if (!empty($locale)) {
-			if ($path = $this->_getPath($code, $locale)) {
+		if (!empty($this->_country)) {
+			if ($path = $this->_getPath($this->_language, $this->_country)) {
 				$this->_loadFile($path . DS . 'language.xml');
 			} else {
-				$message = sprintf("Could not find language resource: %s-%s.", $code, $locale);
+				$message = sprintf("Could not find language resource: %s-%s.",
+					$this->_language,
+					$this->_country
+				);
+
 				trigger_error($message, E_USER_NOTICE);
 			}
 		}
@@ -51,16 +54,16 @@ class Plutonium_Language {
 	public function __get($key) {
 		switch ($key) {
 			case 'name':
-				$name = $this->_code;
+				$name = $this->_language;
 
-				if (!empty($this->_locale))
-					$name .= '-' . $this->_locale;
+				if (!empty($this->_country))
+					$name .= '-' . $this->_country;
 
 				return $name;
-			case 'code':
-				return $this->_code;
-			case 'locale':
-				return $this->_locale;
+			case 'language':
+				return $this->_language;
+			case 'country':
+				return $this->_country;
 		}
 	}
 
@@ -72,7 +75,7 @@ class Plutonium_Language {
 			case 'themes':
 			case 'modules':
 			case 'widgets':
-				$path = self::getPath() . DS . $this->code . DS . $type;
+				$path = self::getPath() . DS . $this->language . DS . $type;
 				$file = $path . DS . $name . '.xml';
 
 				if (!$this->_loadFile($file)) {
@@ -80,7 +83,7 @@ class Plutonium_Language {
 					trigger_error($message, E_USER_WARNING);
 				}
 
-				if (!empty($this->locale)) {
+				if (!empty($this->country)) {
 					$path = self::getPath() . DS . $this->name . DS . $type;
 					$file = $path . DS . $name . '.xml';
 
@@ -116,13 +119,24 @@ class Plutonium_Language {
 		return false;
 	}
 
-	protected function _getPath($code, $locale = null) {
-		$path = self::getPath() . DS . $code;
+	protected function _getPath($language, $country = null) {
+		$path = self::getPath() . DS . $language;
 
-		if (!empty($locale))
-			$path .= '-' . $locale;
+		if (!empty($country))
+			$path .= '-' . $country;
 
 		return is_dir($path) ? $path : false;
+	}
+
+	protected function _parseString($locale) {
+		if (strpos($locale, '-') !== false) {
+			list($language, $country) = explode('-', $locale, 2);
+			$locale = array('language' => $language, 'country' => $country);
+		} else {
+			$locale = array('language' => $locale);
+		}
+
+		return new Plutonium_Object($locale);
 	}
 
 	public function translate($key) {

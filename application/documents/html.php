@@ -13,8 +13,8 @@ class HtmlDocument extends Plutonium_Document {
 		parent::__construct($args);
 
 		$this->_parsers[] = new Plutonium_Parser_Theme($this->application);
-		$this->_parsers[] = new Plutonium_Parser_Utility($this->application, $args->location);
-		$this->_parsers[] = new Plutonium_Parser_Language($this->_application);
+		$this->_parsers[] = new Plutonium_Parser_Utility($this->application, $args);
+		$this->_parsers[] = new Plutonium_Parser_Locale($this->application);
 	}
 
 	public function addStyleSheet($path) {

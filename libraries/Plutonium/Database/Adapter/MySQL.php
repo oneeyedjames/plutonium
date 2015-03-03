@@ -8,7 +8,7 @@ class Plutonium_Database_Adapter_MySQL extends Plutonium_Database_Adapter {
 			$pass = $this->_config->password;
 			$db   = $this->_config->dbname;
 
-			if ($this->_connection = mysql_connect($host, $user, $pass))
+			if ($this->_connection = @mysql_connect($host, $user, $pass))
 				mysql_select_db($db, $this->_connection);
 		}
 

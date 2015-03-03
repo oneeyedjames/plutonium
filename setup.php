@@ -17,8 +17,8 @@ Plutonium_Error_Helper::register(null, 'SetupErrorHandler');
 
 $config = new Plutonium_Object(array(
 	'system'   => array('hostname' => $_SERVER['SERVER_NAME']),
-	'location' => array('timezone' => timezone_name_from_abbr('UTC')),
-	'language' => array('code' => 'en')
+	'timezone' => timezone_name_from_abbr('UTC'),
+	'locale'   => array('language' => 'en')
 ));
 
 $application = new SetupApplication($config);

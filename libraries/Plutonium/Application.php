@@ -20,8 +20,9 @@ class Plutonium_Application {
 	protected $_request = null;
 
 	protected $_response = null;
-	protected $_language = null;
 	protected $_document = null;
+
+	protected $_locale = null;
 
 	public function __construct($config) {
 		$this->_config = $config;
@@ -43,10 +44,10 @@ class Plutonium_Application {
 				return $this->_getRequest($this->_config);
 			case 'response':
 				return $this->_getResponse();
-			case 'language':
-				return $this->_getLanguage($this->_config);
 			case 'document':
 				return $this->_getDocument($this->_config, $this->request);
+			case 'locale':
+				return $this->_getLocale($this->_config);
 		}
 	}
 
@@ -85,26 +86,27 @@ class Plutonium_Application {
 		return $this->_response;
 	}
 
-	protected function _getLanguage($config) {
-		if (is_null($this->_language) && !is_null($config))
-			$this->_language = new Plutonium_Language($config->language);
-
-		return $this->_language;
-	}
-
 	protected function _getDocument($config, $request) {
 		if (is_null($this->_document) && !is_null($config)) {
 			$format = !is_null($request) ? $request->get('format', 'html') : 'html';
 
 			$args = new Plutonium_Object(array(
 				'application' => $this,
-				'location'    => $config->location
+				'locale'      => $config->locale,
+				'timezone'    => $config->timezone
 			));
 
 			$this->_document = Plutonium_Document::newInstance($format, $args);
 		}
 
 		return $this->_document;
+	}
+
+	protected function _getLocale($config) {
+		if (is_null($this->_locale) && !is_null($config))
+			$this->_locale = new Plutonium_Locale($config->locale);
+
+		return $this->_locale;
 	}
 
 	public function initialize() {
