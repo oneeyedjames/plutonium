@@ -3,10 +3,7 @@
 function is_assoc($var) {
 	if (!is_array($var) || empty($var)) return false;
 
-	foreach (array_keys($var) as $key)
-		if (is_string($key)) return true;
-
-	return false;
+	return (bool) count(array_filter(array_keys($var), 'is_string'));
 }
 
 function is_range($var) {
