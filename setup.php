@@ -30,6 +30,7 @@ $application->execute();
 $database = Plutonium_Database_Helper::getAdapter($config->database);
 
 Plutonium_Database_Helper::getTable('hosts');
+Plutonium_Database_Helper::getTable('domains');
 Plutonium_Database_Helper::getTable('users');
 Plutonium_Database_Helper::getTable('groups');
 

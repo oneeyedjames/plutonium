@@ -35,7 +35,7 @@ extends Plutonium_Database_Table_Delegate {
 			if ($field_meta->auto)
 				$type .= " AUTO_INCREMENT";
 
-			if ($field_meta->has('default')) {
+			if ($field_meta->get('default')) {
 				$default = $this->quoteString($field_meta->default);
 
 				$type .= " DEFAULT $default";

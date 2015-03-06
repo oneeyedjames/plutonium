@@ -59,12 +59,13 @@ class Plutonium_Request implements Plutonium_Accessible {
 
 	protected function _initHost($host) {
 		$base = $host;
-		$host = $this->get('SERVER_NAME', null, 'server');
+		$host = $this->get('HTTP_HOST', null, 'server');
 
 		$base = array_reverse(explode('.', trim($base)));
 		$host = array_reverse(explode('.', trim($host)));
 
 		// TODO Support mapped domains
+
 		foreach ($base as $base_slug) {
 			$host_slug = array_shift($host);
 
