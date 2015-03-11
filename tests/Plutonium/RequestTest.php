@@ -8,6 +8,8 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$_SERVER['REQUEST_URI']    = '/';
+
+		$_SERVER['HTTP_HOST'] = 'plutonium.dev';
 	}
 
 	public function setUp() {
@@ -95,14 +97,14 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testHost() {
-		$_SERVER['SERVER_NAME'] = 'main.plutonium.dev';
+		$_SERVER['HTTP_HOST'] = 'main.plutonium.dev';
 
 		$request = new Plutonium_Request($this->config->system);
 
 		$this->assertEquals($request->host, 'main');
 		$this->assertNull($request->module);
 
-		$_SERVER['SERVER_NAME'] = 'site.main.plutonium.dev';
+		$_SERVER['HTTP_HOST'] = 'site.main.plutonium.dev';
 
 		$request = new Plutonium_Request($this->config->system);
 

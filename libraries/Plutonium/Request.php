@@ -31,6 +31,8 @@ class Plutonium_Request implements Plutonium_Accessible {
 		$this->_initHost($config->hostname);
 		$this->_initPath();
 		$this->_initFormat();
+		//$this->_initLanguage();
+		//$this->_initEncoding();
 	}
 
 	protected function _initMethod() {
@@ -57,12 +59,13 @@ class Plutonium_Request implements Plutonium_Accessible {
 
 	protected function _initHost($host) {
 		$base = $host;
-		$host = $this->get('SERVER_NAME', null, 'server');
+		$host = $this->get('HTTP_HOST', null, 'server');
 
 		$base = array_reverse(explode('.', trim($base)));
 		$host = array_reverse(explode('.', trim($host)));
 
 		// TODO Support mapped domains
+
 		foreach ($base as $base_slug) {
 			$host_slug = array_shift($host);
 
@@ -95,47 +98,87 @@ class Plutonium_Request implements Plutonium_Accessible {
 
 	protected function _initFormat() {
 		if (isset($_SERVER['HTTP_ACCEPT'])) {
-			$accept = explode(',', $_SERVER['HTTP_ACCEPT']);
+			$type = $this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT']);
 
-			foreach ($accept as $type) {
-				$terms = array();
-
-				if (strpos($type, ';') !== false) {
-					list($type, $query) = explode(';', $type, 2);
-
-					$query = explode(';', trim($query));
-
-					foreach ($query as $term) {
-						list($key, $value) = explode('=', $term);
-						$terms[trim($key)] = trim($value);
+			foreach ($type as $match => $group) {
+				foreach ($group as $type) {
+					switch ($type) {
+						case 'text/plain':
+							$this->def('format', 'txt');
+							return;
+						case 'text/html':
+						case 'application/xhtml+xml':
+							$this->def('format', 'html');
+							return;
+						case 'text/xml':
+						case 'application/xml': // unofficial
+							$this->def('format', 'xml');
+							return;
+						case 'text/json': // unofficial
+						case 'application/json':
+							$this->def('format', 'json');
+							return;
+						case 'application/rss+xml':
+							$this->def('format', 'rss');
+							return;
+						case 'application/atom+xml':
+							$this->def('format', 'atom');
+							return;
 					}
-				}
-
-				switch ($type) {
-					case 'text/plain':
-						$this->def('format', 'txt');
-						return;
-					case 'text/html':
-					case 'application/xhtml+xml':
-						$this->def('format', 'html');
-						return;
-					case 'text/xml':
-					case 'application/xml': // unofficial
-						$this->def('format', 'xml');
-						return;
-					case 'text/json': // unofficial
-					case 'application/json':
-						$this->def('format', 'json');
-						return;
-					case 'application/rss+xml':
-						$this->def('format', 'rss');
-						return;
-					case 'application/atom+xml':
-						$this->def('format', 'atom');
-						return;
 				}
 			}
 		}
+	}
+
+	protected function _initLanguage() {
+		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+			var_dump($_SERVER['HTTP_ACCEPT_LANGUAGE'],
+				$this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+		}
+	}
+
+	protected function _initEncoding() {
+		if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+			var_dump($_SERVER['HTTP_ACCEPT_ENCODING'],
+				$this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT_ENCODING']));
+		}
+	}
+
+	/**
+	 * Helper function for parsing HTTP Accept and Accept-____ headers
+	 */
+	protected function _parseAcceptHeader($header) {
+		$result = array();
+
+		$list = explode(',', $header);
+
+		foreach ($list as $item) {
+			$params = array();
+
+			if (strpos($item, ';') !== false) {
+				$query = explode(';', $item);
+
+				$name = trim(array_shift($query));
+
+				foreach ($query as $param) {
+					list($key, $value) = explode('=', $param);
+					$params[trim($key)] = trim($value);
+				}
+			} else {
+				$name = trim($item);
+			}
+
+			$q = floatval(isset($params['q']) ? $params['q'] : 1);
+
+			$result[sprintf("%1.3f", $q)][] = $name;
+
+			// TODO manage remaining parameters
+			// unset($params['q']);
+		}
+
+		krsort($result);
+
+		return $result;
 	}
 
 	public function __get($key) {
