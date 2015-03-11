@@ -5,7 +5,7 @@ class Plutonium_Locale {
 
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
-			self::$_path = realpath(PU_PATH_BASE . '/languages');
+			self::$_path = realpath(PU_PATH_BASE . '/locales');
 
 		return self::$_path;
 	}
@@ -94,7 +94,7 @@ class Plutonium_Locale {
 				}
 				break;
 			default:
-				$error = sprintf("Invalid language resource type: %s", $type);
+				$error = sprintf("Invalid locale resource type: %s", $type);
 				trigger_error($error, E_USER_WARNING);
 				break;
 		}
@@ -139,8 +139,16 @@ class Plutonium_Locale {
 		return new Plutonium_Object($locale);
 	}
 
-	public function translate($key) {
-		return isset($this->_phrases[strtoupper($key)])
-		     ? $this->_phrases[strtoupper($key)] : $key;
+	public function localize($key) {
+		if (!isset($this->_phrases[strtoupper($key)])) return $key;
+
+		$match = $this->_phrases[strtoupper($key)];
+
+		if (func_num_args() == 1) return $match;
+
+		$args = func_get_args();
+		$args[0] = $match;
+
+		return call_user_func_array('sprintf', $args);
 	}
 }

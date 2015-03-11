@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="domains" prefix="sys" timestamps="yes">
+	<field name="name" type="string" size="short"/>
+	<field name="domain" type="string" size="short"/>
+	<field name="default" type="bool"/>
+	<ref name="host" table="hosts"/>
+</table>

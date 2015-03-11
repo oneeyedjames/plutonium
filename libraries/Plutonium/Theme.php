@@ -103,7 +103,7 @@ class Plutonium_Theme {
 		return $this->_output;
 	}
 
-	public function translate($text) {
-		return $this->_application->locale->translate($text);
+	public function localize($text) {
+		return $this->_application->locale->localize($text);
 	}
 }

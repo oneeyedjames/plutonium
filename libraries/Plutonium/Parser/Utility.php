@@ -13,7 +13,7 @@ class Plutonium_Parser_Utility extends Plutonium_Parser_Abstract {
 		$regex = '/^(date|time|datetime)_format_(long|short|system)$/';
 
 		if (preg_match($regex, $format))
-			$format = $this->_application->locale->translate($format);
+			$format = $this->_application->locale->localize($format);
 
 		return strftime($format, $time);
 	}
