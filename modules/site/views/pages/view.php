@@ -9,11 +9,10 @@ class PagesView extends Plutonium_Module_View {
 		$slug = $this->getVar('slug', $request->get('slug', ''));
 
 		if (empty($slug))
-			$pages = $model->find(1);
+			$page = $model->find(1);
 		else
-			$pages = $model->find(array('slug' => $slug));
+			$page = $model->find(array('slug' => $slug), null, 1);
 
-		$page = array_shift($pages);
 		$page->body = paragraphize($page->body);
 
 		$this->setRef('page', $page);

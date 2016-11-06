@@ -22,8 +22,10 @@ abstract class Plutonium_Database_Table_Delegate {
 	}
 
 	public function select($match, $sort = null, $limit = 0, $offset = 0) {
+		$return_limit = $limit;
+
 		if (is_scalar($match))
-			$limit = 1;
+			$limit = $return_limit = 1;
 
 		$sql = "SELECT * FROM $this->table_name";
 
@@ -44,7 +46,7 @@ abstract class Plutonium_Database_Table_Delegate {
 
 			$result->close();
 
-			return $limit == 1 ? $rows[0] : $rows;
+			return $return_limit == 1 ? $rows[0] : $rows;
 		}
 
 		return false;

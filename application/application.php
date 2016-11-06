@@ -4,14 +4,33 @@ class HttpApplication extends Plutonium_Application {
 	protected static $_instance = null;
 
 	public function initialize() {
-		// Validate host/module dilemma
-		if (isset($this->request->host) && !isset($this->request->module)) {
-			$table = Plutonium_Database_Helper::getTable('hosts');
-			$rows  = $table->find(array('slug' => $request->host));
+		if (!isset($this->request->host)) {
 
-			if (empty($host)) {
+			// Check for mapped domain
+			$domain = explode('.', $this->request->get('HTTP_HOST', null, 'server'));
+			$domain = array('site', 'main', 'pu');
+
+			$aliases = array();
+
+			while (count($domain) > 1) {
+				$aliases[] = implode('.', $domain);
+				array_shift($domain);
+			}
+
+			$table = Plutonium_Database_Helper::getTable('domains');
+			$rows  = $table->find(array('domain' => $aliases));
+
+			if (!empty($rows))
+				$this->request->host = $rows[0]->host->slug;
+		} elseif (!isset($this->request->module)) {
+
+			// Validate host/module dilemma
+			$table = Plutonium_Database_Helper::getTable('hosts');
+			$rows  = $table->find(array('slug' => $this->request->host));
+
+			if (empty($rows)) {
 				$table = Plutonium_Database_Helper::getTable('modules');
-				$rows  = $table->find(array('slug' => $request->host));
+				$rows  = $table->find(array('slug' => $this->request->host));
 
 				if (!empty($rows)) {
 					$this->request->module = $this->request->host;
