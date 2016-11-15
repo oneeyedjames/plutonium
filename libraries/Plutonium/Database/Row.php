@@ -33,7 +33,7 @@ class Plutonium_Database_Row {
 
 				if (!empty($ref_id)) {
 					$ref_table = $this->_table->table_refs[$key];
-					$ref_table = Plutonium_Database_Helper::getTable($ref_table);
+					$ref_table = Plutonium_Database_Table::getInstance($ref_table);
 
 					$this->_refs[$key] = $ref_table->find($ref_id);
 
@@ -50,7 +50,7 @@ class Plutonium_Database_Row {
 
 				$rev_alias = $this->_table->table_revs[$key]->alias;
 				$rev_table = $this->_table->table_revs[$key]->table;
-				$rev_table = Plutonium_Database_Helper::getTable($rev_table);
+				$rev_table = Plutonium_Database_Table::getInstance($rev_table);
 
 				$this->_revs[$key] = $rev_table->find(array(
 					$rev_alias . '_id' => $rev_id
@@ -119,7 +119,7 @@ class Plutonium_Database_Row {
 					$xref_name = $ref_alias;
 				} else {
 					$xref_id = $ref_alias . '_id';
-					$table = Plutonium_Database_Helper::getTable($ref_table);
+					$table = Plutonium_Database_Table::getInstance($ref_table);
 				}
 			}
 

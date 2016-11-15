@@ -1,11 +1,22 @@
 <?php
 
 abstract class Plutonium_Database_Adapter {
+	private static $_instance;
+
+	public static function getInstance($config = null) {
+		if (is_null(self::$_instance) && !is_null($config)) {
+			$type = 'Plutonium_Database_Adapter_' . $config->driver;
+			self::$_instance = new $type($config);
+		}
+
+		return self::$_instance;
+	}
+
 	protected $_config = null;
 
 	protected $_connection = null;
 
-	public function __construct($config) {
+	protected function __construct($config) {
 		$this->_config = $config;
 
 		if (!$this->connect())

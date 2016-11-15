@@ -30,7 +30,7 @@ Plutonium_Error_Helper::register(null, 'HttpErrorHandler');
 $config = new Plutonium_Object($config);
 $config->system->def('scheme', parse_url(PU_URL_BASE, PHP_URL_SCHEME));
 
-Plutonium_Database_Helper::getAdapter($config->database);
+Plutonium_Database_Adapter::getInstance($config->database);
 
 Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 

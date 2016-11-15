@@ -5,7 +5,7 @@ abstract class Plutonium_Database_Table_Delegate {
 	protected $_table   = null;
 
 	public function __construct($table) {
-		$this->_adapter = Plutonium_Database_Helper::getAdapter();
+		$this->_adapter = Plutonium_Database_Adapter::getInstance();
 		$this->_table   = $table;
 	}
 
