@@ -13,7 +13,7 @@ if (!defined(PU_PATH_BASE)) {
 require_once PU_PATH_BASE . '/application/setup/application.php';
 require_once PU_PATH_BASE . '/application/setup/error.php';
 
-Plutonium_Error_Helper::register(null, 'SetupErrorHandler');
+Plutonium_Error_Handler::register(null, 'SetupErrorHandler');
 
 $config = new Plutonium_Object(array(
 	'system'   => array('hostname' => $_SERVER['SERVER_NAME']),

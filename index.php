@@ -25,7 +25,7 @@ if (!isset($config)) {
 require_once 'application/application.php';
 require_once 'application/error.php';
 
-Plutonium_Error_Helper::register(null, 'HttpErrorHandler');
+Plutonium_Error_Handler::register(null, 'HttpErrorHandler');
 
 $config = new Plutonium_Object($config);
 $config->system->def('scheme', parse_url(PU_URL_BASE, PHP_URL_SCHEME));
