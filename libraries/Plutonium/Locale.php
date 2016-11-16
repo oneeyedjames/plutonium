@@ -3,13 +3,6 @@
 class Plutonium_Locale {
 	protected static $_path = null;
 
-	public static function getPath() {
-		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
-			self::$_path = realpath(PU_PATH_BASE . '/locales');
-
-		return self::$_path;
-	}
-
 	protected $_language;
 	protected $_country;
 	protected $_phrases;
@@ -27,25 +20,19 @@ class Plutonium_Locale {
 
 		$this->_phrases = array();
 
-		if ($path = $this->_getPath($this->_language)) {
-			$this->_loadFile($path . DS . 'language.xml');
-		} else {
-			$message = sprintf("Could not find language resource: %s.",
-				$this->_language
-			);
+		$path = realpath(PU_PATH_BASE . '/locales');
+		$file = $path . DS . $this->_language . '.xml';
 
+		if (!$this->_loadFile($file)) {
+			$message = sprintf("Could not find language resource: %s.", $this->_language);
 			trigger_error($message, E_USER_WARNING);
 		}
 
 		if (!empty($this->_country)) {
-			if ($path = $this->_getPath($this->_language, $this->_country)) {
-				$this->_loadFile($path . DS . 'language.xml');
-			} else {
-				$message = sprintf("Could not find language resource: %s-%s.",
-					$this->_language,
-					$this->_country
-				);
+			$file = $path . DS . $this->_language . '-' . $this->_country . '.xml';
 
+			if (!$this->_loadFile($path . DS . 'language.xml')) {
+				$message = sprintf("Could not find language resource: %s-%s.", $this->_language, $this->_country);
 				trigger_error($message, E_USER_NOTICE);
 			}
 		}
@@ -75,8 +62,8 @@ class Plutonium_Locale {
 			case 'themes':
 			case 'modules':
 			case 'widgets':
-				$path = self::getPath() . DS . $this->language . DS . $type;
-				$file = $path . DS . $name . '.xml';
+				$path = realpath(PU_PATH_BASE) . DS . $type . DS . $name . DS . 'locales';
+				$file = $path . DS . $this->language . '.xml';
 
 				if (!$this->_loadFile($file)) {
 					$message = sprintf("Resource does not exist: %s", $file);
@@ -84,8 +71,8 @@ class Plutonium_Locale {
 				}
 
 				if (!empty($this->country)) {
-					$path = self::getPath() . DS . $this->name . DS . $type;
-					$file = $path . DS . $name . '.xml';
+					$path = realpath(PU_PATH_BASE . DS . $type . DS . $name);
+					$file = $path . DS . 'locales' . DS . $this->name . '.xml';
 
 					if (!$this->_loadFile($file)) {
 						$message = sprintf("Resource does not exist: %s", $file);
@@ -117,15 +104,6 @@ class Plutonium_Locale {
 		}
 
 		return false;
-	}
-
-	protected function _getPath($language, $country = null) {
-		$path = self::getPath() . DS . $language;
-
-		if (!empty($country))
-			$path .= '-' . $country;
-
-		return is_dir($path) ? $path : false;
 	}
 
 	protected function _parseString($locale) {
