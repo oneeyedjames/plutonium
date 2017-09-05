@@ -42,7 +42,7 @@ class Plutonium_Theme {
 
 	public function __construct($args) {
 		$this->_application = $args->application;
-		$this->_application->language->load($args->name, 'themes');
+		$this->_application->locale->load($args->name, 'themes');
 
 		$this->_name   = $args->name;
 		$this->_layout = 'default';
@@ -103,7 +103,7 @@ class Plutonium_Theme {
 		return $this->_output;
 	}
 
-	public function translate($text) {
-		return $this->_application->language->translate($text);
+	public function localize($text) {
+		return $this->_application->locale->localize($text);
 	}
 }

@@ -11,7 +11,7 @@ class PagesView extends Plutonium_Module_View {
 		if (empty($slug))
 			$page = $model->find(1);
 		else
-			$page = array_shift($model->find(array('slug' => $slug)));
+			$page = $model->find(array('slug' => $slug), null, 1);
 
 		$page->body = paragraphize($page->body);
 

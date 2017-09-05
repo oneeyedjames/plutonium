@@ -2,7 +2,7 @@
 
 class Plutonium_Request implements Plutonium_Accessible {
 	protected static $_method_map = array(
-		'GET'  => array('HEAD'),
+		'GET'  => array('HEAD', 'OPTIONS'),
 		'POST' => array('PUT', 'DELETE')
 	);
 
@@ -18,19 +18,42 @@ class Plutonium_Request implements Plutonium_Accessible {
 		$this->_uri    = $_SERVER['REQUEST_URI'];
 		$this->_method = $_SERVER['REQUEST_METHOD'];
 		$this->_hashes = array(
-			'env'     => $_ENV,
-			'server'  => $_SERVER,
 			'default' => $_REQUEST,
 			'get'     => $_GET,
 			'post'    => $_POST,
-			'files'   => $_FILES,
-			'cookies' => $_COOKIE
+			//'files'   => $_FILES,
+			'cookies' => $_COOKIE,
+			'headers' => array()
 		);
 
+		foreach ($_SERVER as $key => $value) {
+			if (stripos($key, 'HTTP_') === 0) {
+				$words = str_replace('_', ' ', substr($key, 5));
+				$words = ucwords(strtolower($words));
+				$words = str_replace(' ', '-', $words);
+
+				$this->set($words, $value, 'headers');
+			}
+		}
+
+		/* $hash = strtolower($this->_method);
+
+		if ($method = $this->get('_method', false, $hash)) {
+			if (self::isMapped($method, $this->_method)) {
+				$this->del('_method', $hash);
+				$this->del('_method');
+
+				$this->_method = $method;
+			}
+		} */
+
+		$this->parseHost($_SERVER['HTTP_HOST'], $config->hostname);
+		$this->parsePath(parse_url($this->uri, PHP_URL_PATH));
+
 		$this->_initMethod();
-		$this->_initHost($config->hostname);
-		$this->_initPath();
-		$this->_initFormat();
+		//$this->_initFormat();
+		//$this->_initLanguage();
+		//$this->_initEncoding();
 	}
 
 	protected function _initMethod() {
@@ -55,31 +78,24 @@ class Plutonium_Request implements Plutonium_Accessible {
 		}
 	}
 
-	protected function _initHost($host) {
-		$base = $host;
-		$host = $this->get('SERVER_NAME', null, 'server');
+	public function parseHost($host, $base) {
+		if ($base == $host) return;
 
-		$base = array_reverse(explode('.', trim($base)));
-		$host = array_reverse(explode('.', trim($host)));
+		if (substr($host, -strlen($base)) == $base) {
+			$diff = explode('.', trim(substr($host, 0, -strlen($base)), '.'));
 
-		// TODO Support mapped domains
-		foreach ($base as $base_slug) {
-			$host_slug = array_shift($host);
+			if ($host = array_pop($diff))
+				$this->set('host', $host);
 
-			if ($host_slug != $base_slug && !empty($host_slug)) {
-				trigger_error('Improperly formed hostname', E_USER_ERROR);
-				break;
-			}
-		}
-
-		if (!empty($host)) {
-			if (isset($host[0])) $this->set('host',   $host[0]);
-			if (isset($host[1])) $this->set('module', $host[1]);
+			if ($module = array_pop($diff))
+				$this->set('module', $module);
 		}
 	}
 
-	protected function _initPath() {
-		$path = explode(FS, trim(parse_url($this->uri, PHP_URL_PATH), FS));
+	public function parsePath($path) {
+		unset($this->path, $this->format);
+
+		$path = explode(FS, trim($path, FS));
 
 		if (!empty($path)) {
 			$last =& $path[count($path) - 1];
@@ -95,47 +111,87 @@ class Plutonium_Request implements Plutonium_Accessible {
 
 	protected function _initFormat() {
 		if (isset($_SERVER['HTTP_ACCEPT'])) {
-			$accept = explode(',', $_SERVER['HTTP_ACCEPT']);
+			$type = $this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT']);
 
-			foreach ($accept as $type) {
-				$terms = array();
-
-				if (strpos($type, ';') !== false) {
-					list($type, $query) = explode(';', $type, 2);
-
-					$query = explode(';', trim($query));
-
-					foreach ($query as $term) {
-						list($key, $value) = explode('=', $term);
-						$terms[trim($key)] = trim($value);
+			foreach ($type as $match => $group) {
+				foreach ($group as $type) {
+					switch ($type) {
+						case 'text/plain':
+							$this->def('format', 'txt');
+							return;
+						case 'text/html':
+						case 'application/xhtml+xml':
+							$this->def('format', 'html');
+							return;
+						case 'text/xml':
+						case 'application/xml': // unofficial
+							$this->def('format', 'xml');
+							return;
+						case 'text/json': // unofficial
+						case 'application/json':
+							$this->def('format', 'json');
+							return;
+						case 'application/rss+xml':
+							$this->def('format', 'rss');
+							return;
+						case 'application/atom+xml':
+							$this->def('format', 'atom');
+							return;
 					}
-				}
-
-				switch ($type) {
-					case 'text/plain':
-						$this->def('format', 'txt');
-						return;
-					case 'text/html':
-					case 'application/xhtml+xml':
-						$this->def('format', 'html');
-						return;
-					case 'text/xml':
-					case 'application/xml': // unofficial
-						$this->def('format', 'xml');
-						return;
-					case 'text/json': // unofficial
-					case 'application/json':
-						$this->def('format', 'json');
-						return;
-					case 'application/rss+xml':
-						$this->def('format', 'rss');
-						return;
-					case 'application/atom+xml':
-						$this->def('format', 'atom');
-						return;
 				}
 			}
 		}
+	}
+
+	protected function _initLanguage() {
+		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+			var_dump($_SERVER['HTTP_ACCEPT_LANGUAGE'],
+				$this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+		}
+	}
+
+	protected function _initEncoding() {
+		if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+			var_dump($_SERVER['HTTP_ACCEPT_ENCODING'],
+				$this->_parseAcceptHeader($_SERVER['HTTP_ACCEPT_ENCODING']));
+		}
+	}
+
+	/**
+	 * Helper function for parsing HTTP Accept and Accept-____ headers
+	 */
+	protected function _parseAcceptHeader($header) {
+		$result = array();
+
+		$list = explode(',', $header);
+
+		foreach ($list as $item) {
+			$params = array();
+
+			if (strpos($item, ';') !== false) {
+				$query = explode(';', $item);
+
+				$name = trim(array_shift($query));
+
+				foreach ($query as $param) {
+					list($key, $value) = explode('=', $param);
+					$params[trim($key)] = trim($value);
+				}
+			} else {
+				$name = trim($item);
+			}
+
+			$q = floatval(isset($params['q']) ? $params['q'] : 1);
+
+			$result[sprintf("%1.3f", $q)][] = $name;
+
+			// TODO manage remaining parameters
+			// unset($params['q']);
+		}
+
+		krsort($result);
+
+		return $result;
 	}
 
 	public function __get($key) {

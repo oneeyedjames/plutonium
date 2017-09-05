@@ -38,7 +38,7 @@ class Plutonium_Module {
 
 	public function __construct($args) {
 		$this->_application = $args->application;
-		$this->_application->language->load($args->name, 'modules');
+		$this->_application->locale->load($args->name, 'modules');
 
 		$this->_name = $args->name;
 	}

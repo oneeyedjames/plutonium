@@ -2,7 +2,7 @@
 
 class MenuWidget extends Plutonium_Widget_Abstract {
 	public function display() {
-		$database = Plutonium_Database_Helper::getAdapter();
+		$database = Plutonium_Database_Adapter::getInstance();
 
 		$table = $database->quoteSymbol('mod_site_pages');
 

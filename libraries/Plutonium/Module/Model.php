@@ -19,7 +19,7 @@ class Plutonium_Module_Model {
 
 	public function getTable() {
 		if (is_null($this->_table))
-			$this->_table = Plutonium_Database_Helper::getTable($this->_name, $this->_module->name);
+			$this->_table = Plutonium_Database_Table::getInstance($this->_name, $this->_module->name);
 
 		return $this->_table;
 	}
@@ -29,14 +29,25 @@ class Plutonium_Module_Model {
 	}
 
 	public function save($data) {
-		$row = $this->getTable()->make($data);
+		if ($this->validate($data)) {
+			$row = $this->getTable()->make($data);
 
-		return $row->save() ? $row : false;
+			return $row->save() ? $row : false;
+		}
+
+		return false;
 	}
 
 	public function delete($id) {
 		$row = $this->getTable()->find($id);
 
 		return $row->delete();
+	}
+
+	/**
+	 * Override this behavior in child classes
+	 */
+	public function validate($row) {
+		return true;
 	}
 }

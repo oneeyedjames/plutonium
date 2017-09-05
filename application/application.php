@@ -4,14 +4,33 @@ class HttpApplication extends Plutonium_Application {
 	protected static $_instance = null;
 
 	public function initialize() {
-		// Validate host/module dilemma
-		if (isset($this->request->host) && !isset($this->request->module)) {
-			$table = Plutonium_Database_Helper::getTable('hosts');
-			$rows  = $table->find(array('slug' => $request->host));
+		if (!isset($this->request->host)) {
 
-			if (empty($host)) {
-				$table = Plutonium_Database_Helper::getTable('modules');
-				$rows  = $table->find(array('slug' => $request->host));
+			// Check for mapped domain
+			$domain = explode('.', $this->request->get('HTTP_HOST', null, 'server'));
+			// $domain = array('site', 'main', 'pu');
+
+			$aliases = array();
+
+			while (count($domain) > 1) {
+				$aliases[] = implode('.', $domain);
+				array_shift($domain);
+			}
+
+			$table = Plutonium_Database_Table::getInstance('domains');
+			$rows  = $table->find(array('domain' => $aliases));
+
+			if (!empty($rows))
+				$this->request->host = $rows[0]->host->slug;
+		} elseif (!isset($this->request->module)) {
+
+			// Validate host/module dilemma
+			$table = Plutonium_Database_Table::getInstance('hosts');
+			$rows  = $table->find(array('slug' => $this->request->host));
+
+			if (empty($rows)) {
+				$table = Plutonium_Database_Table::getInstance('modules');
+				$rows  = $table->find(array('slug' => $this->request->host));
 
 				if (!empty($rows)) {
 					$this->request->module = $this->request->host;
@@ -22,7 +41,7 @@ class HttpApplication extends Plutonium_Application {
 
 		// Lookup default host
 		if (!isset($this->request->host)) {
-			$table = Plutonium_Database_Helper::getTable('hosts');
+			$table = Plutonium_Database_Table::getInstance('hosts');
 			$rows  = $table->find(array('default' => 1));
 
 			if (!empty($rows))
@@ -31,7 +50,7 @@ class HttpApplication extends Plutonium_Application {
 
 		// Lookup default module
 		if (!isset($this->request->module)) {
-			$table = Plutonium_Database_Helper::getTable('modules');
+			$table = Plutonium_Database_Table::getInstance('modules');
 			$rows  = $table->find(array('default' => 1));
 
 			if (!empty($rows))
@@ -40,7 +59,7 @@ class HttpApplication extends Plutonium_Application {
 
 		// Lookup default theme
 		if (!isset($this->config->theme)) {
-			$table = Plutonium_Database_Helper::getTable('themes');
+			$table = Plutonium_Database_Table::getInstance('themes');
 			$rows  = $table->find(array('default' => 1));
 
 			if (!empty($rows))
@@ -56,7 +75,7 @@ class HttpApplication extends Plutonium_Application {
 		parent::initialize();
 
 		// Load widgets
-		$table = Plutonium_Database_Helper::getTable('modules');
+		$table = Plutonium_Database_Table::getInstance('modules');
 		$rows  = $table->find(array('slug' => $this->request->module));
 
 		if (!empty($rows)) {

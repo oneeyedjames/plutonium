@@ -13,8 +13,6 @@ $config['database']['dbname']   = 'plutonium';
 $config['database']['username'] = '';
 $config['database']['password'] = '';
 
-// Language Settings
-$config['language']['code'] = 'en-US';
-
-// Location Settings
-$config['location']['timezone'] = 'America/New_York';
+// Localization Settings
+$config['locale']   = 'en-US';
+$config['timezone'] = 'America/New_York';

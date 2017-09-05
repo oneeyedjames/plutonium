@@ -1,9 +1,9 @@
 <?php
 
 class Plutonium_Parser_Utility extends Plutonium_Parser_Abstract {
-	public function __construct($application, $config) {
+	public function __construct($application, $args) {
 		parent::__construct($application);
-		date_default_timezone_set($config->timezone);
+		date_default_timezone_set($args->timezone);
 	}
 
 	public function dateTag($args) {
@@ -13,7 +13,7 @@ class Plutonium_Parser_Utility extends Plutonium_Parser_Abstract {
 		$regex = '/^(date|time|datetime)_format_(long|short|system)$/';
 
 		if (preg_match($regex, $format))
-			$format = $this->_application->language->translate($format);
+			$format = $this->_application->locale->localize($format);
 
 		return strftime($format, $time);
 	}

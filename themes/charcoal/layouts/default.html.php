@@ -52,7 +52,7 @@ $center_width = $page_width - $left_width - $right_width;
 			</div>
 			<div id="footer">
 				<div class="inside" style="font-size: smaller; font-style: italic; text-align: right;">
-					<pu:date format="<?php echo $this->translate('datetime_format_long'); ?>">
+					<pu:date format="<?php echo $this->localize('datetime_format_long'); ?>">
 				</div>
 			</div>
 		</div>
