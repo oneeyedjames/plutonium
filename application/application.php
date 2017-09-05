@@ -8,7 +8,7 @@ class HttpApplication extends Plutonium_Application {
 
 			// Check for mapped domain
 			$domain = explode('.', $this->request->get('HTTP_HOST', null, 'server'));
-			$domain = array('site', 'main', 'pu');
+			// $domain = array('site', 'main', 'pu');
 
 			$aliases = array();
 
