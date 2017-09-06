@@ -7,9 +7,9 @@ $center_width = $page_width - $left_width - $right_width;
 <html>
 	<head>
 		<pu:head />
-		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/theme.css">
-		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/<?php echo $this->_layout; ?>.css">
-		<link rel="shortcut icon" type="image/png" href="<?php echo PU_URL_BASE; ?>/images/icons/silk/world.png">
+		<link rel="stylesheet" type="text/css" href="themes/<?php echo $this->_name; ?>/styles/theme.css">
+		<link rel="stylesheet" type="text/css" href="themes/<?php echo $this->_name; ?>/styles/<?php echo $this->_layout; ?>.css">
+		<link rel="shortcut icon" type="image/png" href="images/icons/silk/world.png">
 	</head>
 	<body>
 		<div id="page">
