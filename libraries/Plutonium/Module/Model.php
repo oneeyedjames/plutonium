@@ -47,7 +47,7 @@ class Plutonium_Module_Model {
 	/**
 	 * Override this behavior in child classes
 	 */
-	public function validate($row) {
+	public function validate(&$row) {
 		return true;
 	}
 }
