@@ -254,11 +254,6 @@ class Plutonium_Database_Table {
 				'default'  => $field->default
 			));
 		}
-
-		if (!$this->_delegate->exists() && !$this->_delegate->create()) {
-			$message = Plutonium_Database_Adapter::getInstance()->getErrorMsg();
-			trigger_error($message, E_USER_ERROR);
-		}
 	}
 
 	public function __get($key) {
@@ -293,6 +288,13 @@ class Plutonium_Database_Table {
 					$this->_table_xrefs = Plutonium_Database_Table::getXRefs($this->_name);
 
 				return $this->_table_xrefs;
+		}
+	}
+
+	public function create() {
+		if (!$this->_delegate->exists() && !$this->_delegate->create()) {
+			$message = Plutonium_Database_Adapter::getInstance()->getErrorMsg();
+			trigger_error($message, E_USER_ERROR);
 		}
 	}
 
