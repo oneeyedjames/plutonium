@@ -322,7 +322,7 @@ class Plutonium_Database_Table {
 		return $this->_delegate->delete($id);
 	}
 
-	public function validate($row) {
+	public function validate(&$row) {
 		return true;
 	}
 }
