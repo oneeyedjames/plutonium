@@ -15,11 +15,11 @@ class Plutonium_Database_Table {
 			else
 				$path = Plutonium_Module::getPath() . DS . strtolower($module);
 
-			$file = $path . DS . 'models' . DS . $file . '.xml';
+			$file = $path . DS . 'models' . DS . 'tables' . DS . $name . '.xml';
 
 			if (is_file($file)) {
 				$cfg = new Plutonium_Object();
-				$cfg->driver = self::getAdapter()->driver;
+				$cfg->driver = Plutonium_Database_Adapter::getInstance()->driver;
 
 				$doc = new DOMDocument();
 				$doc->preserveWhiteSpace = true;
