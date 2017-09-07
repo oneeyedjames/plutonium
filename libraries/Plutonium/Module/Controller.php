@@ -14,6 +14,8 @@ class Plutonium_Module_Controller {
 		switch ($key) {
 			case 'name':
 				return $this->_name;
+			case 'request':
+				return $this->_module->request;
 			case 'redirect':
 				return $this->_redirect;
 		}
