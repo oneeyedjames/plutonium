@@ -61,13 +61,13 @@ class Plutonium_Module {
 	public function initialize() {
 		switch ($this->request->method) {
 			case 'POST':
-				$this->request->set('action', 'create');
+				$this->request->def('action', 'create');
 				break;
 			case 'PUT':
-				$this->request->set('action', 'update');
+				$this->request->def('action', 'update');
 				break;
 			case 'DELETE':
-				$this->request->set('action', 'delete');
+				$this->request->def('action', 'delete');
 				break;
 		}
 
