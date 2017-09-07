@@ -41,7 +41,7 @@ if (isset($config)) {
 
 	$config = new Plutonium_Object(array(
 		'system'   => array(
-			'hostname' => $_SERVER['SERVER_NAME']
+			'hostname' => PU_URL_HOST,
 			'scheme'   => PU_URL_SCHEME
 		),
 		'timezone' => timezone_name_from_abbr('UTC'),
