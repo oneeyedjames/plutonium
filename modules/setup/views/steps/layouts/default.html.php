@@ -3,7 +3,7 @@
 <form action="/" method="post">
 	<input type="hidden" name="module" value="setup" />
 	<input type="hidden" name="resource" value="steps" />
-	<input type="hidden" name="action" value="default" />
+	<input type="hidden" name="action" value="database" />
 	<fieldset>
 		<legend>Database Credentials</legend>
 		<div>
