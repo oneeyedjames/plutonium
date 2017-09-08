@@ -15,11 +15,11 @@ class Plutonium_Database_Table {
 			else
 				$path = Plutonium_Module::getPath() . DS . strtolower($module);
 
-			$file = $path . DS . 'models' . DS . $file . '.xml';
+			$file = $path . DS . 'models' . DS . 'tables' . DS . $name . '.xml';
 
 			if (is_file($file)) {
 				$cfg = new Plutonium_Object();
-				$cfg->driver = self::getAdapter()->driver;
+				$cfg->driver = Plutonium_Database_Adapter::getInstance()->driver;
 
 				$doc = new DOMDocument();
 				$doc->preserveWhiteSpace = true;
@@ -254,11 +254,6 @@ class Plutonium_Database_Table {
 				'default'  => $field->default
 			));
 		}
-
-		if (!$this->_delegate->exists() && !$this->_delegate->create()) {
-			$message = Plutonium_Database_Adapter::getInstance()->getErrorMsg();
-			trigger_error($message, E_USER_ERROR);
-		}
 	}
 
 	public function __get($key) {
@@ -296,6 +291,13 @@ class Plutonium_Database_Table {
 		}
 	}
 
+	public function create() {
+		if (!$this->_delegate->exists() && !$this->_delegate->create()) {
+			$message = Plutonium_Database_Adapter::getInstance()->getErrorMsg();
+			trigger_error($message, E_USER_ERROR);
+		}
+	}
+
 	public function make($data = null, $xref_data = null) {
 		return new Plutonium_Database_Row($this, $data, $xref_data);
 	}
@@ -322,7 +324,7 @@ class Plutonium_Database_Table {
 		return $this->_delegate->delete($id);
 	}
 
-	public function validate($row) {
+	public function validate(&$row) {
 		return true;
 	}
 }
