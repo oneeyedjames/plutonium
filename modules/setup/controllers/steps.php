@@ -12,12 +12,22 @@ class StepsController extends Plutonium_Module_Controller {
             'driver'   => $data['driver']
         ));
 
+        //header('Content-type: text/plain');
+
         Plutonium_Database_Adapter::getInstance($config);
-        Plutonium_Database_Table::getInstance('hosts')->create();
-        Plutonium_Database_Table::getInstance('domains')->create();
+
+        // System
         Plutonium_Database_Table::getInstance('users')->create();
         Plutonium_Database_Table::getInstance('groups')->create();
+        Plutonium_Database_Table::getInstance('hosts')->create();
+        Plutonium_Database_Table::getInstance('domains')->create();
 
-        exit;
+        // Application
+        Plutonium_Database_Table::getInstance('themes')->create();
+        Plutonium_Database_Table::getInstance('modules')->create();
+        Plutonium_Database_Table::getInstance('resources')->create();
+        Plutonium_Database_Table::getInstance('widgets')->create();
+
+        die('It\'s Over');
     }
 }
