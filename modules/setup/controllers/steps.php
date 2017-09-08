@@ -5,15 +5,29 @@ class StepsController extends Plutonium_Module_Controller {
         $data = $this->request->get('data');
 
         $config = new Plutonium_Object(array(
-            'hostname' => 'localhost',
+            'hostname' => $data['hostname'],
             'username' => $data['username'],
             'password' => $data['password'],
-            'dbname'   => $data['database'],
-            'driver'   => 'MySQL'
+            'dbname'   => $data['dbname'],
+            'driver'   => $data['driver']
         ));
 
-        $db = Plutonium_Database_Adapter::getInstance($config);
+        //header('Content-type: text/plain');
 
-        var_dump($db);exit;
+        Plutonium_Database_Adapter::getInstance($config);
+
+        // System
+        Plutonium_Database_Table::getInstance('users')->create();
+        Plutonium_Database_Table::getInstance('groups')->create();
+        Plutonium_Database_Table::getInstance('hosts')->create();
+        Plutonium_Database_Table::getInstance('domains')->create();
+
+        // Application
+        Plutonium_Database_Table::getInstance('themes')->create();
+        Plutonium_Database_Table::getInstance('modules')->create();
+        Plutonium_Database_Table::getInstance('resources')->create();
+        Plutonium_Database_Table::getInstance('widgets')->create();
+
+        die('It\'s Over');
     }
 }
