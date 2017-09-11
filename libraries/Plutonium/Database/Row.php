@@ -130,7 +130,7 @@ class Plutonium_Database_Row {
 	}
 
 	public function bind($data) {
-		if (is_assoc($data) || is_a($data, 'Plutonium_Object'))
+		if (is_assoc($data) || $data instanceof Plutonium_Object)
 			foreach ($data as $key => $value) $this->$key = $value;
 	}
 

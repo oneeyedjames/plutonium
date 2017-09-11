@@ -44,7 +44,7 @@ class Plutonium_Widget {
 		$this->_vars   = array();
 		$this->_layout = 'default';
 		$this->_format = 'html';
-		$this->_params = is_a($args->params, 'Plutonium_Object') ? $args->params
+		$this->_params = $args->params instanceof Plutonium_Object ? $args->params
 					   : new Plutonium_Object($args->params);
 	}
 
