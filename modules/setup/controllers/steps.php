@@ -27,17 +27,18 @@ class StepsController extends Plutonium_Module_Controller {
         ));
 
         if (empty($hosts)) {
-            $host_data = array(
+            $model->save(array(
                 'name'         => 'Main Host',
                 'slug'         => 'main',
                 'descrip'      => 'The main host for this Plutonium instance',
                 'default'      => true,
                 'meta_keyword' => 'Plutonium',
                 'meta_descrip' => 'A Plutonium-Powered website'
-            );
-
-            $host = $model->save($host_data);
+            ));
         }
+
+        // $module = Plutonium_Module::newInstance($this->_module->application, 'site');
+        // $module->install();
 
         // TODO 'install' core components
         // Module: system
