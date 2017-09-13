@@ -69,6 +69,8 @@ class Plutonium_Theme {
 		}
 	}
 
+	public function install() {}
+
 	public function hasWidgets($location) {
 		return $this->countWidgets($location) > 0;
 	}

@@ -58,6 +58,31 @@ class Plutonium_Module {
 		}
 	}
 
+	public function install() {
+		$table = Plutonium_Database_Table::getInstance('modules');
+
+		$modules = $table->find(array(
+			'slug' => $this->_name
+		));
+
+		if (empty($modules)) {
+			$table->make(array(
+				'name'    => ucfirst($this->_name),
+				'slug'    => $this->_name,
+				'descrip' => 'A new module',
+				'default' => 0
+			))->save();
+		}
+
+		$path = self::getPath() . DS . $this->_name
+			  . DS . 'models' . DS . 'tables' . DS . '*.xml';
+
+		foreach (glob($path) as $file) {
+			$table = $this->getModel(basename($file, '.xml'))->getTable();
+			$table->create();
+		}
+	}
+
 	public function initialize() {
 		switch ($this->request->method) {
 			case 'POST':

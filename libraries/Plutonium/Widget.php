@@ -56,6 +56,8 @@ class Plutonium_Widget {
 		$this->setVal($key, $value);
 	}
 
+	public function install() {}
+
 	public function getVar($key) {
 		return $this->_vars[$key];
 	}
