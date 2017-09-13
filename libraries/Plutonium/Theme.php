@@ -10,6 +10,8 @@ class Plutonium_Theme {
 		return self::$_path;
 	}
 
+	public static function getMetadata($name) {}
+
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Theme';

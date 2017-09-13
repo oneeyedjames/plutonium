@@ -26,6 +26,36 @@ class Plutonium_Widget {
 		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
+	public static function getMetadata($name) {
+		$name = strtolower($name);
+		$file = self::getPath() . DS . $name . DS . 'widget.xml';
+		$meta = new Plutonium_Object(array(
+			'slug' => $name
+		));
+
+		if (is_file($file)) {
+			$doc = new DOMDocument();
+			$doc->preserveWhiteSpace = true;
+			$doc->formatOutput = true;
+			$doc->load($file);
+
+			$xpath = new DOMXPath($doc);
+
+			$widget_name = $xpath->query('/widget/name')->item(0);
+
+			$meta->name = $widget_name->textContent;
+
+			$description = $xpath->query('/widget/description')->item(0);
+
+			$meta->descrip = $description->textContent;
+		} else {
+			$meta->name = ucfirst($name);
+			$meta->descrip = '';
+		}
+
+		return $meta;
+	}
+
 	protected $_application = null;
 
 	protected $_name = null;
