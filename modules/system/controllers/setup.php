@@ -1,6 +1,6 @@
 <?php
 
-class StepsController extends Plutonium_Module_Controller {
+class SetupController extends Plutonium_Module_Controller {
     public function databaseAction() {
         $data = $this->request->get('data');
 

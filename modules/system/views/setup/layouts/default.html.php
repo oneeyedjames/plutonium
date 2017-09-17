@@ -1,8 +1,8 @@
 <h1>Setup: Database</h1>
 
 <form action="/" method="post">
-	<input type="hidden" name="module" value="setup" />
-	<input type="hidden" name="resource" value="steps" />
+	<input type="hidden" name="module" value="system" />
+	<input type="hidden" name="resource" value="setup" />
 	<input type="hidden" name="action" value="database" />
 	<fieldset>
 		<legend>Database Setup</legend>
