@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Module_Controller {
+class Plutonium_Module_Controller implements Plutonium_Executable {
 	protected $_name     = null;
 	protected $_module   = null;
 	protected $_redirect = null;
@@ -29,12 +29,8 @@ class Plutonium_Module_Controller {
 		}
 	}
 
-	public function getModel($name = null) {
-		return $this->_module->getModel($name);
-	}
-
-	public function getView() {
-		return $this->_module->getView();
+	public function initialize() {
+		// TODO method stub
 	}
 
 	public function execute() {
@@ -48,5 +44,13 @@ class Plutonium_Module_Controller {
 
 		if (!empty($this->_redirect))
 			header('Location: ' . $this->_redirect);
+	}
+
+	public function getModel($name = null) {
+		return $this->_module->getModel($name);
+	}
+
+	public function getView() {
+		return $this->_module->getView();
 	}
 }

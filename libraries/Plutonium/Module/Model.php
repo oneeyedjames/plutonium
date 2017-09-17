@@ -17,13 +17,6 @@ class Plutonium_Module_Model {
 		}
 	}
 
-	public function getTable() {
-		if (is_null($this->_table))
-			$this->_table = Plutonium_Database_Table::getInstance($this->_name, $this->_module->name);
-
-		return $this->_table;
-	}
-
 	public function find($args = null) {
 		return $this->getTable()->find($args);
 	}
@@ -49,5 +42,12 @@ class Plutonium_Module_Model {
 	 */
 	public function validate(&$row) {
 		return true;
+	}
+
+	public function getTable() {
+		if (is_null($this->_table))
+			$this->_table = Plutonium_Database_Table::getInstance($this->_name, $this->_module->name);
+
+		return $this->_table;
 	}
 }

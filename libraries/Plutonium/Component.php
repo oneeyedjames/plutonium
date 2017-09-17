@@ -1,6 +1,6 @@
 <?php
 
-abstract class Plutonium_Component {
+abstract class Plutonium_Component implements Plutonium_Visible {
 	protected $_application = null;
 
 	protected $_name = null;
@@ -24,5 +24,4 @@ abstract class Plutonium_Component {
 	}
 
 	public abstract function install();
-	public abstract function display();
 }
