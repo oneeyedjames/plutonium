@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Theme {
+class Plutonium_Theme extends Plutonium_Component {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -9,6 +9,8 @@ class Plutonium_Theme {
 
 		return self::$_path;
 	}
+
+	public static function getMetadata($name) {}
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
@@ -22,9 +24,6 @@ class Plutonium_Theme {
 		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
-	protected $_application = null;
-
-	protected $_name   = null;
 	protected $_layout = null;
 	protected $_format = null;
 	protected $_params = null;
@@ -41,10 +40,8 @@ class Plutonium_Theme {
 	protected $_widget_delim = LS;
 
 	public function __construct($args) {
-		$this->_application = $args->application;
-		$this->_application->locale->load($args->name, 'themes');
+		parent::__construct('theme', $args);
 
-		$this->_name   = $args->name;
 		$this->_layout = 'default';
 		$this->_format = 'html';
 		$this->_params = new Plutonium_Object();
@@ -66,21 +63,19 @@ class Plutonium_Theme {
 				return $this->_widget_close;
 			case 'widget_delim':
 				return $this->_widget_delim;
+			default:
+				return parent::__get($key);
 		}
 	}
 
-	public function hasWidgets($location) {
-		return $this->countWidgets($location) > 0;
-	}
-
-	public function countWidgets($location) {
-		return $this->_application->response->getWidgetCount($location);
+	public function install() {
+		// TODO method stub
 	}
 
 	public function display() {
-		$request = $this->_application->request;
+		$request = $this->application->request;
 
-		$name   = strtolower($this->_name);
+		$name   = strtolower($this->name);
 		$layout = strtolower($request->get('layout', $this->_layout));
 		$format = strtolower($request->get('format', $this->_format));
 
@@ -104,6 +99,14 @@ class Plutonium_Theme {
 	}
 
 	public function localize($text) {
-		return $this->_application->locale->localize($text);
+		return $this->application->locale->localize($text);
+	}
+
+	public function hasWidgets($location) {
+		return $this->countWidgets($location) > 0;
+	}
+
+	public function countWidgets($location) {
+		return $this->application->response->getWidgetCount($location);
 	}
 }

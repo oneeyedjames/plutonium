@@ -48,6 +48,18 @@ class SetupController extends Plutonium_Module_Controller {
         // Widget: login
         // Widget: menu (maybe)
 
+        $model = $this->getModel('widgets');
+        $widget_names = array('menu', 'login', 'debug');
+
+        foreach ($widget_names as $slug) {
+            $widgets = $model->find(compact('slug'));
+
+            if (empty($widgets))
+                $model->save(Plutonium_Widget::getMetadata($slug));
+        }
+
+        exit;
+
         // $file = PU_PATH_BASE . DS . 'config.php';
         // $data = $this->buildConfig($data);
 

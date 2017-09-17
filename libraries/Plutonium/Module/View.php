@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Module_View {
+class Plutonium_Module_View implements Plutonium_Visible {
 	protected $_name   = null;
 	protected $_vars   = null;
 	protected $_layout = null;
@@ -45,22 +45,6 @@ class Plutonium_Module_View {
 		}
 	}
 
-	public function getVar($key, $default = null) {
-		return isset($this->_vars[$key]) ? $this->_vars[$key] : $default;
-	}
-
-	public function setVal($key, $var) {
-		$this->_vars[$key] = $var;
-	}
-
-	public function setRef($key, &$var) {
-		$this->_vars[$key] = $var;
-	}
-
-	public function getModel($name = null) {
-		return $this->_module->getModel($name);
-	}
-
 	public function display() {
 		$path   = $this->_module->path;
 		$name   = strtolower($this->_name);
@@ -93,5 +77,21 @@ class Plutonium_Module_View {
 
 	public function localize($text) {
 		return $this->_module->application->locale->localize($text);
+	}
+
+	public function getModel($name = null) {
+		return $this->_module->getModel($name);
+	}
+
+	public function getVar($key, $default = null) {
+		return isset($this->_vars[$key]) ? $this->_vars[$key] : $default;
+	}
+
+	public function setVal($key, $var) {
+		$this->_vars[$key] = $var;
+	}
+
+	public function setRef($key, &$var) {
+		$this->_vars[$key] = $var;
 	}
 }
