@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Widget {
+class Plutonium_Widget extends Plutonium_Component {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -12,18 +12,6 @@ class Plutonium_Widget {
 
 	public static function setPath($path) {
 		self::$_path = $path;
-	}
-
-	public static function newInstance($application, $name) {
-		$name = strtolower($name);
-		$file = self::getPath() . DS . $name . DS . 'widget.php';
-		$type = ucfirst($name) . 'Widget';
-		$args = new Plutonium_Object(array(
-			'application' => $application,
-			'name' => $name
-		));
-
-		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
 	public static function getMetadata($name) {
@@ -56,9 +44,18 @@ class Plutonium_Widget {
 		return $meta;
 	}
 
-	protected $_application = null;
+	public static function newInstance($application, $name) {
+		$name = strtolower($name);
+		$file = self::getPath() . DS . $name . DS . 'widget.php';
+		$type = ucfirst($name) . 'Widget';
+		$args = new Plutonium_Object(array(
+			'application' => $application,
+			'name' => $name
+		));
 
-	protected $_name = null;
+		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
+	}
+
 	protected $_vars = null;
 
 	protected $_layout = null;
@@ -67,10 +64,8 @@ class Plutonium_Widget {
 	protected $_output = null;
 
 	public function __construct($args) {
-		$this->_application = $args->application;
-		$this->_application->locale->load($args->name, 'widgets');
+		parent::__construct('widget', $args);
 
-		$this->_name   = $args->name;
 		$this->_vars   = array();
 		$this->_layout = 'default';
 		$this->_format = 'html';
@@ -79,31 +74,27 @@ class Plutonium_Widget {
 	}
 
 	public function __get($key) {
-		return $this->getVar($key);
+		switch ($key) {
+			case 'application':
+			case 'name':
+				return parent::__get($key);
+			default:
+				return $this->getVar($key);
+		}
 	}
 
 	public function __set($key, $value) {
 		$this->setVal($key, $value);
 	}
 
-	public function install() {}
-
-	public function getVar($key) {
-		return $this->_vars[$key];
-	}
-
-	public function setVal($key, $var) {
-		$this->_vars[$key] = $var;
-	}
-
-	public function setRef($key, &$var) {
-		$this->_vars[$key] = $var;
+	public function install() {
+		// TODO method stub
 	}
 
 	public function display() {
-		$request = $this->_application->request;
+		$request = $this->application->request;
 
-		$name   = strtolower($this->_name);
+		$name   = strtolower($this->name);
 		$layout = strtolower($this->_layout);
 		$format = strtolower($request->get('format', $this->_format));
 
@@ -124,5 +115,17 @@ class Plutonium_Widget {
 		}
 
 		return $this->_output;
+	}
+
+	public function getVar($key) {
+		return $this->_vars[$key];
+	}
+
+	public function setVal($key, $var) {
+		$this->_vars[$key] = $var;
+	}
+
+	public function setRef($key, &$var) {
+		$this->_vars[$key] = $var;
 	}
 }
