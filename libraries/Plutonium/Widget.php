@@ -17,12 +17,13 @@ class Plutonium_Widget extends Plutonium_Component {
 	public static function getMetadata($name) {
 		$name = strtolower($name);
 		$file = self::getPath() . DS . $name . DS . 'widget.php';
+		$type = ucfirst($name) . 'Widget';
 		$meta = array();
 
 		if (is_file($file)) {
 			require_once $file;
 
-			$ref = new ReflectionClass('LoginWidget');
+			$ref = new ReflectionClass($type);
 
 		    $header = $ref->getDocComment();
 		    $header = trim(preg_replace('/(^\/\*\*|\*\/)/ms', '', trim($header)));
