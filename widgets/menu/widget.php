@@ -1,6 +1,11 @@
 <?php
 
-class MenuWidget extends Plutonium_Widget_Abstract {
+/**
+ * A site menu
+ * @package Menu Widget
+ * @author  J Andrew Scott <jascott@programmer.net>
+ */
+class MenuWidget extends Plutonium_Widget {
 	public function display() {
 		$database = Plutonium_Database_Adapter::getInstance();
 
