@@ -1,6 +1,21 @@
 <?php
 
 class SetupController extends Plutonium_Module_Controller {
+    private static $_core_tables = array(
+        'hosts',
+        'domains',
+        'users',
+        'groups',
+        'themes',
+        'modules',
+        'resources',
+        'widgets'
+    );
+
+    private static $_core_theme_names  = array('charcoal');
+    private static $_core_module_names = array('system', 'site');
+    private static $_core_widget_names = array('login', 'menu');
+
     public function databaseAction() {
         $data = $this->request->get('data');
 
@@ -8,24 +23,11 @@ class SetupController extends Plutonium_Module_Controller {
 
         Plutonium_Database_Adapter::getInstance($config);
 
-        // System
-        Plutonium_Database_Table::getInstance('users')->create();
-        Plutonium_Database_Table::getInstance('groups')->create();
-        Plutonium_Database_Table::getInstance('hosts')->create();
-        Plutonium_Database_Table::getInstance('domains')->create();
-
-        // Application
-        Plutonium_Database_Table::getInstance('themes')->create();
-        Plutonium_Database_Table::getInstance('modules')->create();
-        Plutonium_Database_Table::getInstance('resources')->create();
-        Plutonium_Database_Table::getInstance('widgets')->create();
+        foreach (self::$_core_tables as $table)
+            Plutonium_Database_Table::getInstance($table)->create();
 
         $model = $this->getModel('hosts');
-
-        $hosts = $model->find(array(
-            'slug' => 'main'
-        ));
-
+        $hosts = $model->find(array('slug' => 'main'));
         if (empty($hosts)) {
             $model->save(array(
                 'name'         => 'Main Host',
@@ -37,23 +39,29 @@ class SetupController extends Plutonium_Module_Controller {
             ));
         }
 
-        // $module = Plutonium_Module::newInstance($this->_module->application, 'site');
-        // $module->install();
+        $model = $this->getModel('users');
+        $users = $model->find();
+        if (empty($users)) {
+            // TODO create default admin user
+        }
 
-        // TODO 'install' core components
-        // Module: system
-        // Module: site
-        // Module: blog (maybe)
-        // Theme: charcoal
-        // Widget: login
-        // Widget: menu (maybe)
+        $model = $this->getModel('themes');
+        foreach (self::$_core_theme_names as $slug) {
+            $themes = $model->find(compact('slug'));
+            if (empty($themes))
+                $model->save(Plutonium_Theme::getMetadata($slug));
+        }
+
+        $model = $this->getModel('modules');
+        foreach (self::$_core_module_names as $slug) {
+            $modules = $model->find(compact('slug'));
+            if (empty($modules))
+                $model->save(Plutonium_Module::getMetadata($slug));
+        }
 
         $model = $this->getModel('widgets');
-        $widget_names = array('menu', 'login', 'debug');
-
-        foreach ($widget_names as $slug) {
+        foreach (self::$_core_widget_names as $slug) {
             $widgets = $model->find(compact('slug'));
-
             if (empty($widgets))
                 $model->save(Plutonium_Widget::getMetadata($slug));
         }
