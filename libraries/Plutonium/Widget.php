@@ -16,29 +16,33 @@ class Plutonium_Widget extends Plutonium_Component {
 
 	public static function getMetadata($name) {
 		$name = strtolower($name);
-		$file = self::getPath() . DS . $name . DS . 'widget.xml';
-		$meta = new Plutonium_Object(array(
-			'slug' => $name
-		));
+		$file = self::getPath() . DS . $name . DS . 'widget.php';
+		$meta = array();
 
 		if (is_file($file)) {
-			$doc = new DOMDocument();
-			$doc->preserveWhiteSpace = true;
-			$doc->formatOutput = true;
-			$doc->load($file);
+			require_once $file;
 
-			$xpath = new DOMXPath($doc);
+			$ref = new ReflectionClass('LoginWidget');
 
-			$widget_name = $xpath->query('/widget/name')->item(0);
+		    $header = $ref->getDocComment();
+		    $header = trim(preg_replace('/(^\/\*\*|\*\/)/ms', '', trim($header)));
 
-			$meta->name = $widget_name->textContent;
+		    $lines = preg_split('/\n|\r\n?/', $header);
 
-			$description = $xpath->query('/widget/description')->item(0);
+		    array_walk($lines, function(&$value, $key) {
+		        $value = preg_replace('/^\s*\*\s/', '', $value);
+		    });
 
-			$meta->descrip = $description->textContent;
-		} else {
-			$meta->name = ucfirst($name);
-			$meta->descrip = '';
+		    foreach ($lines as $line) {
+		        if ('@' == $line[0]) {
+		            list($key, $value) = explode(' ', substr($line, 1), 2);
+		            $meta[$key] = trim($value);
+		        } else {
+		            $meta['description'][] = trim($line);
+		        }
+		    }
+
+		    $meta['description'] = implode(PHP_EOL, $meta['description']);
 		}
 
 		return $meta;
