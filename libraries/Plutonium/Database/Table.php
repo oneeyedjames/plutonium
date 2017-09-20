@@ -5,6 +5,57 @@ class Plutonium_Database_Table {
 	protected static $_xref_tables = array();
 	protected static $_refs = array();
 
+	protected static function buildXRefTable($node, $xpath, &$cfg) {
+		$name   = $node->getAttribute('name');
+		$alias  = $node->getAttribute('alias');
+		$table  = $node->getAttribute('table');
+		$prefix = $node->getAttribute('prefix');
+
+		if (empty($name))   $name   = $table;
+		if (empty($alias))  $alias  = $cfg->name;
+		if (empty($prefix)) $prefix = $cfg->prefix;
+
+		$xref_cfg = new Plutonium_Object(array(
+			'driver'     => $cfg->driver,
+			'prefix'     => $cfg->prefix,
+			'suffix'     => 'xref',
+			'name'       => $alias . '_' . $name,
+			'timestamps' => $node->getAttribute('timestamps'),
+			'refs'       => array(
+				new Plutonium_Object(array(
+					'name'   => $alias,
+					'table'  => $cfg->name,
+					'prefix' => $cfg->prefix
+				)),
+				new Plutonium_Object(array(
+					'name'   => $name,
+					'table'  => $table,
+					'prefix' => $prefix
+				))
+			)
+		));
+
+		$fields = array();
+
+		$subnodes = $xpath->query('field', $node);
+		foreach ($subnodes as $subnode) {
+			$fields[] = new Plutonium_Object(array(
+				'name' => $subnode->getAttribute('name'),
+				'type' => $subnode->getAttribute('type'),
+				'size' => $subnode->getAttribute('size')
+			));
+		}
+
+		$xref_cfg->fields = $fields;
+
+		$xref_table = new Plutonium_Database_Table($xref_cfg);
+
+		self::$_xref_tables[$table][$alias] =& $xref_table;
+		self::$_xref_tables[$cfg->name][$name] =& $xref_table;
+
+		return $xref_table;
+	}
+
 	public static function getInstance($name, $module = null) {
 		if (!isset(self::$_tables[$name])) {
 			$name = strtolower($name);
@@ -76,56 +127,8 @@ class Plutonium_Database_Table {
 				//$xrefs = array();
 
 				$nodes = $xpath->query('/table/xref');
-				foreach ($nodes as $node) {
-					$name   = $node->getAttribute('name');
-					$alias  = $node->getAttribute('alias');
-					$table  = $node->getAttribute('table');
-					$prefix = $node->getAttribute('prefix');
-
-					if (empty($name))   $name   = $table;
-					if (empty($alias))  $alias  = $cfg->name;
-					if (empty($prefix)) $prefix = $cfg->prefix;
-
-					$xref_cfg = new Plutonium_Object(array(
-						'driver'     => $cfg->driver,
-						'prefix'     => $cfg->prefix,
-						'suffix'     => 'xref',
-						'name'       => $alias . '_' . $name,
-						'timestamps' => $node->getAttribute('timestamps'),
-						'refs'       => array(
-							new Plutonium_Object(array(
-								'name'   => $alias,
-								'table'  => $cfg->name,
-								'prefix' => $cfg->prefix
-							)),
-							new Plutonium_Object(array(
-								'name'   => $name,
-								'table'  => $table,
-								'prefix' => $prefix
-							))
-						)
-					));
-
-					$fields = array();
-
-					$subnodes = $xpath->query('field', $node);
-					foreach ($subnodes as $subnode) {
-						$fields[] = new Plutonium_Object(array(
-							'name' => $subnode->getAttribute('name'),
-							'type' => $subnode->getAttribute('type'),
-							'size' => $subnode->getAttribute('size')
-						));
-					}
-
-					$xref_cfg->fields = $fields;
-
-					//$xrefs[] = $xref;
-
-					$xref_table = new Plutonium_Database_Table($xref_cfg);
-
-					self::$_xref_tables[$table][$alias] =& $xref_table;
-					self::$_xref_tables[$cfg->name][$name] =& $xref_table;
-				}
+				foreach ($nodes as $node)
+					$xref_table = self::buildXRefTable($node, $xpath, $cfg);
 
 				//$cfg->xrefs = $xrefs;
 
@@ -296,6 +299,8 @@ class Plutonium_Database_Table {
 			$message = Plutonium_Database_Adapter::getInstance()->getErrorMsg();
 			trigger_error($message, E_USER_ERROR);
 		}
+
+		foreach (self::getXRefs($this->name) as $xref) $xref->create();
 	}
 
 	public function make($data = null, $xref_data = null) {

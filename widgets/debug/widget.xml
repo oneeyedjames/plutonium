@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget>
+    <name>Debugger Widget</name>
+    <description>This handy-dandy lil' widget outputs currently defined constants, server variables, and request parameters.</description>
+</widget>

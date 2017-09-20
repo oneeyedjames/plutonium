@@ -7,7 +7,7 @@ class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Iterator, C
 	public function __construct($data = null) {
 		$this->_vars = array();
 
-		if (is_a($data, __CLASS__)) {
+		if ($data instanceof Plutonium_Object) {
 			$this->_vars = $data->_vars;
 		} elseif (is_assoc($data)) {
 			foreach ($data as $key => $value)

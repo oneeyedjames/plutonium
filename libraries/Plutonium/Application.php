@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Application {
+class Plutonium_Application implements Plutonium_Executable {
 	protected static $_path = null;
 
 	public static function getPath() {

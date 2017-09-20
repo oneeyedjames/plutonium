@@ -22,7 +22,7 @@ class Plutonium_Database_Result_MySQLi extends Plutonium_Database_Result {
 	}
 
 	public function fetchAssoc() {
-		return $this->_result->fetch_assoc());
+		return $this->_result->fetch_assoc();
 	}
 
 	public function fetchObject() {

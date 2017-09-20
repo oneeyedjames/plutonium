@@ -1,4 +1,9 @@
 <?php
+/**
+ * A login form that can be placed on any layout.
+ * @package Login Widget
+ * @author  J Andrew Scott <jascott@programmer.net>
+ */
 
 class LoginWidget extends Plutonium_Widget {
 	public function display() {

@@ -13,7 +13,7 @@ class Plutonium_Locale {
 		elseif (is_array($config))
 			$config = new Plutonium_Object($config);
 
-		if (is_a($config, 'Plutonium_Object')) {
+		if ($config instanceof Plutonium_Object) {
 			$this->_language = strtolower($config->language);
 			$this->_country  = strtoupper($config->country);
 		}

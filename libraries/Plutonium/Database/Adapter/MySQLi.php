@@ -32,7 +32,7 @@ class Plutonium_Database_Adapter_MySQLi extends Plutonium_Database_Adapter {
 
 		if (is_bool($result)) return $result;
 
-		return new Plutonium_Database_Result_MySQL($result);
+		return new Plutonium_Database_Result_MySQLi($result);
 	}
 
 	public function getAffectedRows() {

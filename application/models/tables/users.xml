@@ -4,7 +4,7 @@
 	<field name="user" type="string" size="short" length="64"/>
 	<field name="pass" type="string" size="short" length="64"/>
 	<field name="salt" type="string" size="short" length="64"/>
-	<xref table="groups">
+	<xref name="group" alias="user" table="groups">
 		<field name="default" type="bool"/>
 	</xref>
 </table>

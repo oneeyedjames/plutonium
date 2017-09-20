@@ -130,9 +130,8 @@ class Plutonium_Database_Row {
 	}
 
 	public function bind($data) {
-		if (is_assoc($data)) {
+		if (is_assoc($data) || $data instanceof Plutonium_Object)
 			foreach ($data as $key => $value) $this->$key = $value;
-		}
 	}
 
 	protected function _bind_xref($xref_data) {

@@ -1,6 +1,6 @@
 <?php
 
-class Plutonium_Module {
+class Plutonium_Module extends Plutonium_Component implements Plutonium_Executable {
 	protected static $_path = null;
 
 	protected static $_default_resource = null;
@@ -11,6 +11,8 @@ class Plutonium_Module {
 
 		return self::$_path;
 	}
+
+	public static function getMetadata($name) {}
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
@@ -24,9 +26,6 @@ class Plutonium_Module {
 		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
-	protected $_application = null;
-
-	protected $_name     = null;
 	protected $_resource = null;
 	protected $_output   = null;
 
@@ -37,37 +36,61 @@ class Plutonium_Module {
 	protected $_view       = null;
 
 	public function __construct($args) {
-		$this->_application = $args->application;
-		$this->_application->locale->load($args->name, 'modules');
-
-		$this->_name = $args->name;
+		parent::__construct('module', $args);
 	}
 
 	public function __get($key) {
 		switch ($key) {
-			case 'name':
-				return $this->_name;
 			case 'path':
-				return self::getPath() . DS . strtolower($this->_name);
+				return self::getPath() . DS . strtolower($this->name);
 			case 'resource':
 				return $this->_resource;
 			case 'request':
-				return $this->_application->request;
-			case 'application':
-				return $this->_application;
+				return $this->application->request;
+			default:
+				return parent::__get($key);
 		}
+	}
+
+	public function install() {
+		$table = Plutonium_Database_Table::getInstance('modules');
+
+		$modules = $table->find(array(
+			'slug' => $this->name
+		));
+
+		if (empty($modules)) {
+			$table->make(array(
+				'name'    => ucfirst($this->name),
+				'slug'    => $this->name,
+				'descrip' => 'A new module',
+				'default' => 0
+			))->save();
+		}
+
+		$path = self::getPath() . DS . $this->name
+			  . DS . 'models' . DS . 'tables' . DS . '*.xml';
+
+		foreach (glob($path) as $file) {
+			$table = $this->getModel(basename($file, '.xml'))->getTable();
+			$table->create();
+		}
+	}
+
+	public function display() {
+		return $this->_output = $this->getView()->display();
 	}
 
 	public function initialize() {
 		switch ($this->request->method) {
 			case 'POST':
-				$this->request->set('action', 'create');
+				$this->request->def('action', 'create');
 				break;
 			case 'PUT':
-				$this->request->set('action', 'update');
+				$this->request->def('action', 'update');
 				break;
 			case 'DELETE':
-				$this->request->set('action', 'delete');
+				$this->request->def('action', 'delete');
 				break;
 		}
 
@@ -85,14 +108,10 @@ class Plutonium_Module {
 		$this->getController()->execute();
 	}
 
-	public function display() {
-		return $this->_output = $this->getView()->display();
-	}
-
 	public function getRouter() {
 		if (is_null($this->_router)) {
-			$type = ucfirst($this->_name) . 'Router';
-			$file = self::getPath() . DS . $this->_name . DS . 'router.php';
+			$type = ucfirst($this->name) . 'Router';
+			$file = $this->path . DS . 'router.php';
 
 			$this->_router = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Router', $this);
 		}
@@ -104,8 +123,7 @@ class Plutonium_Module {
 		if (is_null($this->_controller)) {
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'Controller';
-			$file = self::getPath() . DS . $this->_name
-				  . DS . 'controllers' . DS . $name . '.php';
+			$file = $this->path . DS . 'controllers' . DS . $name . '.php';
 
 			$args = new Plutonium_Object(array(
 				'module' => $this,
@@ -123,8 +141,7 @@ class Plutonium_Module {
 
 		if (empty($this->_models[$name])) {
 			$type = ucfirst($name) . 'Model';
-			$file = self::getPath() . DS . $this->_name
-				  . DS . 'models' . DS . $name . '.php';
+			$file = $this->path . DS . 'models' . DS . $name . '.php';
 
 			$args = new Plutonium_Object(array(
 				'module' => $this,
@@ -141,8 +158,7 @@ class Plutonium_Module {
 		if (is_null($this->_view)) {
 			$name = strtolower($this->_resource);
 			$type = ucfirst($name) . 'View';
-			$file = self::getPath() . DS . $this->_name . DS
-				  . 'views' . DS . $name . DS . 'view.php';
+			$file = $this->path . DS . 'views' . DS . $name . DS . 'view.php';
 
 			$args = new Plutonium_Object(array(
 				'module' => $this,
@@ -156,8 +172,8 @@ class Plutonium_Module {
 	}
 
 	public function getPermalink() {
-		$request = $this->_application->request;
-		$config  = $this->_application->config->system;
+		$request = $this->application->request;
+		$config  = $this->application->config->system;
 
 		$host = $request->module . '.' . $request->host . '.' . $config->hostname;
 		$path = $this->getRouter()->build($request);
