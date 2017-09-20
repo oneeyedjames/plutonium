@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A login form that can be placed on any layout.
  * @package Login Widget

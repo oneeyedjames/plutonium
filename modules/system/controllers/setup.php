@@ -56,22 +56,46 @@ class SetupController extends Controller {
         $model = $this->getModel('themes');
         foreach (self::$_core_theme_names as $slug) {
             $themes = $model->find(compact('slug'));
-            if (empty($themes))
-                var_dump($model->save(Theme::getMetadata($slug)));
+            if (empty($themes)) {
+                $meta = new Object(Theme::getMetadata($slug));
+                $meta->def('package', ucfirst($slug) . ' Theme');
+
+                $model->save(array(
+                    'name'    => $meta['package'],
+                    'slug'    => $slug,
+                    'descrip' => $meta['description']
+                ));
+            }
         }
 
         $model = $this->getModel('modules');
         foreach (self::$_core_module_names as $slug) {
             $modules = $model->find(compact('slug'));
-            if (empty($modules))
-                var_dump($model->save(Module::getMetadata($slug)));
+            if (empty($modules)) {
+                $meta = new Object(Module::getMetadata($slug));
+                $meta->def('package', ucfirst($slug) . ' Module');
+
+                $model->save(array(
+                    'name'    => $meta['package'],
+                    'slug'    => $slug,
+                    'descrip' => $meta['description']
+                ));
+            }
         }
 
         $model = $this->getModel('widgets');
         foreach (self::$_core_widget_names as $slug) {
             $widgets = $model->find(compact('slug'));
-            if (empty($widgets))
-                var_dump($model->save(Widget::getMetadata($slug)));
+            if (empty($widgets)) {
+                $meta = new Object(Widget::getMetadata($slug));
+                $meta->def('package', ucfirst($slug) . ' Widget');
+
+                $model->save(array(
+                    'name'    => $meta['package'],
+                    'slug'    => $slug,
+                    'descrip' => $meta['description']
+                ));
+            }
         }
 
         exit;

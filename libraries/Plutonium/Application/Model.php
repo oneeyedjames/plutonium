@@ -44,7 +44,7 @@ class Model {
 	/**
 	 * Override this behavior in child classes
 	 */
-	public function validate(&$row) {
+	public function validate(&$data) {
 		return true;
 	}
 
