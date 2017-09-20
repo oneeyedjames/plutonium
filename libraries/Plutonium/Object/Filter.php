@@ -59,8 +59,8 @@ class Plutonium_Object_Filter extends Plutonium_Object {
 		return $this->get($key, $default, 'digit');
 	}
 
-	public function getXDigit($key, $default = null) {
-		return $this->get($key, $default, 'xdigit');
+	public function getHexit($key, $default = null) {
+		return $this->get($key, $default, 'hexit');
 	}
 
 	public function getLower($key, $default = null) {

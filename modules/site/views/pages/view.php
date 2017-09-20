@@ -18,6 +18,6 @@ class PagesView extends Plutonium_Module_View {
 		$this->setRef('page', $page);
 
 		$document = $this->_module->application->document;
-		$document->setTitle($page->title);
+		$document->title = $page->title;
 	}
 }

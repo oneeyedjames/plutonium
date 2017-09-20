@@ -8,6 +8,8 @@ class Plutonium_Utility_Address {
 			$octets = self::parseInt($ip);
 		elseif (is_string($ip))
 			$octets = self::parseString($ip);
+		elseif (is_array($ip))
+			$octets = $ip;
 
 		return new self($octets);
 	}
@@ -39,7 +41,7 @@ class Plutonium_Utility_Address {
 
 	protected $_octets = array();
 
-	public function __construct($octets = array()) {
+	protected function __construct($octets = array()) {
 		$this->_octets = $octets;
 	}
 
