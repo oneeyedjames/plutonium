@@ -29,7 +29,7 @@ class Widget extends Component {
 		if (is_file($file)) {
 			require_once $file;
 
-			$ref = new ReflectionClass($type);
+			$ref = new \ReflectionClass($type);
 
 		    $header = $ref->getDocComment();
 		    $header = trim(preg_replace('/(^\/\*\*|\*\/)/ms', '', trim($header)));

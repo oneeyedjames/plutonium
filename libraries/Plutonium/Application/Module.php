@@ -7,6 +7,8 @@ use Plutonium\Component;
 use Plutonium\Object;
 use Plutonium\Loader;
 
+use Plutonium\Database\Table;
+
 class Module extends Component implements Executable {
 	protected static $_path = null;
 
@@ -60,7 +62,7 @@ class Module extends Component implements Executable {
 	}
 
 	public function install() {
-		$table = Plutonium_Database_Table::getInstance('modules');
+		$table = Table::getInstance('modules');
 
 		$modules = $table->find(array(
 			'slug' => $this->name

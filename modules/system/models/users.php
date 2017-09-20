@@ -1,6 +1,8 @@
 <?php
 
-class UsersModel extends Plutonium_Module_Model {
+use Plutonium\Application\Model;
+
+class UsersModel extends Model {
 	public function lookup($username, $password) {
 		if ($user = $this->find(array('user' => $username))) {
 			$user = $user[0];

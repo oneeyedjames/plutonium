@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Database_Result_MySQL extends Plutonium_Database_Result {
+namespace Plutonium\Database\MySQL;
+
+use Plutonium\Database\AbstractResult;
+
+class Result extends AbstractResult {
 	public function close() {
 		return mysql_free_result($this->_result);
 	}

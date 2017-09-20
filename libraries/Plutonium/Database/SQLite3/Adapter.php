@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Database_Adapter_SQLite3 extends Plutonium_Database_Adapter {
+namespace Plutonium\Database\SQLite3;
+
+use Plutonium\Database\AbstractAdapter;
+
+class Adapter extends AbstractAdapter {
 	public function connect() {
 		$this->_connection = new SQLite3($this->_config->dbfile);
 
@@ -15,7 +19,7 @@ class Plutonium_Database_Adapter_SQLite3 extends Plutonium_Database_Adapter {
 		$result = $this->_connection->query($sql);
 
 		if (is_object($result))
-			return new Plutonium_Database_Result_SQLite3($result);
+			return new Result($result);
 
 		return $result;
 	}

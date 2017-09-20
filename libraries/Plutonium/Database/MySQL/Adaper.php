@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Database_Adapter_MySQLi extends Plutonium_Database_Adapter {
+namespace Plutonium\Database\MySQL;
+
+use Plutonium\Database\AbstractAdapter;
+
+class Adapter extends AbstractAdapter {
 	public function connect() {
 		if (is_null($this->_connection)) {
 			$host = $this->_config->hostname;
@@ -8,51 +12,44 @@ class Plutonium_Database_Adapter_MySQLi extends Plutonium_Database_Adapter {
 			$pass = $this->_config->password;
 			$db   = $this->_config->dbname;
 
-			$this->_connection = new mysqli($host, $user, $pass, $db);
-
-			if ($this->_connection->connect_errno) {
-				$error = 'MySQL Error #' . $this->_connection->connect_errno
-					. ': ' . $this->_connection->connect_error;
-
-				trigger_error($error, E_USER_WARNING);
-
-				return false;
-			}
+			if ($this->_connection = @mysql_connect($host, $user, $pass))
+				mysql_select_db($db, $this->_connection);
 		}
 
-		return true;
+		return is_resource($this->_connection);
 	}
 
 	public function close() {
-		return $this->_connection->close();
+		mysql_close($this->_connection);
 	}
 
 	public function query($sql) {
-		$result = $this->_connection->query($sql);
+		$result = mysql_query($sql, $this->_connection);
 
-		if (is_bool($result)) return $result;
+		if (is_resource($result))
+			return new Result($result);
 
-		return new Plutonium_Database_Result_MySQLi($result);
+		return $result;
 	}
 
 	public function getAffectedRows() {
-		return $this->_connection->affected_rows;
+		return mysql_affected_rows($this->_connection);
 	}
 
 	public function getInsertId() {
-		return $this->_connection->insert_id;
+		return mysql_insert_id($this->_connection);
 	}
 
 	public function getErrorNum() {
-		return $this->_connection->errno;
+		return mysql_errno($this->_connection);
 	}
 
 	public function getErrorMsg() {
-		return $this->_connection->error;
+		return mysql_error($this->_connection);
 	}
 
 	public function escapeString($str) {
-		return $this->_connection->real_escape_string($str);
+		return mysql_real_escape_string($str, $this->_connection);
 	}
 
 	public function quoteString($str) {

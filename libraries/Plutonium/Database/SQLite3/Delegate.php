@@ -1,7 +1,10 @@
 <?php
 
-class Plutonium_Database_Table_Delegate_SQLite3
-extends Plutonium_Database_Table_Delegate {
+namespace Plutonium\Database\SQLite3;
+
+use Plutonium\Database\AbstractDelegate;
+
+class Delegate extends AbstractDelegate {
 	public function exists() {
 		$field1 = $this->quoteSymbol('type');
 		$value2 = $this->quoteString('table');

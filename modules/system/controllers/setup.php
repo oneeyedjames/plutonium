@@ -1,6 +1,12 @@
 <?php
 
+use Plutonium\Object;
+use Plutonium\Application\Theme;
+use Plutonium\Application\Module;
+use Plutonium\Application\Widget;
 use Plutonium\Application\Controller;
+use Plutonium\Database\AbstractAdapter;
+use Plutonium\Database\Table;
 
 class SetupController extends Controller {
     private static $_core_tables = array(
@@ -21,12 +27,12 @@ class SetupController extends Controller {
     public function databaseAction() {
         $data = $this->request->get('data');
 
-        $config = new Plutonium_Object($data);
+        $config = new Object($data);
 
-        Plutonium_Database_Adapter::getInstance($config);
+        AbstractAdapter::getInstance($config);
 
         foreach (self::$_core_tables as $table)
-            Plutonium_Database_Table::getInstance($table)->create();
+            Table::getInstance($table)->create();
 
         $model = $this->getModel('hosts');
         $hosts = $model->find(array('slug' => 'main'));
@@ -51,21 +57,21 @@ class SetupController extends Controller {
         foreach (self::$_core_theme_names as $slug) {
             $themes = $model->find(compact('slug'));
             if (empty($themes))
-                $model->save(Plutonium_Theme::getMetadata($slug));
+                var_dump($model->save(Theme::getMetadata($slug)));
         }
 
         $model = $this->getModel('modules');
         foreach (self::$_core_module_names as $slug) {
             $modules = $model->find(compact('slug'));
             if (empty($modules))
-                $model->save(Plutonium_Module::getMetadata($slug));
+                var_dump($model->save(Module::getMetadata($slug)));
         }
 
         $model = $this->getModel('widgets');
         foreach (self::$_core_widget_names as $slug) {
             $widgets = $model->find(compact('slug'));
             if (empty($widgets))
-                $model->save(Plutonium_Widget::getMetadata($slug));
+                var_dump($model->save(Widget::getMetadata($slug)));
         }
 
         exit;

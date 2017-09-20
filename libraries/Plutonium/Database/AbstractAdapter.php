@@ -1,11 +1,13 @@
 <?php
 
-abstract class Plutonium_Database_Adapter {
+namespace Plutonium\Database;
+
+abstract class AbstractAdapter {
 	private static $_instance;
 
 	public static function getInstance($config = null) {
 		if (is_null(self::$_instance) && !is_null($config)) {
-			$type = 'Plutonium_Database_Adapter_' . $config->driver;
+			$type = 'Plutonium\\Database\\' . $config->driver . '\\Adapter';
 			self::$_instance = new $type($config);
 		}
 

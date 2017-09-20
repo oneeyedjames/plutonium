@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
+namespace Plutonium\Database\PostgreSQL;
+
+use Plutonium\Database\AbstractAdapter;
+
+class Adapter extends AbstractAdapter {
 	protected $_result = null;
 
 	public function connect() {
@@ -30,7 +34,7 @@ class Plutonium_Database_Adapter_PostgeSQL extends Plutonium_Database_Adapter {
 
 		if (is_resource($result)) {
 			$this->_result = $result;
-			return new Plutonium_Database_Result_PostgreSQL($result);
+			return new Result($result);
 		}
 
 		return $result;

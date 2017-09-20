@@ -1,7 +1,10 @@
 <?php
 
-class Plutonium_Database_Table_Delegate_PostgreSQL
-extends Plutonium_Database_Table_Delegate {
+namespace Plutonium\Database\PostgreSQL;
+
+use Plutonium\Database\AbstractDelegate;
+
+class Delegate extends AbstractDelegate {
 	public function exists() {
 		$table = $this->quoteSymbol('pg_class');
 		$field = $this->quoteSymbol('relname');

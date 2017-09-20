@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Database_Result_PostgreSQL extends Plutonium_Database_Result {
+namespace Plutonium\Database\PostgreSQL;
+
+use Plutonium\Database\AbstractResult;
+
+class Result extends AbstractResult {
 	public function close() {
 		return pg_free_result($this->_result);
 	}

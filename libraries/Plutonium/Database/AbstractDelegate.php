@@ -1,11 +1,15 @@
 <?php
 
-abstract class Plutonium_Database_Table_Delegate {
+namespace Plutonium\Database;
+
+use function Plutonium\Functions\is_assoc;
+
+abstract class AbstractDelegate {
 	protected $_adapter = null;
 	protected $_table   = null;
 
 	public function __construct($table) {
-		$this->_adapter = Plutonium_Database_Adapter::getInstance();
+		$this->_adapter = AbstractAdapter::getInstance();
 		$this->_table   = $table;
 	}
 

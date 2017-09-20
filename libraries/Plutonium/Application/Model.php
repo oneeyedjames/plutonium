@@ -2,6 +2,8 @@
 
 namespace Plutonium\Application;
 
+use Plutonium\Database\Table;
+
 class Model {
 	protected $_name   = null;
 	protected $_table  = null;
@@ -48,7 +50,7 @@ class Model {
 
 	public function getTable() {
 		if (is_null($this->_table))
-			$this->_table = Plutonium_Database_Table::getInstance($this->_name, $this->_module->name);
+			$this->_table = Table::getInstance($this->_name, $this->_module->name);
 
 		return $this->_table;
 	}

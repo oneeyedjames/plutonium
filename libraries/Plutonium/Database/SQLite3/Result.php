@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Database_Result_SQLite3 extends Plutonium_Database_Result {
+namespace Plutonium\Database\SQLite3;
+
+use Plutonium\Database\AbstractResult;
+
+class Result extends AbstractResult {
 	protected $_rows = array();
 
 	public function reset() {

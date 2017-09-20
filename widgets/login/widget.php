@@ -5,7 +5,9 @@
  * @author  J Andrew Scott <jascott@programmer.net>
  */
 
-class LoginWidget extends Plutonium_Widget {
+use Plutonium\Application\Widget;
+
+class LoginWidget extends Widget {
 	public function display() {
 		$session = $this->_application->session;
 		$request = $this->_application->request;

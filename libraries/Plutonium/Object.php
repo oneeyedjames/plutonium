@@ -36,7 +36,7 @@ class Object implements Accessible, \ArrayAccess, \Iterator, \Countable {
 		$this->del($key);
 	}
 
-	// Plutonium_Accessible methods
+	// Plutonium\Accessible methods
 	public function has($key) {
 		return array_key_exists($key, $this->_vars);
 	}

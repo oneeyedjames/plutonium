@@ -1,7 +1,12 @@
 <?php
 
-class Plutonium_Database_Table_Delegate_MySQL
-extends Plutonium_Database_Table_Delegate {
+namespace Plutonium\Database\MySQL;
+
+use Plutonium\Object;
+
+use Plutonium\Database\AbstractDelegate;
+
+class Delegate extends AbstractDelegate {
 	public function exists() {
 		$sql = "SHOW TABLES LIKE $this->table_name";
 
@@ -44,7 +49,7 @@ extends Plutonium_Database_Table_Delegate {
 			$lines[] = "$field $type";
 
 			if ($field_meta->index || $field_meta->unique) {
-				$indexes[] = new Plutonium_Object(array(
+				$indexes[] = new Object(array(
 					'name'   => $field_meta->name,
 					'unique' => $field_meta->unique
 				));

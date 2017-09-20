@@ -1,6 +1,8 @@
 <?php
 
-abstract class Plutonium_Database_Result {
+namespace Plutonium\Database;
+
+abstract class AbstractResult {
 	protected $_result = null;
 
 	public function __construct($result) {
