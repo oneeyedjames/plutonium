@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Request implements Plutonium_Accessible {
+namespace Plutonium\Http;
+
+use Plutonium\Accessible;
+
+class Request implements Accessible {
 	protected static $_method_map = array(
 		'GET'  => array('HEAD', 'OPTIONS'),
 		'POST' => array('PUT', 'DELETE')

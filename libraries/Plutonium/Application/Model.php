@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_Module_Model {
+namespace Plutonium\Application;
+
+class Model {
 	protected $_name   = null;
 	protected $_table  = null;
 	protected $_module = null;

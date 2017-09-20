@@ -1,13 +1,17 @@
 <?php
 
-class Plutonium_Object implements Plutonium_Accessible, ArrayAccess, Iterator, Countable {
+namespace Plutonium;
+
+use function Plutonium\Functions\is_assoc;
+
+class Object implements Accessible, \ArrayAccess, \Iterator, \Countable {
 	protected $_vars;
 
 	// Constructor
 	public function __construct($data = null) {
 		$this->_vars = array();
 
-		if ($data instanceof Plutonium_Object) {
+		if ($data instanceof Object) {
 			$this->_vars = $data->_vars;
 		} elseif (is_assoc($data)) {
 			foreach ($data as $key => $value)

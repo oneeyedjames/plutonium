@@ -1,6 +1,14 @@
 <?php
 
-class HtmlDocument extends Plutonium_Document {
+use Plutonium\Document;
+
+use Plutonium\Parser\ThemeParser;
+use Plutonium\Parser\UtilityParser;
+use Plutonium\Parser\LocaleParser;
+
+use Plutonium\Html\Tag;
+
+class HtmlDocument extends Document {
 	protected $_meta_descrip = null;
 	protected $_meta_keyword = null;
 
@@ -12,9 +20,9 @@ class HtmlDocument extends Plutonium_Document {
 	public function __construct($args) {
 		parent::__construct($args);
 
-		$this->_parsers[] = new Plutonium_Parser_Theme($this->application);
-		$this->_parsers[] = new Plutonium_Parser_Utility($this->application, $args);
-		$this->_parsers[] = new Plutonium_Parser_Locale($this->application);
+		$this->_parsers[] = new ThemeParser($this->application);
+		$this->_parsers[] = new UtilityParser($this->application, $args);
+		$this->_parsers[] = new LocaleParser($this->application);
 	}
 
 	public function addStyleSheet($path) {
@@ -28,13 +36,13 @@ class HtmlDocument extends Plutonium_Document {
 	public function getHeader() {
 		$tags = array();
 
-		$tags[] = new Plutonium_HTML_Tag('base', array('href' => PU_URL_BASE . FS));
+		$tags[] = new Tag('base', array('href' => PU_URL_BASE . FS));
 
 		$attribs = array('name' => 'description', 'content' => $this->_meta_descrip);
-		$tags[] = new Plutonium_HTML_Tag('meta', $attribs);
+		$tags[] = new Tag('meta', $attribs);
 
 		$attribs = array('name' => 'keywords', 'content' => $this->_meta_keyword);
-		$tags[] = new Plutonium_HTML_Tag('meta', $attribs);
+		$tags[] = new Tag('meta', $attribs);
 
 		foreach ($this->_style_sheets as $file) {
 			$attribs = array(
@@ -43,7 +51,7 @@ class HtmlDocument extends Plutonium_Document {
 				'href' => $file
 			);
 
-			$tags[] = new Plutonium_HTML_Tag('link', $attribs);
+			$tags[] = new Tag('link', $attribs);
 		}
 
 		foreach ($this->_script_files as $file) {
@@ -52,11 +60,11 @@ class HtmlDocument extends Plutonium_Document {
 				'src' => $file
 			);
 
-			$tags[] = new Plutonium_HTML_Tag('script', $attribs, null, false);
+			$tags[] = new Tag('script', $attribs, null, false);
 		}
 
 		if (!empty($this->_title)) {
-			$tags[] = new Plutonium_HTML_Tag('title', null, $this->_title);
+			$tags[] = new Tag('title', null, $this->_title);
 		}
 
 		$html = implode(LS, $tags);

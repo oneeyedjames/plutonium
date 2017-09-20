@@ -1,5 +1,7 @@
 <?php
 
+namespace Plutonium\Functions;
+
 function is_assoc($var) {
 	if (!is_array($var) || empty($var)) return false;
 

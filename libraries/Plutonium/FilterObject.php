@@ -1,13 +1,18 @@
 <?php
 
-class Plutonium_Object_Filter extends Plutonium_Object {
+namespace Plutonium;
+
+use Plutonium\Filter\TypeFilter;
+use Plutonium\Filter\StringFilter;
+
+class FilterObject extends Object {
 	protected $_filters = array();
 
 	public function __construct($data = null) {
 		parent::__construct($data);
 
-		$this->_filters[] = new Plutonium_Filter_Object();
-		$this->_filters[] = new Plutonium_Filter_String();
+		$this->_filters[] = new TypeFilter();
+		$this->_filters[] = new StringFilter();
 	}
 
 	public function get($key, $default = null, $type = null) {

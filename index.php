@@ -14,10 +14,10 @@ if (is_file('config.php'))
 
 require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
 
-Plutonium_Loader::autoload(PU_PATH_BASE . '/libraries');
-Plutonium_Loader::importDirectory('Plutonium/Functions');
+Plutonium\Loader::autoload(PU_PATH_BASE . '/libraries');
+Plutonium\Loader::importDirectory('Plutonium/Functions');
 
-Plutonium_Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
+Plutonium\Http\Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 
 if (isset($config)) {
 	require_once 'application/application.php';
@@ -37,9 +37,9 @@ if (isset($config)) {
 	require_once PU_PATH_BASE . '/application/setup/application.php';
 	require_once PU_PATH_BASE . '/application/setup/error.php';
 
-	Plutonium_Error_Handler::register(null, 'SetupErrorHandler');
+	Plutonium\Error\AbstractHandler::register(null, 'SetupErrorHandler');
 
-	$config = new Plutonium_Object(array(
+	$config = new Plutonium\Object(array(
 		'system'   => array(
 			'hostname' => PU_URL_HOST,
 			'scheme'   => PU_URL_SCHEME

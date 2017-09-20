@@ -1,6 +1,6 @@
 <?php
 
-class SystemModule extends Plutonium_Module {
+class SystemModule extends \Plutonium\Application\Module {
 	// public function execute() {
 	// 	$this->_resource = 'users';
 	//

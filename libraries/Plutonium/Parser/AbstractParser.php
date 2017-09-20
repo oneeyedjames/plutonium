@@ -1,6 +1,8 @@
 <?php
 
-abstract class Plutonium_Parser_Abstract {
+namespace Plutonium\Parser;
+
+abstract class AbstractParser {
 	protected $_namespace = 'pu';
 
 	protected $_application = null;

@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_Filter_String extends Plutonium_Filter_Abstract {
+namespace Plutonium\Filter;
+
+class StringFilter extends AbstractFilter {
 	public function alphaFilter($value) {
 		return preg_replace('/[^A-Z]/i', '', $value);
 	}

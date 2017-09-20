@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_Filter_Object extends Plutonium_Filter_Abstract {
+namespace Plutonium\Filter;
+
+class TypeFilter extends AbstractFilter {
 	public function boolFilter($value) {
 		return is_scalar($value) ? (bool) $value : null;
 	}

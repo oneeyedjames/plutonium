@@ -1,6 +1,8 @@
 <?php
 
-final class Plutonium_Loader {
+namespace Plutonium;
+
+final class Loader {
 	private static $_registered = false;
 
 	private static function register() {
@@ -43,7 +45,7 @@ final class Plutonium_Loader {
 	}
 
 	public static function import($class) {
-		return self::importFile(str_replace('_', DS, $class));
+		return self::importFile(str_replace(BS, DS, $class));
 	}
 
 	public static function importFile($rel_path) {

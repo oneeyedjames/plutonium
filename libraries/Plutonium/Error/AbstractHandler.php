@@ -1,6 +1,8 @@
 <?php
 
-abstract class Plutonium_Error_Handler {
+namespace Plutonium\Error;
+
+abstract class AbstractHandler {
 	protected static $_levels   = null;
 	protected static $_handlers = array();
 

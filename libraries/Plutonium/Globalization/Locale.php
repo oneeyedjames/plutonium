@@ -1,6 +1,9 @@
 <?php
+namespace Plutonium\Globalization;
 
-class Plutonium_Locale {
+use Plutonium\Object;
+
+class Locale {
 	protected static $_path = null;
 
 	protected $_language;
@@ -11,9 +14,9 @@ class Plutonium_Locale {
 		if (is_string($config))
 			$config = $this->_parseString($config);
 		elseif (is_array($config))
-			$config = new Plutonium_Object($config);
+			$config = new Object($config);
 
-		if ($config instanceof Plutonium_Object) {
+		if ($config instanceof Object) {
 			$this->_language = strtolower($config->language);
 			$this->_country  = strtoupper($config->country);
 		}
@@ -114,7 +117,7 @@ class Plutonium_Locale {
 			$locale = array('language' => $locale);
 		}
 
-		return new Plutonium_Object($locale);
+		return new Object($locale);
 	}
 
 	public function localize($key) {

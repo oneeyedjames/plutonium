@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_HTML_Tag {
+namespace Plutonium\Html;
+
+class Tag {
 	protected $_name;
 	protected $_attributes;
 	protected $_child_tags;
@@ -76,7 +78,7 @@ class Plutonium_HTML_Tag {
 	}
 
 	public function addChildTag($tag) {
-
+		$this->_child_tags[] = $tag;
 	}
 
 	public function setSelfClose($self_close) {
@@ -89,7 +91,7 @@ class Plutonium_HTML_Tag {
 		foreach ($this->_attributes as $key => $value)
 			$html .= ' ' . $key . '="' . $value . '"';
 
-		$inner_html = "";
+		$inner_html = '';
 
 		foreach ($this->_child_tags as $tag)
 			$inner_html .= $tag->toString();

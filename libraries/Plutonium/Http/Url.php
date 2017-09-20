@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Url extends Plutonium_Object {
+namespace Plutonium\Http;
+
+use Plutonium\Object;
+
+class Url extends Object {
 	protected static $_scheme = null;
 	protected static $_domain = null;
 	protected static $_path   = null;

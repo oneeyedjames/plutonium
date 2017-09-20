@@ -1,6 +1,12 @@
 <?php
 
-class Plutonium_Theme extends Plutonium_Component {
+namespace Plutonium\Application;
+
+use Plutonium\Component;
+use Plutonium\Object;
+use Plutonium\Loader;
+
+class Theme extends Component {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -16,12 +22,12 @@ class Plutonium_Theme extends Plutonium_Component {
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Theme';
 		$file = self::getPath() . DS . $name . DS . 'theme.php';
-		$args = new Plutonium_Object(array(
+		$args = new Object(array(
 			'application' => $application,
 			'name' => $name
 		));
 
-		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
 	protected $_layout = null;
@@ -44,7 +50,7 @@ class Plutonium_Theme extends Plutonium_Component {
 
 		$this->_layout = 'default';
 		$this->_format = 'html';
-		$this->_params = new Plutonium_Object();
+		$this->_params = new Object();
 	}
 
 	public function __get($key) {

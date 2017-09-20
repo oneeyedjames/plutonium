@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Module_Controller implements Plutonium_Executable {
+namespace Plutonium\Application;
+
+use Plutonium\Executable;
+
+class Controller implements Executable {
 	protected $_name     = null;
 	protected $_module   = null;
 	protected $_redirect = null;

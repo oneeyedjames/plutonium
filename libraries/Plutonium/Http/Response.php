@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Response {
+namespace Plutonium\Http;
+
+use Plutonium\Object;
+
+class Response {
 	protected $_theme_output  = null;
 	protected $_module_output = null;
 	protected $_widget_output = array();
@@ -15,7 +19,7 @@ class Plutonium_Response {
 
 	public function getModuleOutput($args = null) {
 		if (is_null($args))
-			$args = new Plutonium_Object();
+			$args = new Object();
 
 		return $args->get('module_start', '')
 			 . $this->_module_output
@@ -32,7 +36,7 @@ class Plutonium_Response {
 
 	public function getWidgetOutput($location, $args = null) {
 		if (is_null($args))
-			$args = new Plutonium_Object();
+			$args = new Object();
 
 		if (isset($this->_widget_output[$location])) {
 			$outputs = array();

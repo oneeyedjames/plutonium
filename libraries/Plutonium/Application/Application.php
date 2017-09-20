@@ -1,6 +1,18 @@
 <?php
 
-class Plutonium_Application implements Plutonium_Executable {
+namespace Plutonium\Application;
+
+use Plutonium\Executable;
+use Plutonium\Object;
+use Plutonium\Document;
+
+use Plutonium\Http\Session;
+use Plutonium\Http\Request;
+use Plutonium\Http\Response;
+
+use Plutonium\Globalization\Locale;
+
+class Application implements Executable {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -53,35 +65,35 @@ class Plutonium_Application implements Plutonium_Executable {
 
 	protected function _getTheme($config) {
 		if (is_null($this->_theme) && !is_null($config))
-			$this->_theme = Plutonium_Theme::newInstance($this, $config->theme);
+			$this->_theme = Theme::newInstance($this, $config->theme);
 
 		return $this->_theme;
 	}
 
 	protected function _getModule($request) {
 		if (is_null($this->_module) && !is_null($request))
-			$this->_module = Plutonium_Module::newInstance($this, $request->module);
+			$this->_module = Module::newInstance($this, $request->module);
 
 		return $this->_module;
 	}
 
 	protected function _getSession() {
 		if (is_null($this->_session))
-			$this->_session = new Plutonium_Session();
+			$this->_session = new Session();
 
 		return $this->_session;
 	}
 
 	protected function _getRequest($config) {
 		if (is_null($this->_request) && !is_null($config))
-			$this->_request = new Plutonium_Request($config->system);
+			$this->_request = new Request($config->system);
 
 		return $this->_request;
 	}
 
 	protected function _getResponse() {
 		if (is_null($this->_response))
-			$this->_response = new Plutonium_Response();
+			$this->_response = new Response();
 
 		return $this->_response;
 	}
@@ -90,13 +102,13 @@ class Plutonium_Application implements Plutonium_Executable {
 		if (is_null($this->_document) && !is_null($config)) {
 			$format = !is_null($request) ? $request->get('format', 'html') : 'html';
 
-			$args = new Plutonium_Object(array(
+			$args = new Object(array(
 				'application' => $this,
 				'locale'      => $config->locale,
 				'timezone'    => $config->timezone
 			));
 
-			$this->_document = Plutonium_Document::newInstance($format, $args);
+			$this->_document = Document::newInstance($format, $args);
 		}
 
 		return $this->_document;
@@ -104,7 +116,7 @@ class Plutonium_Application implements Plutonium_Executable {
 
 	protected function _getLocale($config) {
 		if (is_null($this->_locale) && !is_null($config))
-			$this->_locale = new Plutonium_Locale($config->locale);
+			$this->_locale = new Locale($config->locale);
 
 		return $this->_locale;
 	}
@@ -130,6 +142,6 @@ class Plutonium_Application implements Plutonium_Executable {
 	}
 
 	public function addWidget($location, $name) {
-		$this->_widgets[$location][] = Plutonium_Widget::newInstance($this, $name);
+		$this->_widgets[$location][] = Widget::newInstance($this, $name);
 	}
 }

@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_Parser_Locale extends Plutonium_Parser_Abstract {
+namespace Plutonium\Parser;
+
+class LocaleParser extends AbstractParser {
 	public function transTag($args) {
 		return $this->_application->locale->localize($args['phrase']);
 	}

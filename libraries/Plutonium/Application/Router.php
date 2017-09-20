@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_Module_Router {
+namespace Plutonium\Application;
+
+class Router {
 	protected $_module = null;
 
 	public function __construct($module) {

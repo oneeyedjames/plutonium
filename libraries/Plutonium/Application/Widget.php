@@ -1,6 +1,12 @@
 <?php
 
-class Plutonium_Widget extends Plutonium_Component {
+namespace Plutonium\Application;
+
+use Plutonium\Component;
+use Plutonium\Object;
+use Plutonium\Loader;
+
+class Widget extends Component {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -53,12 +59,12 @@ class Plutonium_Widget extends Plutonium_Component {
 		$name = strtolower($name);
 		$file = self::getPath() . DS . $name . DS . 'widget.php';
 		$type = ucfirst($name) . 'Widget';
-		$args = new Plutonium_Object(array(
+		$args = new Object(array(
 			'application' => $application,
 			'name' => $name
 		));
 
-		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
 	protected $_vars = null;
@@ -74,8 +80,8 @@ class Plutonium_Widget extends Plutonium_Component {
 		$this->_vars   = array();
 		$this->_layout = 'default';
 		$this->_format = 'html';
-		$this->_params = $args->params instanceof Plutonium_Object ? $args->params
-					   : new Plutonium_Object($args->params);
+		$this->_params = $args->params instanceof Object ? $args->params
+					   : new Object($args->params);
 	}
 
 	public function __get($key) {

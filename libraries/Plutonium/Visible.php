@@ -1,5 +1,7 @@
 <?php
 
-interface Plutonium_Visible {
+namespace Plutonium;
+
+interface Visible {
 	public function display();
 }

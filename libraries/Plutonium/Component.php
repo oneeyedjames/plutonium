@@ -1,6 +1,8 @@
 <?php
 
-abstract class Plutonium_Component implements Plutonium_Visible {
+namespace Plutonium;
+
+abstract class Component implements Visible {
 	protected $_application = null;
 
 	protected $_name = null;

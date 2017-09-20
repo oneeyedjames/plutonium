@@ -1,6 +1,8 @@
 <?php
 
-class SetupController extends Plutonium_Module_Controller {
+use Plutonium\Application\Controller;
+
+class SetupController extends Controller {
     private static $_core_tables = array(
         'hosts',
         'domains',

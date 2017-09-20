@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_Parser_Utility extends Plutonium_Parser_Abstract {
+namespace Plutonium\Parser;
+
+class UtilityParser extends AbstractParser {
 	public function __construct($application, $args) {
 		parent::__construct($application);
 		date_default_timezone_set($args->timezone);

@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Session implements Plutonium_Accessible {
+namespace Plutonium\Http;
+
+use Plutonium\Accessible;
+
+class Session implements Accessible {
 	protected $_namespaces = array();
 
 	public function __construct() {

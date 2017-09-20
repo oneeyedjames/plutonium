@@ -1,6 +1,10 @@
 <?php
 
-class Plutonium_Module_View implements Plutonium_Visible {
+namespace Plutonium\Application;
+
+use Plutonium\Visible;
+
+class View implements Visible {
 	protected $_name   = null;
 	protected $_vars   = null;
 	protected $_layout = null;

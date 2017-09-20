@@ -1,6 +1,8 @@
 <?php
 
-abstract class Plutonium_Filter_Abstract {
+namespace Plutonium\Filter;
+
+abstract class AbstractFilter {
 	public function filter($value, $type) {
 		if ($callback = $this->canHandle($type))
 			return call_user_func($callback, $value);

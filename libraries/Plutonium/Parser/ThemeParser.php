@@ -1,12 +1,16 @@
 <?php
 
-class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
+namespace Plutonium\Parser;
+
+use Plutonium\Object;
+
+class ThemeParser extends AbstractParser {
 	public function headTag($args) {
 		return $this->_application->document->getHeader();
 	}
 
 	public function moduleTag($args) {
-		$out_args = new Plutonium_Object(array(
+		$out_args = new Object(array(
 			'module_start' => $this->_application->theme->module_start,
 			'module_close' => $this->_application->theme->module_close
 		));
@@ -15,7 +19,7 @@ class Plutonium_Parser_Theme extends Plutonium_Parser_Abstract {
 	}
 
 	public function widgetsTag($args) {
-		$out_args = new Plutonium_Object(array(
+		$out_args = new Object(array(
 			'widget_start' => $this->_application->theme->widget_start,
 			'widget_close' => $this->_application->theme->widget_close,
 			'widget_delim' => $this->_application->theme->widget_delim

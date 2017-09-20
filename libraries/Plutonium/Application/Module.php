@@ -1,6 +1,13 @@
 <?php
 
-class Plutonium_Module extends Plutonium_Component implements Plutonium_Executable {
+namespace Plutonium\Application;
+
+use Plutonium\Executable;
+use Plutonium\Component;
+use Plutonium\Object;
+use Plutonium\Loader;
+
+class Module extends Component implements Executable {
 	protected static $_path = null;
 
 	protected static $_default_resource = null;
@@ -18,12 +25,12 @@ class Plutonium_Module extends Plutonium_Component implements Plutonium_Executab
 		$name = strtolower($name);
 		$type = ucfirst($name) . 'Module';
 		$file = self::getPath() . DS . $name . DS . 'module.php';
-		$args = new Plutonium_Object(array(
+		$args = new Object(array(
 			'application' => $application,
 			'name'        => $name
 		));
 
-		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
 	protected $_resource = null;
@@ -113,7 +120,7 @@ class Plutonium_Module extends Plutonium_Component implements Plutonium_Executab
 			$type = ucfirst($this->name) . 'Router';
 			$file = $this->path . DS . 'router.php';
 
-			$this->_router = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Router', $this);
+			$this->_router = Loader::getClass($file, $type, 'Plutonium\Application\Router', $this);
 		}
 
 		return $this->_router;
@@ -125,12 +132,12 @@ class Plutonium_Module extends Plutonium_Component implements Plutonium_Executab
 			$type = ucfirst($name) . 'Controller';
 			$file = $this->path . DS . 'controllers' . DS . $name . '.php';
 
-			$args = new Plutonium_Object(array(
+			$args = new Object(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_controller = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Controller', $args);
+			$this->_controller = Loader::getClass($file, $type, 'Plutonium\Application\Controller', $args);
 		}
 
 		return $this->_controller;
@@ -143,12 +150,12 @@ class Plutonium_Module extends Plutonium_Component implements Plutonium_Executab
 			$type = ucfirst($name) . 'Model';
 			$file = $this->path . DS . 'models' . DS . $name . '.php';
 
-			$args = new Plutonium_Object(array(
+			$args = new Object(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_models[$name] = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_Model', $args);
+			$this->_models[$name] = Loader::getClass($file, $type, 'Plutonium\Application\Model', $args);
 		}
 
 		return $this->_models[$name];
@@ -160,12 +167,12 @@ class Plutonium_Module extends Plutonium_Component implements Plutonium_Executab
 			$type = ucfirst($name) . 'View';
 			$file = $this->path . DS . 'views' . DS . $name . DS . 'view.php';
 
-			$args = new Plutonium_Object(array(
+			$args = new Object(array(
 				'module' => $this,
 				'name'   => $name
 			));
 
-			$this->_view = Plutonium_Loader::getClass($file, $type, 'Plutonium_Module_View', $args);
+			$this->_view = Loader::getClass($file, $type, 'Plutonium\Application\View', $args);
 		}
 
 		return $this->_view;
