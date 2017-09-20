@@ -50,7 +50,11 @@ class SetupController extends Controller {
         $model = $this->getModel('users');
         $users = $model->find();
         if (empty($users)) {
-            // TODO create default admin user
+            $model->save(array(
+                'name' => 'Administrator',
+                'user' => 'admin',
+                'pass' => 'admin'
+            ));
         }
 
         $model = $this->getModel('themes');
