@@ -325,20 +325,12 @@ class Table {
 	}
 
 	public function save($row) {
-		if ($this->validate($row)) {
-			return is_null($row->id)
-				 ? $this->_delegate->insert($row)
-				 : $this->_delegate->update($row);
-		}
-
-		return false;
+		return is_null($row->id)
+			 ? $this->_delegate->insert($row)
+			 : $this->_delegate->update($row);
 	}
 
 	public function delete($id) {
 		return $this->_delegate->delete($id);
-	}
-
-	public function validate(&$row) {
-		return true;
 	}
 }

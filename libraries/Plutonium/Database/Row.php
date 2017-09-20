@@ -152,10 +152,6 @@ class Row {
 		return $this->_table->save($this);
 	}
 
-	public function validate() {
-		return $this->_table->validate($this);
-	}
-
 	public function delete() {
 		return $this->_table->delete($this->id);
 	}

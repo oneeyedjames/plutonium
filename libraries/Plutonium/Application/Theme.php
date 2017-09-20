@@ -16,7 +16,40 @@ class Theme extends Component {
 		return self::$_path;
 	}
 
-	public static function getMetadata($name) {}
+	public static function getMetadata($name) {
+		$name = strtolower($name);
+		$file = self::getPath() . DS . $name . DS . 'theme.php';
+		$type = ucfirst($name) . 'Theme';
+		$meta = array();
+
+		if (is_file($file)) {
+			require_once $file;
+
+			$ref = new \ReflectionClass($type);
+
+		    $header = $ref->getDocComment();
+		    $header = trim(preg_replace('/(^\/\*\*|\*\/)/ms', '', trim($header)));
+
+		    $lines = preg_split('/\n|\r\n?/', $header);
+
+		    array_walk($lines, function(&$value, $key) {
+		        $value = preg_replace('/^\s*\*\s/', '', $value);
+		    });
+
+		    foreach ($lines as $line) {
+		        if ('@' == $line[0]) {
+		            list($key, $value) = explode(' ', substr($line, 1), 2);
+		            $meta[$key] = trim($value);
+		        } else {
+		            $meta['description'][] = trim($line);
+		        }
+		    }
+
+		    $meta['description'] = implode(PHP_EOL, $meta['description']);
+		}
+
+		return $meta;
+	}
 
 	public static function newInstance($application, $name) {
 		$name = strtolower($name);
