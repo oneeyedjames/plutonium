@@ -34,15 +34,16 @@ class Plutonium_Document extends Plutonium_Object {
 		switch ($key) {
 			case 'application':
 				return $this->_application;
+			case 'title':
+				return $this->_title;
 		}
 	}
 
-	public function getTitle() {
-		return $this->_title;
-	}
-
-	public function setTitle($title) {
-		$this->_title = $title;
+	public function __set($key, $value) {
+		switch ($key) {
+			case 'title':
+				$this->_title = $value;
+		}
 	}
 
 	public function display() {

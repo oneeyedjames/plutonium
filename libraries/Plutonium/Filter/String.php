@@ -13,7 +13,7 @@ class Plutonium_Filter_String extends Plutonium_Filter_Abstract {
 		return preg_replace('/[^0-9]/', '', $value);
 	}
 
-	public function xdigitFilter($value) {
+	public function hexitFilter($value) {
 		return preg_replace('/[^A-F0-9]/i', '', $value);
 	}
 

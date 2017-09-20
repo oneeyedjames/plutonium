@@ -2,7 +2,7 @@
 
 class AddressTest extends PHPUnit_Framework_TestCase {
 	public function testAddress() {
-		$address = new Plutonium_Utility_Address(array(127, 0, 0, 1));
+		$address = Plutonium_Utility_Address::newInstance(array(127, 0, 0, 1));
 
 		$this->assertEquals(0x7f000001, $address->toInt());
 		$this->assertEquals('127.0.0.1', $address->toString());
