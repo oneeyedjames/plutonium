@@ -1,6 +1,8 @@
 <?php
 
-class PagesView extends Plutonium_Module_View {
+use Plutonium\Application\View;
+
+class PagesView extends View {
 	public function detailsLayout() {
 		$request = $this->_module->request;
 

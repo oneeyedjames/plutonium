@@ -23,12 +23,12 @@ if (isset($config)) {
 	require_once 'application/application.php';
 	require_once 'application/error.php';
 
-	Plutonium_Error_Handler::register(null, 'HttpErrorHandler');
+	Plutonium\Error\AbstractHandler::register(null, 'HttpErrorHandler');
 
-	$config = new Plutonium_Object($config);
+	$config = new Plutonium\Object($config);
 	$config->system->def('scheme', PU_URL_SCHEME);
 
-	Plutonium_Database_Adapter::getInstance($config->database);
+	Plutonium\Database\AbstractAdapter::getInstance($config->database);
 
 	$application = new HttpApplication($config);
 	$application->initialize();
