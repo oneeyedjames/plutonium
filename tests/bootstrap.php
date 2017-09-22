@@ -19,8 +19,6 @@ define('PU_PATH_BASE', realpath($_SERVER['DOCUMENT_ROOT']));
 define('PU_PATH_LIB', realpath(PU_PATH_BASE . '/libraries'));
 define('PU_PATH_FUNC', realpath(PU_PATH_LIB . '/Plutonium/Functions'));
 
-var_dump(PU_PATH_BASE, PU_PATH_LIB, PU_PATH_FUNC);
-
 require_once PU_PATH_BASE . '/constants.php';
 require_once PU_PATH_FUNC . '/Strings.php';
 require_once PU_PATH_FUNC . '/Arrays.php';

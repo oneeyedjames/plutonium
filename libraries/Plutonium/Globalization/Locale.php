@@ -34,7 +34,7 @@ class Locale {
 		if (!empty($this->_country)) {
 			$file = $path . DS . $this->_language . '-' . $this->_country . '.xml';
 
-			if (!$this->_loadFile($path . DS . 'language.xml')) {
+			if (!$this->_loadFile($file)) {
 				$message = sprintf("Could not find language resource: %s-%s.", $this->_language, $this->_country);
 				trigger_error($message, E_USER_NOTICE);
 			}
