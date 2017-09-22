@@ -1,10 +1,12 @@
 <?php
 
-class FilterClass extends PHPUnit_Framework_TestCase {
+use Plutonium\FilterObject;
+
+class FilterObjectClass extends PHPUnit_Framework_TestCase {
 	var $object;
 
-	public function testObject() {
-		$object = new Plutonium_Object_Filter(array(
+	public function testType() {
+		$object = new FilterObject(array(
 			'zero'  => 0,
 			'one'   => 1,
 			'array' => array(1, 2, 3)
@@ -32,14 +34,14 @@ class FilterClass extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testString() {
-		$object = new Plutonium_Object_Filter(array(
+		$object = new FilterObject(array(
 			'string' => 'FooBar123@#!'
 		));
 
 		$this->assertSame('FooBar', $object->getAlpha('string'));
 		$this->assertSame('FooBar123', $object->getAlnum('string'));
 		$this->assertSame('123', $object->getDigit('string'));
-		$this->assertSame('FBa123', $object->getXDigit('string'));
+		$this->assertSame('FBa123', $object->getHexit('string'));
 		$this->assertSame('ooar', $object->getLower('string'));
 		$this->assertSame('FB', $object->getUpper('string'));
 	}

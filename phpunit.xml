@@ -2,24 +2,19 @@
 	<testsuites>
 		<testsuite name="PlutoniumLibrary">
 			<file>tests/IncludesTest.php</file>
+			<file>tests/ReferencesTest.php</file>
 
 			<file>tests/Plutonium/FunctionsTest.php</file>
+			<file>tests/Plutonium/LoaderTest.php</file>
+			<file>tests/Plutonium/ObjectTest.php</file>
+			<file>tests/Plutonium/FilterObjectTest.php</file>
 
+			<file>tests/Plutonium/Globalization/LocaleTest.php</file>
 			<file>tests/Plutonium/Utility/AddressTest.php</file>
 
-			<file>tests/Plutonium/ObjectTest.php</file>
-			<file>tests/Plutonium/Object/FilterTest.php</file>
-
-			<file>tests/Plutonium/SessionTest.php</file>
-			<file>tests/Plutonium/RequestTest.php</file>
-			<file>tests/Plutonium/ResponseTest.php</file>
-			<!--<file>tests/Plutonium/DocumentTest.php</file>-->
-
-			<file>tests/Plutonium/LocaleTest.php</file>
-
-			<!--<file>tests/Plutonium/ThemeTest.php</file>-->
-			<!--<file>tests/Plutonium/ModuleTest.php</file>-->
-			<!--<file>tests/Plutonium/WidgetTest.php</file>-->
+			<file>tests/Plutonium/Http/SessionTest.php</file>
+			<file>tests/Plutonium/Http/RequestTest.php</file>
+			<file>tests/Plutonium/Http/ResponseTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

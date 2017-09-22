@@ -1,5 +1,8 @@
 <?php
 
+use Plutonium\Object;
+use Plutonium\Http\Request;
+
 class RequestTest extends PHPUnit_Framework_TestCase {
 	var $config;
 
@@ -16,7 +19,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 		$this->reset();
 
 		if (is_null($this->config)) {
-			$this->config = new Plutonium_Object(array(
+			$this->config = new Object(array(
 				'system' => array(
 					'hostname' => 'plutonium.dev'
 				)
@@ -31,31 +34,31 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	public function testMethod() {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('GET', $request->method);
 
 		$_SERVER['REQUEST_METHOD'] = 'HEAD';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('HEAD', $request->method);
 
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('POST', $request->method);
 
 		$_SERVER['REQUEST_METHOD'] = 'PUT';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('PUT', $request->method);
 
 		$_SERVER['REQUEST_METHOD'] = 'DELETE';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('DELETE', $request->method);
 	}
@@ -65,7 +68,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
 		$_GET['_method'] = $_REQUEST['_method'] = 'HEAD';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('HEAD', $request->method);
 
@@ -78,7 +81,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
 		$_POST['_method'] = $_REQUEST['_method'] = 'PUT';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('PUT', $request->method);
 
@@ -89,7 +92,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
 		$_POST['_method'] = $_REQUEST['_method'] = 'DELETE';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		$this->assertEquals('DELETE', $request->method);
 
@@ -100,7 +103,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testHost() {
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 		$request->parseHost('plutonium.dev', 'plutonium.dev');
 
 		$this->assertNull($request->host);
@@ -118,7 +121,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPath() {
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 		$request->parsePath('/path/to/resource.ext');
 
 		$this->assertEquals($request->path, 'path/to/resource');
@@ -153,7 +156,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 	public function testFormat() {
 		$_SERVER['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml';
 
-		$request = new Plutonium_Request($this->config->system);
+		$request = new Request($this->config->system);
 
 		//$this->assertEquals('html', $request->format);
 	}

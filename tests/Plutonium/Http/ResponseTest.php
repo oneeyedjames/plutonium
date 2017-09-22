@@ -1,13 +1,16 @@
 <?php
 
+use Plutonium\Object;
+use Plutonium\Http\Response;
+
 class ResponseTest extends PHPUnit_Framework_TestCase {
 	public function testModule() {
-		$args = new Plutonium_Object(array(
+		$args = new Object(array(
 			'module_start' => '<article>',
 			'module_close' => '</article>'
 		));
 
-		$response = new Plutonium_Response();
+		$response = new Response();
 		$response->setModuleOutput('Hello, World!');
 
 		$expected = '<article>Hello, World!</article>';
@@ -16,13 +19,13 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testWidget() {
-		$args = new Plutonium_Object(array(
+		$args = new Object(array(
 			'widget_start' => '<aside>',
 			'widget_delim' => '<hr>',
 			'widget_close' => '</aside>'
 		));
 
-		$response = new Plutonium_Response();
+		$response = new Response();
 		$response->setWidgetOutput('sidebar', '1');
 		$response->setWidgetOutput('sidebar', '2');
 		$response->setWidgetOutput('footer', '3');

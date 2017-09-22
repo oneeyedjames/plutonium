@@ -1,5 +1,13 @@
 <?php
 
+use function Plutonium\Functions\paragraphize;
+use function Plutonium\Functions\slugify;
+
+use function Plutonium\Functions\array_peek;
+
+use function Plutonium\Functions\is_assoc;
+use function Plutonium\Functions\is_range;
+
 class FunctionsTest extends PHPUnit_Framework_TestCase {
 	public function testStrings() {
 		$strings = array(

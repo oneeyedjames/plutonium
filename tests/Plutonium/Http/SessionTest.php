@@ -1,8 +1,10 @@
 <?php
 
+use Plutonium\Http\Session;
+
 class SessionTest extends PHPUnit_Framework_TestCase {
 	public function testAccessible() {
-		$session = new Plutonium_Session();
+		$session = new Session();
 
 		$this->assertFalse($session->has('foo'));
 
@@ -16,7 +18,7 @@ class SessionTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($session->has('foo'));
 		$this->assertEquals('bar', $session->get('foo'));
 
-		$other_session = new Plutonium_Session();
+		$other_session = new Session();
 
 		$this->assertTrue($other_session->has('foo'));
 		$this->assertEquals('bar', $other_session->get('foo'));
@@ -28,7 +30,7 @@ class SessionTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testNamespace() {
-		$session = new Plutonium_Session();
+		$session = new Session();
 
 		$this->assertFalse($session->has('foo'));
 		$this->assertFalse($session->has('foo', 'other'));
