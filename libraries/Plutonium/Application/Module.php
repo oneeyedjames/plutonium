@@ -2,14 +2,15 @@
 
 namespace Plutonium\Application;
 
-use Plutonium\Executable;
 use Plutonium\Component;
+use Plutonium\Executable;
+use Plutonium\Visible;
 use Plutonium\Object;
 use Plutonium\Loader;
 
 use Plutonium\Database\Table;
 
-class Module extends Component implements Executable {
+class Module extends Component implements Executable, Visible {
 	protected static $_path = null;
 
 	protected static $_default_resource = null;
@@ -119,10 +120,6 @@ class Module extends Component implements Executable {
 		}
 	}
 
-	public function display() {
-		return $this->_output = $this->getView()->display();
-	}
-
 	public function initialize() {
 		switch ($this->request->method) {
 			case 'POST':
@@ -144,10 +141,16 @@ class Module extends Component implements Executable {
 		$this->request->def('resource', self::$_default_resource);
 
 		$this->_resource = $this->request->resource;
+
+		$this->getController()->initialize();
 	}
 
 	public function execute() {
 		$this->getController()->execute();
+	}
+
+	public function display() {
+		return $this->_output = $this->getView()->display();
 	}
 
 	public function getRouter() {

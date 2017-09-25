@@ -3,10 +3,11 @@
 namespace Plutonium\Application;
 
 use Plutonium\Component;
+use Plutonium\Visible;
 use Plutonium\Object;
 use Plutonium\Loader;
 
-class Widget extends Component {
+class Widget extends Component implements Visible {
 	protected static $_path = null;
 
 	public static function getPath() {

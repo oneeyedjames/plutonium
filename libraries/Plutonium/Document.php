@@ -3,9 +3,10 @@
 namespace Plutonium;
 
 use Plutonium\Loader;
+use Plutonium\Visible;
 use Plutonium\Application\Application;
 
-class Document extends Object {
+abstract class Document extends Object implements Visible {
 	protected static $_path = null;
 
 	public static function getPath() {
@@ -49,9 +50,5 @@ class Document extends Object {
 			case 'title':
 				$this->_title = $value;
 		}
-	}
-
-	public function display() {
-		echo $this->_descrip;
 	}
 }

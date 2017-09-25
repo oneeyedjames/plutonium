@@ -33,9 +33,11 @@ class Controller implements Executable {
 		}
 	}
 
-	public function initialize() {
-		// TODO method stub
-	}
+	/**
+	 * Intentionally empty method stub
+	 * Can be overridden in child classes
+	 */
+	public function initialize() {}
 
 	public function execute() {
 		$request = $this->_module->request;
