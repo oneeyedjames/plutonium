@@ -1,5 +1,5 @@
 <?php
 
-require_once 'system.php';
+require_once 'component.php';
 
-class ThemesModel extends SystemModel {}
+class ThemesModel extends ComponentModel {}

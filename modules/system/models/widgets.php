@@ -1,5 +1,5 @@
 <?php
 
-require_once 'system.php';
+require_once 'component.php';
 
-class WidgetsModel extends SystemModel {}
+class WidgetsModel extends ComponentModel {}

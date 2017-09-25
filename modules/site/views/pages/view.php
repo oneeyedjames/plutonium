@@ -1,5 +1,7 @@
 <?php
 
+use function Plutonium\Functions\paragraphize;
+
 use Plutonium\Application\View;
 
 class PagesView extends View {
@@ -15,7 +17,8 @@ class PagesView extends View {
 		else
 			$page = $model->find(array('slug' => $slug), null, 1);
 
-		$page->body = paragraphize($page->body);
+		if ($page)
+			$page->body = paragraphize($page->body);
 
 		$this->setRef('page', $page);
 

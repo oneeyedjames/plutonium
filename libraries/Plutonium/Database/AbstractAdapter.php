@@ -2,13 +2,15 @@
 
 namespace Plutonium\Database;
 
+use Plutonium\Loader;
+
 abstract class AbstractAdapter {
 	private static $_instance;
 
 	public static function getInstance($config = null) {
 		if (is_null(self::$_instance) && !is_null($config)) {
-			$type = 'Plutonium\\Database\\' . $config->driver . '\\Adapter';
-			self::$_instance = new $type($config);
+			$type = '\\Plutonium\\Database\\' . $config->driver . '\\Adapter';
+			if (Loader::import($type)) self::$_instance = new $type($config);
 		}
 
 		return self::$_instance;

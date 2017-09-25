@@ -3,7 +3,7 @@
 use Plutonium\Application\Model;
 use Plutonium\Database\Table;
 
-class SystemModel extends Model {
+class ComponentModel extends Model {
     public function getTable() {
 		if (is_null($this->_table))
 			$this->_table = Table::getInstance($this->name);
