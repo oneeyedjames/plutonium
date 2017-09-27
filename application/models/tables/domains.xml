@@ -2,6 +2,6 @@
 <table name="domains" prefix="sys" timestamps="yes">
 	<field name="name" type="string" size="short"/>
 	<field name="domain" type="string" size="short"/>
-	<field name="default" type="bool"/>
 	<ref name="host" table="hosts"/>
+	<ref name="module" table="modules"/>
 </table>

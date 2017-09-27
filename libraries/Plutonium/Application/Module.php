@@ -155,10 +155,16 @@ class Module extends Component implements Executable, Visible {
 
 	public function getRouter() {
 		if (is_null($this->_router)) {
-			$type = ucfirst($this->name) . 'Router';
+			$name = strtolower($this->name);
+			$type = ucfirst($name) . 'Router';
 			$file = $this->path . DS . 'router.php';
 
-			$this->_router = Loader::getClass($file, $type, 'Plutonium\Application\Router', $this);
+			$args = new Object(array(
+				'module' => $this,
+				'name'   => $name
+			));
+
+			$this->_router = Loader::getClass($file, $type, 'Plutonium\Application\Router', $args);
 		}
 
 		return $this->_router;

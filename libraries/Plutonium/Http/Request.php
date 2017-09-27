@@ -30,34 +30,16 @@ class Request implements Accessible {
 			'headers' => array()
 		);
 
-		foreach ($_SERVER as $key => $value) {
-			if (stripos($key, 'HTTP_') === 0) {
-				$words = str_replace('_', ' ', substr($key, 5));
-				$words = ucwords(strtolower($words));
-				$words = str_replace(' ', '-', $words);
-
-				$this->set($words, $value, 'headers');
-			}
-		}
-
-		/* $hash = strtolower($this->_method);
-
-		if ($method = $this->get('_method', false, $hash)) {
-			if (self::isMapped($method, $this->_method)) {
-				$this->del('_method', $hash);
-				$this->del('_method');
-
-				$this->_method = $method;
-			}
-		} */
-
-		$this->parseHost($_SERVER['HTTP_HOST'], $config->hostname);
-		$this->parsePath(parse_url($this->uri, PHP_URL_PATH));
-
 		$this->_initMethod();
-		//$this->_initFormat();
-		//$this->_initLanguage();
-		//$this->_initEncoding();
+		$this->_initHeader();
+
+		// TODO consider moving these functions to a router
+		// $this->parseHost($this->_hashes['headers']['Host'], $config->hostname);
+		// $this->parsePath(parse_url($this->uri, PHP_URL_PATH));
+
+		// TODO Revisit Accept-____ headers
+		// $this->_initLanguage();
+		// $this->_initEncoding();
 	}
 
 	protected function _initMethod() {
@@ -67,6 +49,8 @@ class Request implements Accessible {
 				$hash = strtolower($this->_method);
 
 				if ($method = $this->get('_method', false, $hash)) {
+					$method = strtoupper($method);
+
 					if (self::isMapped($method, $this->_method)) {
 						$this->del('_method', $hash);
 						$this->del('_method');
@@ -79,6 +63,21 @@ class Request implements Accessible {
 				parse_str(file_get_contents('php://input'), $query);
 				$this->_hashes['default'] = array_merge_recursive($_REQUEST, $query);
 				break;
+		}
+	}
+
+	protected function _initHeader() {
+		foreach ($_SERVER as $key => $value) {
+			if (stripos($key, 'HTTP_') === 0) {
+				$words = str_replace('_', ' ', substr($key, 5));
+				$words = ucwords(strtolower($words));
+				$words = str_replace(' ', '-', $words);
+
+				if ($words == 'Host' && ($pos = strpos($value, ':')) !== false)
+					$value = substr($value, 0, $pos);
+
+				$this->set($words, $value, 'headers');
+			}
 		}
 	}
 
@@ -262,6 +261,6 @@ class Request implements Accessible {
 	}
 
 	public function toArray($hash = 'default') {
-		return isset($this->_hashes[$hash]) ? $this->_hashes[$hash] : null;
+		return isset($this->_hashes[$hash]) ? $this->_hashes[$hash] : array();
 	}
 }

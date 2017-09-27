@@ -20,8 +20,8 @@ Plutonium\Loader::importDirectory('Plutonium/Functions');
 Plutonium\Http\Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 
 if (isset($config)) {
-	require_once 'application/application.php';
-	require_once 'application/error.php';
+	require_once PU_PATH_BASE . '/application/application.php';
+	require_once PU_PATH_BASE . '/application/error.php';
 
 	Plutonium\Error\AbstractHandler::register(null, 'HttpErrorHandler');
 

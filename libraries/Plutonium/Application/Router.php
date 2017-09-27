@@ -2,16 +2,18 @@
 
 namespace Plutonium\Application;
 
+use Plutonium\Object;
+
 class Router {
 	protected $_module = null;
 
-	public function __construct($module) {
-		$this->_module = $module;
+	public function __construct($args) {
+		$this->_module = $args->module;
 	}
 
 	public function match($path) {
 		$path = empty($path) ? array() : explode(FS, trim($path, FS));
-		$vars = array();
+		$vars = new Object();
 
 		if (isset($path[0]))
 			$vars['resource'] = $path[0];

@@ -1,71 +1,54 @@
 <?php
 
+use Plutonium\Loader;
 use Plutonium\Application\Application;
 use Plutonium\Database\Table;
 
 class HttpApplication extends Application {
 	protected static $_instance = null;
 
-	public function initialize() {
-		if (!isset($this->request->host)) {
+	protected $_name = 'http';
+	protected $_router = null;
 
-			// Check for mapped domain
-			$domain = explode('.', $this->request->get('HTTP_HOST', null, 'server'));
-			// $domain = array('site', 'main', 'pu');
-
-			$aliases = array();
-
-			while (count($domain) > 1) {
-				$aliases[] = implode('.', $domain);
-				array_shift($domain);
-			}
-
-			$table = Table::getInstance('domains');
-			$rows  = $table->find(array('domain' => $aliases));
-
-			if (!empty($rows))
-				$this->request->host = $rows[0]->host->slug;
-		} elseif (!isset($this->request->module)) {
-
-			// Validate host/module dilemma
-			$table = Table::getInstance('hosts');
-			$rows  = $table->find(array('slug' => $this->request->host));
-
-			if (empty($rows)) {
-				$table = Table::getInstance('modules');
-				$rows  = $table->find(array('slug' => $this->request->host));
-
-				if (!empty($rows)) {
-					$this->request->module = $this->request->host;
-					unset($this->request->host);
-				}
-			}
+	public function __get($key) {
+		switch ($key) {
+			case 'name':
+				return $this->_name;
+			case 'router':
+				return $this->_getRouter();
+			default:
+				return parent::__get($key);
 		}
+	}
+
+	public function initialize() {
+		$route = $this->router->match($this->request->get('Host', null, 'headers'));
+		// $route = $this->router->match('blog.pu');
+
+		if (isset($route->host))
+			$this->request->host = $route->host;
+
+		if (isset($route->module))
+			$this->request->host = $route->module;
 
 		// Lookup default host
 		if (!isset($this->request->host)) {
 			$table = Table::getInstance('hosts');
-			$rows  = $table->find(array('default' => 1));
-
-			if (!empty($rows))
+			if ($rows = $table->find(array('default' => 1)))
 				$this->request->host = $rows[0]->slug;
 		}
 
 		// Lookup default module
 		if (!isset($this->request->module)) {
 			$table = Table::getInstance('modules');
-			$rows  = $table->find(array('default' => 1));
-
-			if (!empty($rows))
+			if ($rows = $table->find(array('default' => 1)))
 				$this->request->module = $rows[0]->slug;
 		}
 
 		// Lookup default theme
 		if (!isset($this->config->theme)) {
 			$table = Table::getInstance('themes');
-			$rows  = $table->find(array('default' => 1));
-
-			if (!empty($rows))
+			if ($rows = $table->find(array('default' => 1)))
 				$this->config->theme = $rows[0]->slug;
 		}
 
@@ -79,9 +62,7 @@ class HttpApplication extends Application {
 
 		// Load widgets
 		$table = Table::getInstance('modules');
-		$rows  = $table->find(array('slug' => $this->request->module));
-
-		if (!empty($rows)) {
+		if ($rows = $table->find(array('slug' => $this->request->module))) {
 			$widgets = array();
 
 			foreach ($rows[0]->widget as $widget) {
@@ -89,5 +70,16 @@ class HttpApplication extends Application {
 				$this->addWidget($xref->location, $widget->slug);
 			}
 		}
+	}
+
+	protected function _getRouter() {
+		if (is_null($this->_router)) {
+			$type = ucfirst(strtolower($this->name)) . 'Router';
+			$file = realpath(PU_PATH_BASE . '/application/router.php');
+
+			$this->_router = Loader::getClass($file, $type, 'Plutonium\Application\Router', $this->config->system);
+		}
+
+		return $this->_router;
 	}
 }

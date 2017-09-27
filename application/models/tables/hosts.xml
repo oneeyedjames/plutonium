@@ -6,4 +6,5 @@
 	<field name="default" type="bool"/>
 	<field name="meta_keyword" type="string" size="short"/>
 	<field name="meta_descrip" type="string" size="short"/>
+	<ref name="module" table="modules"/>
 </table>
