@@ -65,21 +65,13 @@ final class Loader {
 
 	public static function importDirectory($rel_path) {
 		foreach (self::getPaths() as $lib_path) {
-			$abs_path = realpath($lib_path . DS . $rel_path);
-
-			if (is_dir($abs_path)) {
-				if ($dir = @opendir($abs_path)) {
-					while (($file = readdir($dir)) !== false) {
-						$ext = pathinfo($file, PATHINFO_EXTENSION);
-
-						if (in_array('.' . $ext, self::getExtensions()))
-							require_once $abs_path . DS . $file;
-					}
-
-					closedir($dir);
-
-					return true;
+			if ($abs_path = realpath($lib_path . DS . $rel_path)) {
+				foreach (self::getExtensions() as $ext) {
+					foreach (glob($abs_path . DS . '*' . $ext) as $file)
+						require_once $file;
 				}
+
+				return true;
 			}
 		}
 
