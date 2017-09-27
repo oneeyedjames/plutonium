@@ -1,6 +1,15 @@
 <?php
 
-class Plutonium_Database_Table {
+namespace Plutonium\Database;
+
+use Plutonium\Object;
+use Plutonium\Application\Application;
+use Plutonium\Application\Module;
+
+use DOMDocument;
+use DOMXPath;
+
+class Table {
 	protected static $_tables = array();
 	protected static $_xref_tables = array();
 	protected static $_refs = array();
@@ -15,19 +24,19 @@ class Plutonium_Database_Table {
 		if (empty($alias))  $alias  = $cfg->name;
 		if (empty($prefix)) $prefix = $cfg->prefix;
 
-		$xref_cfg = new Plutonium_Object(array(
+		$xref_cfg = new Object(array(
 			'driver'     => $cfg->driver,
 			'prefix'     => $cfg->prefix,
 			'suffix'     => 'xref',
 			'name'       => $alias . '_' . $name,
 			'timestamps' => $node->getAttribute('timestamps'),
 			'refs'       => array(
-				new Plutonium_Object(array(
+				new Object(array(
 					'name'   => $alias,
 					'table'  => $cfg->name,
 					'prefix' => $cfg->prefix
 				)),
-				new Plutonium_Object(array(
+				new Object(array(
 					'name'   => $name,
 					'table'  => $table,
 					'prefix' => $prefix
@@ -39,7 +48,7 @@ class Plutonium_Database_Table {
 
 		$subnodes = $xpath->query('field', $node);
 		foreach ($subnodes as $subnode) {
-			$fields[] = new Plutonium_Object(array(
+			$fields[] = new Object(array(
 				'name' => $subnode->getAttribute('name'),
 				'type' => $subnode->getAttribute('type'),
 				'size' => $subnode->getAttribute('size')
@@ -48,7 +57,7 @@ class Plutonium_Database_Table {
 
 		$xref_cfg->fields = $fields;
 
-		$xref_table = new Plutonium_Database_Table($xref_cfg);
+		$xref_table = new self($xref_cfg);
 
 		self::$_xref_tables[$table][$alias] =& $xref_table;
 		self::$_xref_tables[$cfg->name][$name] =& $xref_table;
@@ -62,15 +71,15 @@ class Plutonium_Database_Table {
 			$type = ucfirst($name) . 'Table';
 
 			if (is_null($module))
-				$path = Plutonium_Application::getPath();
+				$path = Application::getPath();
 			else
-				$path = Plutonium_Module::getPath() . DS . strtolower($module);
+				$path = Module::getPath() . DS . strtolower($module);
 
 			$file = $path . DS . 'models' . DS . 'tables' . DS . $name . '.xml';
 
 			if (is_file($file)) {
-				$cfg = new Plutonium_Object();
-				$cfg->driver = Plutonium_Database_Adapter::getInstance()->driver;
+				$cfg = new Object();
+				$cfg->driver = AbstractAdapter::getInstance()->driver;
 
 				$doc = new DOMDocument();
 				$doc->preserveWhiteSpace = true;
@@ -94,7 +103,7 @@ class Plutonium_Database_Table {
 
 				$nodes = $xpath->query('/table/field');
 				foreach ($nodes as $field) {
-					$fields[] = new Plutonium_Object(array(
+					$fields[] = new Object(array(
 						'name'   => $field->getAttribute('name'),
 						'type'   => $field->getAttribute('type'),
 						'size'   => $field->getAttribute('size'),
@@ -108,7 +117,7 @@ class Plutonium_Database_Table {
 
 				$nodes = $xpath->query('/table/ref');
 				foreach ($nodes as $node) {
-					$ref = new Plutonium_Object(array(
+					$ref = new Object(array(
 						'name'   => $node->getAttribute('name'),
 						'table'  => $node->getAttribute('table'),
 						'prefix' => $node->getAttribute('prefix')
@@ -116,7 +125,7 @@ class Plutonium_Database_Table {
 
 					$refs[] = $ref;
 
-					self::$_refs[$ref->table][$ref->alias] = new Plutonium_Object(array(
+					self::$_refs[$ref->table][$ref->alias] = new Object(array(
 						'table' => $cfg->name,
 						'alias' => $ref->name
 					));
@@ -132,7 +141,7 @@ class Plutonium_Database_Table {
 
 				//$cfg->xrefs = $xrefs;
 
-				self::$_tables[$name] = new Plutonium_Database_Table($cfg);
+				self::$_tables[$name] = new self($cfg);
 			}
 		}
 
@@ -181,7 +190,7 @@ class Plutonium_Database_Table {
 	protected $_table_xrefs = array();
 
 	public function __construct($config) {
-		$type = 'Plutonium_Database_Table_Delegate_' . $config->driver;
+		$type = 'Plutonium\\Database\\' . $config->driver . '\\Delegate';
 
 		$this->_delegate = new $type($this);
 
@@ -201,12 +210,12 @@ class Plutonium_Database_Table {
 
 		$this->_table_name = implode('_', $table_name);
 
-		$this->_table_meta = new Plutonium_Object(array(
+		$this->_table_meta = new Object(array(
 			'timestamps' => $config->timestamps == 'yes'
 		));
 
 		if ($config->suffix != 'xref') {
-			$this->_field_meta['id'] = new Plutonium_Object(array(
+			$this->_field_meta['id'] = new Object(array(
 				'name'     => 'id',
 				'type'     => 'int',
 				'null'     => false,
@@ -220,7 +229,7 @@ class Plutonium_Database_Table {
 
 			$field_name = $ref->name . '_id';
 
-			$this->_field_meta[$field_name] = new Plutonium_Object(array(
+			$this->_field_meta[$field_name] = new Object(array(
 				'name'     => $field_name,
 				'type'     => 'int',
 				'null'     => false,
@@ -231,14 +240,14 @@ class Plutonium_Database_Table {
 		}
 
 		if ($config->timestamps == 'yes') {
-			$this->_field_meta['created'] = new Plutonium_Object(array(
+			$this->_field_meta['created'] = new Object(array(
 				'name'    => 'created',
 				'type'    => 'date',
 				'null'    => true,
 				'default' => false
 			));
 
-			$this->_field_meta['updated'] = new Plutonium_Object(array(
+			$this->_field_meta['updated'] = new Object(array(
 				'name'    => 'updated',
 				'type'    => 'date',
 				'null'    => true,
@@ -247,7 +256,7 @@ class Plutonium_Database_Table {
 		}
 
 		foreach ($config->fields as $field) {
-			$this->_field_meta[$field->name] = new Plutonium_Object(array(
+			$this->_field_meta[$field->name] = new Object(array(
 				'name'     => $field->name,
 				'type'     => $field->type,
 				'size'     => $field->size,
@@ -275,10 +284,10 @@ class Plutonium_Database_Table {
 				return $this->_table_refs;
 			case 'table_revs':
 				if (empty($this->_table_revs)) {
-					$this->_table_revs = Plutonium_Database_Table::getRefs($this->_name);
+					$this->_table_revs = self::getRefs($this->_name);
 
 					foreach ($this->_table_revs as &$rev) {
-						$table = Plutonium_Database_Table::getInstance($rev->table);
+						$table = self::getInstance($rev->table);
 
 						if ($table->_prefix == 'mod')
 							$rev->alias = $table->_module . '_' . $rev->alias;
@@ -288,7 +297,7 @@ class Plutonium_Database_Table {
 				return $this->_table_revs;
 			case 'table_xrefs':
 				if (empty($this->_table_xrefs))
-					$this->_table_xrefs = Plutonium_Database_Table::getXRefs($this->_name);
+					$this->_table_xrefs = self::getXRefs($this->_name);
 
 				return $this->_table_xrefs;
 		}
@@ -296,7 +305,7 @@ class Plutonium_Database_Table {
 
 	public function create() {
 		if (!$this->_delegate->exists() && !$this->_delegate->create()) {
-			$message = Plutonium_Database_Adapter::getInstance()->getErrorMsg();
+			$message = self::getInstance()->getErrorMsg();
 			trigger_error($message, E_USER_ERROR);
 		}
 
@@ -304,7 +313,7 @@ class Plutonium_Database_Table {
 	}
 
 	public function make($data = null, $xref_data = null) {
-		return new Plutonium_Database_Row($this, $data, $xref_data);
+		return new Row($this, $data, $xref_data);
 	}
 
 	public function find($args = null) {
@@ -316,20 +325,12 @@ class Plutonium_Database_Table {
 	}
 
 	public function save($row) {
-		if ($this->validate($row)) {
-			return is_null($row->id)
-				 ? $this->_delegate->insert($row)
-				 : $this->_delegate->update($row);
-		}
-
-		return false;
+		return is_null($row->id)
+			 ? $this->_delegate->insert($row)
+			 : $this->_delegate->update($row);
 	}
 
 	public function delete($id) {
 		return $this->_delegate->delete($id);
-	}
-
-	public function validate(&$row) {
-		return true;
 	}
 }

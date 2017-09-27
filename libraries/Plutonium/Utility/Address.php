@@ -1,6 +1,8 @@
 <?php
 
-class Plutonium_Utility_Address {
+namespace Plutonium\Utility;
+
+class Address {
 	public static function newInstance($ip) {
 		$octets = array();
 

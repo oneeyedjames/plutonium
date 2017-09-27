@@ -1,9 +1,12 @@
 <?php
 
-class UsersController extends Plutonium_Module_Controller {
+use Plutonium\Application\Controller;
+use Plutonium\Http\Session;
+
+class UsersController extends Controller {
 	public function loginAction() {
 		$request = $this->module->request;
-		$session = new Plutonium_Session();
+		$session = new Session();
 
 		$data = $request->get('data');
 
@@ -24,7 +27,7 @@ class UsersController extends Plutonium_Module_Controller {
 
 	public function logoutAction() {
 		$request = $this->module->request;
-		$session = new Plutonium_Session();
+		$session = new Session();
 		$session->del('user');
 
 		$this->redirect = $request->get('return', PU_URL_PATH);

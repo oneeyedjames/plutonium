@@ -1,6 +1,8 @@
 <?php
 
-class SetupErrorHandler extends Plutonium_Error_Handler {
+use Plutonium\Error\AbstractHandler;
+
+class SetupErrorHandler extends AbstractHandler {
 	public function handleError($message) {
 		die($message);
 	}

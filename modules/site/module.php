@@ -1,6 +1,13 @@
 <?php
 
-class SiteModule extends Plutonium_Module {
+/**
+ * A typical CMS package
+ * @package Plutonium Site Module
+ */
+
+use Plutonium\Application\Module;
+
+class SiteModule extends Module {
 	public function __construct($name) {
 		parent::__construct($name);
 		self::$_default_resource = 'pages';

@@ -10,7 +10,7 @@ $_SERVER['REQUEST_URI']    = '/';
 session_start();
 
 spl_autoload_register(function ($class) {
-	$file = str_replace('_', '/', $class) . '.php';
+	$file = str_replace(BS, DS, $class) . '.php';
 	$path = realpath(PU_PATH_LIB . '/' . $file);
 	if (is_file($path)) require_once $path;
 });

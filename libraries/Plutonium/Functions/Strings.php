@@ -1,5 +1,7 @@
 <?php
 
+namespace Plutonium\Functions;
+
 function paragraphize($text) {
 	$html = str_replace("\r\n", "\n", $text);
 	$html = str_replace("\r", "\n", $html);

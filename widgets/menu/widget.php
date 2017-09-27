@@ -5,9 +5,13 @@
  * @package Menu Widget
  * @author  J Andrew Scott <jascott@programmer.net>
  */
-class MenuWidget extends Plutonium_Widget {
+
+use Plutonium\Application\Widget;
+use Plutonium\Database\AbstractAdapter;
+
+class MenuWidget extends Widget {
 	public function display() {
-		$database = Plutonium_Database_Adapter::getInstance();
+		$database = AbstractAdapter::getInstance();
 
 		$table = $database->quoteSymbol('mod_site_pages');
 

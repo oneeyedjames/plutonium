@@ -1,6 +1,14 @@
 <?php
 
-class SetupController extends Plutonium_Module_Controller {
+use Plutonium\Object;
+use Plutonium\Application\Theme;
+use Plutonium\Application\Module;
+use Plutonium\Application\Widget;
+use Plutonium\Application\Controller;
+use Plutonium\Database\AbstractAdapter;
+use Plutonium\Database\Table;
+
+class SetupController extends Controller {
     private static $_core_tables = array(
         'hosts',
         'domains',
@@ -19,12 +27,12 @@ class SetupController extends Plutonium_Module_Controller {
     public function databaseAction() {
         $data = $this->request->get('data');
 
-        $config = new Plutonium_Object($data);
+        $config = new Object($data);
 
-        Plutonium_Database_Adapter::getInstance($config);
+        AbstractAdapter::getInstance($config);
 
         foreach (self::$_core_tables as $table)
-            Plutonium_Database_Table::getInstance($table)->create();
+            Table::getInstance($table)->create();
 
         $model = $this->getModel('hosts');
         $hosts = $model->find(array('slug' => 'main'));
@@ -42,28 +50,56 @@ class SetupController extends Plutonium_Module_Controller {
         $model = $this->getModel('users');
         $users = $model->find();
         if (empty($users)) {
-            // TODO create default admin user
+            $model->save(array(
+                'name' => 'Administrator',
+                'user' => 'admin',
+                'pass' => 'admin'
+            ));
         }
 
         $model = $this->getModel('themes');
         foreach (self::$_core_theme_names as $slug) {
             $themes = $model->find(compact('slug'));
-            if (empty($themes))
-                $model->save(Plutonium_Theme::getMetadata($slug));
+            if (empty($themes)) {
+                $meta = new Object(Theme::getMetadata($slug));
+                $meta->def('package', ucfirst($slug) . ' Theme');
+
+                $model->save(array(
+                    'name'    => $meta['package'],
+                    'slug'    => $slug,
+                    'descrip' => $meta['description']
+                ));
+            }
         }
 
         $model = $this->getModel('modules');
         foreach (self::$_core_module_names as $slug) {
             $modules = $model->find(compact('slug'));
-            if (empty($modules))
-                $model->save(Plutonium_Module::getMetadata($slug));
+            if (empty($modules)) {
+                $meta = new Object(Module::getMetadata($slug));
+                $meta->def('package', ucfirst($slug) . ' Module');
+
+                $model->save(array(
+                    'name'    => $meta['package'],
+                    'slug'    => $slug,
+                    'descrip' => $meta['description']
+                ));
+            }
         }
 
         $model = $this->getModel('widgets');
         foreach (self::$_core_widget_names as $slug) {
             $widgets = $model->find(compact('slug'));
-            if (empty($widgets))
-                $model->save(Plutonium_Widget::getMetadata($slug));
+            if (empty($widgets)) {
+                $meta = new Object(Widget::getMetadata($slug));
+                $meta->def('package', ucfirst($slug) . ' Widget');
+
+                $model->save(array(
+                    'name'    => $meta['package'],
+                    'slug'    => $slug,
+                    'descrip' => $meta['description']
+                ));
+            }
         }
 
         exit;

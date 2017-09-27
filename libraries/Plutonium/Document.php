@@ -1,11 +1,17 @@
 <?php
 
-class Plutonium_Document extends Plutonium_Object {
+namespace Plutonium;
+
+use Plutonium\Loader;
+use Plutonium\Visible;
+use Plutonium\Application\Application;
+
+abstract class Document extends Object implements Visible {
 	protected static $_path = null;
 
 	public static function getPath() {
 		if (is_null(self::$_path) && defined('PU_PATH_BASE'))
-			self::$_path = realpath(Plutonium_Application::getPath() . '/documents');
+			self::$_path = realpath(Application::getPath() . '/documents');
 
 		return self::$_path;
 	}
@@ -15,7 +21,7 @@ class Plutonium_Document extends Plutonium_Object {
 		$type = ucfirst($name) . 'Document';
 		$file = self::getPath() . DS . $name . '.php';
 
-		return Plutonium_Loader::getClass($file, $type, __CLASS__, $args);
+		return Loader::getClass($file, $type, __CLASS__, $args);
 	}
 
 	protected $_application = null;
@@ -44,9 +50,5 @@ class Plutonium_Document extends Plutonium_Object {
 			case 'title':
 				$this->_title = $value;
 		}
-	}
-
-	public function display() {
-		echo $this->_descrip;
 	}
 }

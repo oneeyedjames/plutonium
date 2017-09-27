@@ -1,6 +1,8 @@
 <?php
 
-class SiteRouter extends Plutonium_Module_Router {
+use Plutonium\Application\Router;
+
+class SiteRouter extends Router {
 	public function match($path) {
 		$vars = array('resource' => 'pages', 'layout' => 'details');
 

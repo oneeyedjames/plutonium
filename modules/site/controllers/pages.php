@@ -1,6 +1,8 @@
 <?php
 
-class PagesController extends Plutonium_Module_Controller {
+use Plutonium\Application\Controller;
+
+class PagesController extends Controller {
 	public function defaultAction() {
 		$view = $this->getView();
 		$view->layout = 'details';

@@ -1,4 +1,9 @@
 <?php
 
-class Plutonium_HTML_Table extends Plutonium_HTML_Tag{
+namespace Plutonium\Html;
+
+class Table extends Tag {
+    public function __construct($attributes = array(), $child_tags = array()) {
+        parent::__construct('table', $attributes, $child_tags, false);
+    }
 }

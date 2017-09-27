@@ -1,6 +1,8 @@
 <?php
 
-class BlogRouter extends Plutonium_Module_Router {
+use Plutonium\Application\Router;
+
+class BlogRouter extends Router {
 	public function match($path = null) {
 		$this->module->request->def('resource', 'feeds');
 
