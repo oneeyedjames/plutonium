@@ -34,6 +34,15 @@ class SetupController extends Controller {
         foreach (self::$_core_tables as $table)
             Table::getInstance($table)->create();
 
+        foreach (self::$_core_theme_names as $slug)
+            Theme::newInstance($this->_module->application, $slug)->install();
+
+        foreach (self::$_core_module_names as $slug)
+            Module::newInstance($this->_module->application, $slug)->install();
+
+        foreach (self::$_core_widget_names as $slug)
+            Widget::newInstance($this->_module->application, $slug)->install();
+
         $model = $this->getModel('hosts');
         $hosts = $model->find(array('slug' => 'main'));
         if (empty($hosts)) {
@@ -57,49 +66,16 @@ class SetupController extends Controller {
             ));
         }
 
-        $model = $this->getModel('themes');
-        foreach (self::$_core_theme_names as $slug) {
-            $themes = $model->find(compact('slug'));
-            if (empty($themes)) {
-                $meta = new Object(Theme::getMetadata($slug));
-                $meta->def('package', ucfirst($slug) . ' Theme');
+        $site = Module::newInstance($this->_module->application, 'site');
 
-                $model->save(array(
-                    'name'    => $meta['package'],
-                    'slug'    => $slug,
-                    'descrip' => $meta['description']
-                ));
-            }
-        }
-
-        $model = $this->getModel('modules');
-        foreach (self::$_core_module_names as $slug) {
-            $modules = $model->find(compact('slug'));
-            if (empty($modules)) {
-                $meta = new Object(Module::getMetadata($slug));
-                $meta->def('package', ucfirst($slug) . ' Module');
-
-                $model->save(array(
-                    'name'    => $meta['package'],
-                    'slug'    => $slug,
-                    'descrip' => $meta['description']
-                ));
-            }
-        }
-
-        $model = $this->getModel('widgets');
-        foreach (self::$_core_widget_names as $slug) {
-            $widgets = $model->find(compact('slug'));
-            if (empty($widgets)) {
-                $meta = new Object(Widget::getMetadata($slug));
-                $meta->def('package', ucfirst($slug) . ' Widget');
-
-                $model->save(array(
-                    'name'    => $meta['package'],
-                    'slug'    => $slug,
-                    'descrip' => $meta['description']
-                ));
-            }
+        $model = $site->getModel('pages');
+        $pages = $model->find();
+        if (empty($pages)) {
+            $model->save(array(
+                'name' => 'Home',
+                'slug' => 'home',
+                'body' => '<h1>Welcome!</h1>'
+            ));
         }
 
         exit;
