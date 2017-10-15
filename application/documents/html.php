@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\Document;
+use Plutonium\Application\Document;
 
 use Plutonium\Parser\ThemeParser;
 use Plutonium\Parser\UtilityParser;
@@ -72,15 +72,15 @@ class HtmlDocument extends Document {
 		return $html;
 	}
 
-	public function display() {
+	public function render() {
 		$response = $this->_application->response;
 
-		$tmpl = $response->getThemeOutput();
+		$output = $response->getThemeOutput();
 
 		foreach ($this->_parsers as $parser)
-			$tmpl = $parser->parse($tmpl);
+			$output = $parser->parse($output);
 
-		echo $tmpl;
+		return $output;
 	}
 
 	public function sefurl($match) {

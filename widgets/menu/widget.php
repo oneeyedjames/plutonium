@@ -10,7 +10,7 @@ use Plutonium\Application\Widget;
 use Plutonium\Database\AbstractAdapter;
 
 class MenuWidget extends Widget {
-	public function display() {
+	public function render() {
 		$database = AbstractAdapter::getInstance();
 
 		$table = $database->quoteSymbol('mod_site_pages');
@@ -31,6 +31,6 @@ class MenuWidget extends Widget {
 			}
 		}
 
-		return parent::display();
+		return parent::render();
 	}
 }

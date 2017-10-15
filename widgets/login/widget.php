@@ -9,7 +9,7 @@
 use Plutonium\Application\Widget;
 
 class LoginWidget extends Widget {
-	public function display() {
+	public function render() {
 		$session = $this->_application->session;
 		$request = $this->_application->request;
 
@@ -23,6 +23,6 @@ class LoginWidget extends Widget {
 			$this->setVal('url',  $this->_application->request->uri);
 		}
 
-		return parent::display();
+		return parent::render();
 	}
 }
