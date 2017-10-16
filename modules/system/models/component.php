@@ -14,7 +14,7 @@ class ComponentModel extends Model {
     public function validate(&$data) {
         $data['updated'] = gmdate('Y-m-d H:i:s');
 
-        if (!isset($data['created']))
+        if (!isset($data['id']))
             $data['created'] = $data['updated'];
 
         return true;

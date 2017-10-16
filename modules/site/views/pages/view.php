@@ -5,20 +5,16 @@ use function Plutonium\Functions\paragraphize;
 use Plutonium\Application\View;
 
 class PagesView extends View {
-	public function detailsLayout() {
+	public function itemLayout() {
 		$request = $this->_module->request;
 
 		$model = $this->getModel();
 
 		$slug = $this->getVar('slug', $request->get('slug', ''));
+		$args = empty($slug) ? array('parent' => 0) : compact('slug');
+		$page = $model->find($args, null, 1);
 
-		if (empty($slug))
-			$page = $model->find(1);
-		else
-			$page = $model->find(array('slug' => $slug), null, 1);
-
-		if ($page)
-			$page->body = paragraphize($page->body);
+		if ($page) $page->body = paragraphize($page->body);
 
 		$this->setRef('page', $page);
 
