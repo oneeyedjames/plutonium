@@ -35,13 +35,13 @@ class SetupController extends Controller {
             Table::getInstance($table)->create();
 
         foreach (self::$_core_theme_names as $slug)
-            Theme::newInstance($this->_module->application, $slug)->install();
+            Theme::newInstance($this->module->application, $slug)->install();
 
         foreach (self::$_core_module_names as $slug)
-            Module::newInstance($this->_module->application, $slug)->install();
+            Module::newInstance($this->module->application, $slug)->install();
 
         foreach (self::$_core_widget_names as $slug)
-            Widget::newInstance($this->_module->application, $slug)->install();
+            Widget::newInstance($this->module->application, $slug)->install();
 
         $model = $this->getModel('hosts');
         $hosts = $model->find(array('slug' => 'main'));
@@ -66,7 +66,7 @@ class SetupController extends Controller {
             ));
         }
 
-        $site = Module::newInstance($this->_module->application, 'site');
+        $site = Module::newInstance($this->module->application, 'site');
 
         $model = $site->getModel('pages');
         $pages = $model->find();

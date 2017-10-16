@@ -5,7 +5,7 @@ use Plutonium\Http\Session;
 
 class UsersController extends Controller {
 	public function loginAction() {
-		$request = $this->module->request;
+		$request = $this->request;
 		$session = new Session();
 
 		$data = $request->get('data');
@@ -26,7 +26,7 @@ class UsersController extends Controller {
 	}
 
 	public function logoutAction() {
-		$request = $this->module->request;
+		$request = $this->request;
 		$session = new Session();
 		$session->del('user');
 
