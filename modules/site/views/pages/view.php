@@ -11,7 +11,7 @@ class PagesView extends View {
 		$model = $this->getModel();
 
 		$slug = $this->getVar('slug', $request->get('slug', ''));
-		$args = empty($slug) ? array('parent' => 0) : compact('slug');
+		$args = empty($slug) ? array('parent_id' => 0) : compact('slug');
 		$page = $model->find($args, null, 1);
 
 		if ($page) $page->body = paragraphize($page->body);

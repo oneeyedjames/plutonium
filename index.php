@@ -23,7 +23,7 @@ if (isset($config)) {
 	require_once 'application/application.php';
 	require_once 'application/error.php';
 
-	Plutonium\Error\AbstractHandler::register(null, 'HttpErrorHandler');
+	Plutonium\Error\AbstractHandler::register('HttpErrorHandler');
 
 	$config = new Plutonium\Object($config);
 	$config->system->def('scheme', PU_URL_SCHEME);
@@ -37,7 +37,7 @@ if (isset($config)) {
 	require_once PU_PATH_BASE . '/application/setup/application.php';
 	require_once PU_PATH_BASE . '/application/setup/error.php';
 
-	Plutonium\Error\AbstractHandler::register(null, 'SetupErrorHandler');
+	Plutonium\Error\AbstractHandler::register('SetupErrorHandler');
 
 	$config = new Plutonium\Object(array(
 		'system'   => array(

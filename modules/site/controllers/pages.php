@@ -5,12 +5,12 @@ use Plutonium\Application\Controller;
 class PagesController extends Controller {
 	public function defaultAction() {
 		$view = $this->getView();
-		$view->layout = 'details';
+		$view->layout = 'item';
 
-		$this->detailsAction();
+		$this->itemAction();
 	}
 
-	public function detailsAction() {
+	public function itemAction() {
 		$slug = $this->_module->request->get('slug', '');
 
 		if (!empty($slug))

@@ -1,5 +1,6 @@
 <?php
 
+use Plutonium\Loader;
 use Plutonium\Application\Application;
 use Plutonium\Database\Table;
 
