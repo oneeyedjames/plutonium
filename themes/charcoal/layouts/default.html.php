@@ -6,10 +6,10 @@ $center_width = $page_width - $left_width - $right_width;
 ?><!DOCTYPE html>
 <html>
 	<head>
-		<pu:head />
-		<link rel="stylesheet" type="text/css" href="themes/<?php echo $this->_name; ?>/styles/theme.css">
-		<link rel="stylesheet" type="text/css" href="themes/<?php echo $this->_name; ?>/styles/<?php echo $this->_layout; ?>.css">
-		<link rel="shortcut icon" type="image/png" href="images/icons/silk/world.png">
+		<pu:head>
+		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/theme.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo PU_URL_BASE; ?>/themes/<?php echo $this->_name; ?>/styles/<?php echo $this->_layout; ?>.css">
+		<link rel="shortcut icon" type="image/png" href="<?php echo PU_URL_BASE; ?>/images/icons/silk/world.png">
 	</head>
 	<body>
 		<div id="page">
@@ -52,7 +52,7 @@ $center_width = $page_width - $left_width - $right_width;
 			</div>
 			<div id="footer">
 				<div class="inside" style="font-size: smaller; font-style: italic; text-align: right;">
-					<pu:date format="<?php echo $this->localize('datetime_format_long'); ?>">
+					<pu:date format="datetime_format_long">
 				</div>
 			</div>
 		</div>
