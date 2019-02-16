@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Application\Theme;
 use Plutonium\Application\Module;
 use Plutonium\Application\Widget;
@@ -27,7 +27,7 @@ class SetupController extends Controller {
     public function databaseAction() {
         $data = $this->request->get('data');
 
-        $config = new Object($data);
+        $config = new AccessObject($data);
 
         AbstractAdapter::getInstance($config);
 

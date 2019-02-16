@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Application\Router;
 use Plutonium\Database\Table;
 
@@ -13,7 +13,7 @@ class HttpRouter extends Router {
     }
 
     public function match($host) {
-        $vars = new Object();
+        $vars = new AccessObject();
         $base = $this->_base_host;
 
         if (substr($host, -strlen($base)) == $base) {

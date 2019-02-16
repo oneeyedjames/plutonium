@@ -1,10 +1,10 @@
 <?php
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 
 class ObjectTest extends PHPUnit_Framework_TestCase {
 	public function testAccessible() {
-		$object = new Object();
+		$object = new AccessObject();
 
 		$this->assertFalse($object->has('foo'));
 		$this->assertNull($object->get('foo'));
@@ -33,7 +33,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase {
 	public function testIterable() {
 		$vars = array('foo' => 'bar', 'baz' => 'baz');
 
-		$object = new Object($vars);
+		$object = new AccessObject($vars);
 
 		$keys   = array_keys($vars);
 		$values = array_values($vars);
@@ -60,7 +60,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testMagic() {
-		$object = new Object();
+		$object = new AccessObject();
 
 		$this->assertFalse(isset($object->foo));
 		$this->assertNull($object->foo);
@@ -77,7 +77,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testArray() {
-		$object = new Object();
+		$object = new AccessObject();
 
 		$this->assertEquals(0, count($object));
 		$this->assertFalse(isset($object['foo']));

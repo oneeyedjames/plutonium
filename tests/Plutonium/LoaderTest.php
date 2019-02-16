@@ -14,7 +14,7 @@ class LoaderTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertContains($lib_path, Loader::getPaths());
 
-		$this->assertTrue(Loader::import('\Plutonium\Object'));
+		$this->assertTrue(Loader::import('\Plutonium\AccessObject'));
 		$this->assertTrue(interface_exists('\Plutonium\Accessible', false));
 	}
 }

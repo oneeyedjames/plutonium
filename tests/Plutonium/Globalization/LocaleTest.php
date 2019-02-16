@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\GLobalization\Locale;
 
 class LocaleTest extends PHPUnit_Framework_TestCase {
@@ -19,7 +19,7 @@ class LocaleTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('en', $locale->language);
 		$this->assertEmpty($locale->country);
 
-		$locale = new Locale(new Object(array(
+		$locale = new Locale(new AccessObject(array(
 			'language' => 'en'
 		)));
 
@@ -42,7 +42,7 @@ class LocaleTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('en', $locale->language);
 		$this->assertEquals('US', $locale->country);
 
-		$locale = new Locale(new Object(array(
+		$locale = new Locale(new AccessObject(array(
 			'language' => 'en',
 			'country'  => 'US'
 		)));
