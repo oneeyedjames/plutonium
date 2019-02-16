@@ -1,6 +1,6 @@
 <?php
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Http\Request;
 
 class RequestTest extends PHPUnit_Framework_TestCase {
@@ -19,7 +19,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 		$this->reset();
 
 		if (is_null($this->config)) {
-			$this->config = new Object(array(
+			$this->config = new AccessObject(array(
 				'system' => array(
 					'hostname' => 'plutonium.dev'
 				)

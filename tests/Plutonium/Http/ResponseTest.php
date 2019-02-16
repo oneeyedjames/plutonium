@@ -1,11 +1,11 @@
 <?php
 
-use Plutonium\Object;
+use Plutonium\AccessObject;
 use Plutonium\Http\Response;
 
 class ResponseTest extends PHPUnit_Framework_TestCase {
 	public function testModule() {
-		$args = new Object(array(
+		$args = new AccessObject(array(
 			'module_start' => '<article>',
 			'module_close' => '</article>'
 		));
@@ -19,7 +19,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testWidget() {
-		$args = new Object(array(
+		$args = new AccessObject(array(
 			'widget_start' => '<aside>',
 			'widget_delim' => '<hr>',
 			'widget_close' => '</aside>'

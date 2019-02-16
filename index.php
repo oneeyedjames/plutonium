@@ -25,7 +25,7 @@ if (isset($config)) {
 
 	Plutonium\Error\AbstractHandler::register('HttpErrorHandler');
 
-	$config = new Plutonium\Object($config);
+	$config = new Plutonium\AccessObject($config);
 	$config->system->def('scheme', PU_URL_SCHEME);
 
 	Plutonium\Database\AbstractAdapter::getInstance($config->database);
@@ -39,7 +39,7 @@ if (isset($config)) {
 
 	Plutonium\Error\AbstractHandler::register('SetupErrorHandler');
 
-	$config = new Plutonium\Object(array(
+	$config = new Plutonium\AccessObject(array(
 		'system'   => array(
 			'hostname' => PU_URL_HOST,
 			'scheme'   => PU_URL_SCHEME
