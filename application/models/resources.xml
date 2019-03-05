@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<table name="resources" prefix="app">
-	<field name="name" type="string" size="short"/>
-	<field name="slug" type="string" size="short"/>
-	<field name="descrip" type="string"/>
-	<field name="default" type="bool"/>
-	<ref name="module" table="modules"/>
-</table>

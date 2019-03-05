@@ -16,7 +16,6 @@ class SetupController extends Controller {
         'groups',
         'themes',
         'modules',
-        'resources',
         'widgets'
     );
 
