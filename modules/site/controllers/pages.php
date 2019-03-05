@@ -1,19 +1,22 @@
 <?php
 
+use Plutonium\AccessObject;
 use Plutonium\Application\Controller;
 
 class PagesController extends Controller {
-	public function defaultAction() {
-		$view = $this->getView();
-		$view->layout = 'item';
+	public function createAction() {
+		$data = new AccessObject([
+			'name'   => $this->request->name,
+			'body'   => $this->request->body,
+			'parent' => $this->request->parent
+		]);
 
-		$this->itemAction();
-	}
+		$model = $this->getModel();
 
-	public function itemAction() {
-		$slug = $this->_module->request->get('slug', '');
-
-		if (!empty($slug))
-			$this->getView()->slug = $slug;
+		if ($page = $model->save($data)) {
+			$this->redirect = FS . $page->slug;
+		} else {
+			trigger_error('Page could not be saved.', E_USER_ERROR);
+		}
 	}
 }
