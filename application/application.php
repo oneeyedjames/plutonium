@@ -28,7 +28,7 @@ class HttpApplication extends Application {
 			$this->request->host = $route->host;
 
 		if (isset($route->module))
-			$this->request->host = $route->module;
+			$this->request->module = $route->module;
 
 		// Lookup default host
 		if (!isset($this->request->host)) {
