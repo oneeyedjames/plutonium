@@ -7,6 +7,8 @@
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
+if ('/favicon.ico' == $_SERVER['REQUEST_URI']) exit;
+
 require_once 'constants.php';
 
 if (is_file('config.php'))
