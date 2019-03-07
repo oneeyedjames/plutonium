@@ -5,6 +5,7 @@ use Plutonium\Error\AbstractHandler;
 
 class HttpErrorHandler extends AbstractHandler {
 	public function handleError($message) {
+		error_log($message);
 		die($message);
 	}
 
@@ -12,12 +13,13 @@ class HttpErrorHandler extends AbstractHandler {
 		$session = new Session();
 		$session->set('message', $message);
 
+		error_log($message);
+
 		return true;
 	}
 
 	public function handleNotice($message) {
-		$session = new Session();
-		$session->set('message', $message);
+		error_log($message);
 
 		return true;
 	}
