@@ -11,8 +11,8 @@ if ('/favicon.ico' == $_SERVER['REQUEST_URI']) exit;
 
 require_once 'constants.php';
 
-if (is_file('config.php'))
-	require_once 'config.php';
+if (is_file(PU_PATH_BASE . '/config.php'))
+	require_once PU_PATH_BASE . '/config.php';
 
 require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
 
