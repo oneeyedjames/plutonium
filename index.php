@@ -14,7 +14,16 @@ require_once 'constants.php';
 if (is_file(PU_PATH_BASE . '/config.php'))
 	require_once PU_PATH_BASE . '/config.php';
 
-require_once PU_PATH_BASE . '/libraries/Plutonium/Loader.php';
+$library_path = PU_PATH_BASE . '/libraries/Plutonium';
+$library_file = 'Loader.php';
+
+if (is_file($library_path . '.phar')) {
+	require_once 'phar://' . $library_path . '.phar' . DS . $library_file;
+} else {
+	require_once $library_path . DS . $library_file;
+}
+
+unset($library_path, $library_file);
 
 Plutonium\Loader::autoload(PU_PATH_BASE . '/libraries');
 Plutonium\Loader::importDirectory('Plutonium/Functions');
