@@ -1,0 +1,19 @@
+{
+    "name": "oneeyedjames/plutonium",
+    "type": "project",
+    "authors": [
+        {
+            "name": "J Andrew Scott",
+            "email": "jascott@programmer.net"
+        }
+    ],
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/oneeyedjames/plutonium-library"
+		}
+	],
+    "require": {
+		"oneeyedjames/plutonium-library": "dev-composer"
+	}
+}
