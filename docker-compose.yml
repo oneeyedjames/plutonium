@@ -24,6 +24,7 @@ services:
         volumes:
             - ./conf/php.conf:/usr/local/etc/php-fpm.d/zz-log.conf
             - ./src:/var/www
+            - ./vendor:/var/lib
         networks:
             - stack
 
