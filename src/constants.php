@@ -7,7 +7,7 @@ define('BS', '\\');
 define('FS', '/');
 
 $root = str_replace(BS, FS, realpath($_SERVER['DOCUMENT_ROOT']));
-$path = str_replace(BS, FS, realpath(dirname(__FILE__)));
+$path = str_replace(BS, FS, realpath(__DIR__));
 
 defined('PU_PATH_ROOT') or define('PU_PATH_ROOT', $root);
 defined('PU_PATH_BASE') or define('PU_PATH_BASE', $path);
