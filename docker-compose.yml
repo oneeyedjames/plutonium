@@ -1,0 +1,43 @@
+version: '2'
+
+networks:
+    stack:
+        driver: bridge
+
+services:
+    nginx:
+        image: nginx
+        ports:
+            - 8001:80
+        volumes:
+            - ./conf/nginx.conf:/etc/nginx/conf.d/plutonium.conf
+            - ./src:/var/www/plutonium/src
+            - ./log:/var/log/nginx
+        networks:
+            - stack
+
+    php:
+        image: php:fpm
+        build:
+            context: .
+            dockerfile: dockerfile
+        volumes:
+            - ./conf/php.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+            - ./src:/var/www/plutonium/src
+            - ./vendor:/var/www/plutonium/vendor
+        networks:
+            - stack
+
+    mysql:
+        image: mysql
+        ports:
+            - 3301:3306
+        volumes:
+            - ./data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: plutonium
+            MYSQL_PASSWORD: plutonium
+            MYSQL_DATABASE: plutonium
+        networks:
+            - stack

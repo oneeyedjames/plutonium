@@ -1,3 +1,0 @@
-[submodule "libraries/Plutonium"]
-	path = libraries/Plutonium
-	url = git@github.com:oneeyedjames/plutonium-library.git
