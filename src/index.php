@@ -14,7 +14,7 @@ require_once 'constants.php';
 if (is_file(PU_PATH_BASE . '/config.php'))
 	require_once PU_PATH_BASE . '/config.php';
 
-if ($library_path = realpath(dirname(PU_PATH_BASE) . '/lib'))
+if ($library_path = realpath(dirname(PU_PATH_BASE) . '/vendor'))
 	$library_file = $library_path . DS . 'autoload.php';
 
 if (isset($library_file)) {

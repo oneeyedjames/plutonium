@@ -11,7 +11,7 @@ services:
             - 8001:80
         volumes:
             - ./conf/nginx.conf:/etc/nginx/conf.d/plutonium.conf
-            - ./src:/var/www
+            - ./src:/var/www/plutonium/src
             - ./log:/var/log/nginx
         networks:
             - stack
@@ -23,8 +23,8 @@ services:
             dockerfile: dockerfile
         volumes:
             - ./conf/php.conf:/usr/local/etc/php-fpm.d/zz-log.conf
-            - ./src:/var/www
-            - ./vendor:/var/lib
+            - ./src:/var/www/plutonium/src
+            - ./vendor:/var/www/plutonium/vendor
         networks:
             - stack
 
