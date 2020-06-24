@@ -6,3 +6,4 @@ log/*
 
 src/config.php
 src/libraries/*
+src/**/*.phar

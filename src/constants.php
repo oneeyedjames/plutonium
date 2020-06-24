@@ -14,7 +14,7 @@ defined('PU_PATH_BASE') or define('PU_PATH_BASE', $path);
 
 unset($root, $path);
 
-$scheme = empty($_SERVER['HTTPS']) ? 'http' : 'https';
+$scheme = $_SERVER['REQUEST_SCHEME'];
 
 defined('PU_URL_SCHEME') or define('PU_URL_SCHEME', $scheme);
 

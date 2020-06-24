@@ -83,6 +83,10 @@ class HtmlDocument extends Document {
 		return $output;
 	}
 
+	public function localize($text) {
+		return $text;
+	}
+
 	public function sefurl($match) {
 		$parts = parse_url($match[0]);
 
