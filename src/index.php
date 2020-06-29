@@ -41,7 +41,7 @@ if (isset($config)) {
 	require_once 'application/application.php';
 	require_once 'application/error.php';
 
-	Plutonium\Error\AbstractHandler::register('HttpErrorHandler');
+	Plutonium\Error\ErrorHandler::register('HttpErrorHandler');
 
 	$config = new Plutonium\AccessObject($config);
 	$config->system->def('scheme', PU_URL_SCHEME);

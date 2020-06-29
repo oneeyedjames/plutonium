@@ -1,15 +1,18 @@
 <?php
 
 use Plutonium\Http\Session;
-use Plutonium\Error\AbstractHandler;
+use Plutonium\Error\ErrorHandler;
 
-class HttpErrorHandler extends AbstractHandler {
-	public function handleError($message) {
+class HttpErrorHandler extends ErrorHandler {
+	public function handleError($message, $file, $line) {
 		error_log($message);
-		die($message);
+
+		throw new ErrorException($message, -1, $level, $file, $line);
+
+		return true;
 	}
 
-	public function handleWarning($message) {
+	public function handleWarning($message, $file, $line) {
 		$session = new Session();
 		$session->set('message', $message);
 
@@ -18,7 +21,7 @@ class HttpErrorHandler extends AbstractHandler {
 		return true;
 	}
 
-	public function handleNotice($message) {
+	public function handleNotice($message, $file, $line) {
 		error_log($message);
 
 		return true;
