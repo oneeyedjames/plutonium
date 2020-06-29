@@ -15,24 +15,10 @@ if (is_file(PU_PATH_BASE . '/config.php'))
 	require_once PU_PATH_BASE . '/config.php';
 
 if ($library_path = realpath(dirname(PU_PATH_BASE) . '/vendor'))
-	$library_file = $library_path . DS . 'autoload.php';
-
-if (isset($library_file)) {
-	require_once $library_file;
-} else {
-	$library_path = PU_PATH_BASE . '/libraries/Plutonium';
-	$library_file = 'Loader.php';
-
-	if (is_file($library_path . '.phar')) {
-		require_once 'phar://' . $library_path . '.phar' . DS . $library_file;
-	} else {
-		require_once $library_path . DS . $library_file;
-	}
-}
+	require_once $library_path . DS . 'autoload.php';
 
 unset($library_path, $library_file);
 
-Plutonium\Loader::autoload(PU_PATH_BASE . '/libraries');
 Plutonium\Loader::importDirectory('Plutonium/Functions');
 
 Plutonium\Http\Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
