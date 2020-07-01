@@ -33,7 +33,7 @@ class HttpApplication extends Application {
 		// Lookup default host
 		if (!isset($this->request->host)) {
 			$table = Table::getInstance('hosts');
-			$rows  = $table->find(array('default' => 1));
+			$rows  = $table->find(['default' => 1]);
 
 			if (!empty($rows))
 				$this->request->host = $rows[0]->slug;
@@ -42,7 +42,7 @@ class HttpApplication extends Application {
 		// Lookup default module
 		if (!isset($this->request->module)) {
 			$table = Table::getInstance('modules');
-			$rows  = $table->find(array('default' => 1));
+			$rows  = $table->find(['default' => 1]);
 
 			if (!empty($rows))
 				$this->request->module = $rows[0]->slug;
@@ -51,7 +51,7 @@ class HttpApplication extends Application {
 		// Lookup default theme
 		if (!isset($this->config->theme)) {
 			$table = Table::getInstance('themes');
-			$rows  = $table->find(array('default' => 1));
+			$rows  = $table->find(['default' => 1]);
 
 			if (!empty($rows))
 				$this->config->theme = $rows[0]->slug;
@@ -67,10 +67,10 @@ class HttpApplication extends Application {
 
 		// Load widgets
 		$table = Table::getInstance('modules');
-		$rows  = $table->find(array('slug' => $this->request->module));
+		$rows  = $table->find(['slug' => $this->request->module]);
 
 		if (!empty($rows)) {
-			$widgets = array();
+			$widgets = [];
 
 			foreach ($rows[0]->widget as $widget) {
 				$xref = $widget->xref->module;

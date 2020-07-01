@@ -4,7 +4,7 @@ use Plutonium\Application\Router;
 
 class SiteRouter extends Router {
 	public function match($path) {
-		$vars = array('resource' => 'pages');
+		$vars = ['resource' => 'pages'];
 		$path = trim($path, FS);
 
 		if (!empty($path)) {

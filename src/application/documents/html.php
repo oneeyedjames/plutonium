@@ -12,10 +12,10 @@ class HtmlDocument extends Document {
 	protected $_meta_descrip = null;
 	protected $_meta_keyword = null;
 
-	protected $_style_sheets = array();
-	protected $_script_files = array();
+	protected $_style_sheets = [];
+	protected $_script_files = [];
 
-	protected $_parsers = array();
+	protected $_parsers = [];
 
 	public function __construct($args) {
 		parent::__construct($args);
@@ -34,31 +34,31 @@ class HtmlDocument extends Document {
 	}
 
 	public function getHeader() {
-		$tags = array();
+		$tags = [];
 
-		$tags[] = new Tag('base', array('href' => PU_URL_BASE . FS));
+		$tags[] = new Tag('base', ['href' => PU_URL_BASE . FS]);
 
-		$attribs = array('name' => 'description', 'content' => $this->_meta_descrip);
+		$attribs = ['name' => 'description', 'content' => $this->_meta_descrip];
 		$tags[] = new Tag('meta', $attribs);
 
-		$attribs = array('name' => 'keywords', 'content' => $this->_meta_keyword);
+		$attribs = ['name' => 'keywords', 'content' => $this->_meta_keyword];
 		$tags[] = new Tag('meta', $attribs);
 
 		foreach ($this->_style_sheets as $file) {
-			$attribs = array(
+			$attribs = [
 				'rel'  => 'stylesheet',
 				'type' => 'text/css',
 				'href' => $file
-			);
+			];
 
 			$tags[] = new Tag('link', $attribs);
 		}
 
 		foreach ($this->_script_files as $file) {
-			$attribs = array(
+			$attribs = [
 				'type' => 'text/javascript',
 				'src' => $file
-			);
+			];
 
 			$tags[] = new Tag('script', $attribs, null, false);
 		}
@@ -92,10 +92,10 @@ class HtmlDocument extends Document {
 
 		if (isset($parts['query'])) parse_str($parts['query'], $parts['query']);
 
-		if (in_array(@$parts['path'], array(PU_URL_ROOT . 'index.php', 'index.php', null))) {
+		if (in_array(@$parts['path'], [PU_URL_ROOT . 'index.php', 'index.php', null])) {
 			$url = PU_URL_BASE;
 
-			$keys = array('module', 'resource', 'action', 'id');
+			$keys = ['module', 'resource', 'action', 'id'];
 
 			$i = 0;
 			while ($i < count($keys) && !empty($parts['query'][$keys[$i]])) {

@@ -9,7 +9,7 @@ use Plutonium\Database\AbstractAdapter;
 use Plutonium\Database\Table;
 
 class SetupController extends Controller {
-	private static $_core_tables = array(
+	private static $_core_tables = [
 		'hosts',
 		'domains',
 		'users',
@@ -17,11 +17,11 @@ class SetupController extends Controller {
 		'themes',
 		'modules',
 		'widgets'
-	);
+	];
 
-	private static $_core_theme_names  = array('charcoal');
-	private static $_core_module_names = array('system', 'site');
-	private static $_core_widget_names = array('login', 'menu');
+	private static $_core_theme_names  = ['charcoal'];
+	private static $_core_module_names = ['system', 'site'];
+	private static $_core_widget_names = ['login', 'menu'];
 
 	public function databaseAction() {
 		$data = $this->request->get('data');
@@ -43,26 +43,26 @@ class SetupController extends Controller {
 			Widget::newInstance($this->module->application, $slug)->install();
 
 		$model = $this->getModel('hosts');
-		$hosts = $model->find(array('slug' => 'main'));
+		$hosts = $model->find(['slug' => 'main']);
 		if (empty($hosts)) {
-			$model->save(array(
+			$model->save([
 				'name'         => 'Main Host',
 				'slug'         => 'main',
 				'descrip'      => 'The main host for this Plutonium instance',
 				'default'      => true,
 				'meta_keyword' => 'Plutonium',
 				'meta_descrip' => 'A Plutonium-Powered website'
-			));
+			]);
 		}
 
 		$model = $this->getModel('users');
 		$users = $model->find();
 		if (empty($users)) {
-			$model->save(array(
+			$model->save([
 				'name' => 'Administrator',
 				'user' => 'admin',
 				'pass' => 'admin'
-			));
+			]);
 		}
 
 		$site = Module::newInstance($this->module->application, 'site');
@@ -70,11 +70,11 @@ class SetupController extends Controller {
 		$model = $site->getModel('pages');
 		$pages = $model->find();
 		if (empty($pages)) {
-			$model->save(array(
+			$model->save([
 				'name' => 'Home',
 				'slug' => 'home',
 				'body' => '<h1>Welcome!</h1>'
-			));
+			]);
 		}
 
 		exit;

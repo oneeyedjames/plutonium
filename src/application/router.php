@@ -70,7 +70,7 @@ class HttpRouter extends Router {
 
 	protected function _findDomain($host) {
 		$domain = explode('.', $host);
-		$args = array('domain' => array());
+		$args = ['domain' => []];
 
 		while (count($domain) > 1) {
 			$args['domain'][] = implode('.', $domain);

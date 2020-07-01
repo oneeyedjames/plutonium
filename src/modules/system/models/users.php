@@ -5,7 +5,7 @@ use Plutonium\Database\Table;
 
 class UsersModel extends Model {
 	public function lookup($username, $password) {
-		if ($user = $this->find(array('user' => $username))) {
+		if ($user = $this->find(['user' => $username])) {
 			$user = $user[0];
 
 			if ($user->pass == hash_hmac('md5', $password, $user->salt))

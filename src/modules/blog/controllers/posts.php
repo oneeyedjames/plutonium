@@ -7,16 +7,16 @@ class PostsController extends Controller {
 		$model =& $this->getModel();
 		$view  =& $this->getView();
 
-		$posts =& $model->find(null, array(
-			'filters' => array(
+		$posts =& $model->find(null, [
+			'filters' => [
 				':created > @created',
-				array(
+				[
 					'created' => '0000-00-00'
-				)
-			),
+				]
+			],
 			'order' => ':created DESC',
 			'group' => ':id'
-		));
+		]);
 
 		$view->setRef('posts', $posts);
 	}

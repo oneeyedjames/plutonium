@@ -43,14 +43,14 @@ if (isset($config)) {
 
 	Plutonium\Error\AbstractHandler::register('SetupErrorHandler');
 
-	$config = new Plutonium\AccessObject(array(
-		'system'   => array(
+	$config = new Plutonium\AccessObject([
+		'system'   => [
 			'hostname' => PU_URL_HOST,
 			'scheme'   => PU_URL_SCHEME
-		),
+		],
 		'timezone' => timezone_name_from_abbr('UTC'),
-		'locale'   => array('language' => 'en')
-	));
+		'locale'   => ['language' => 'en']
+	]);
 
 	$application = new SetupApplication($config);
 	$application->initialize();
