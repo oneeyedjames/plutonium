@@ -5,14 +5,22 @@ use Plutonium\Database\Table;
 
 class UsersModel extends Model {
 	public function lookup($username, $password) {
-		if ($user = $this->find(['user' => $username])) {
+		if ($user = $this->find(['username' => $username])) {
 			$user = $user[0];
 
-			if ($user->pass == hash_hmac('md5', $password, $user->salt))
+			if (password_verify($password, $user->password)) {
+				if (password_needs_rehash($user->password, PASSWORD_DEFAULT)) {
+					$user->password = password_hash($user->password, PASSWORD_DEFAULT);
+					$this->save($user->toArray());
+				}
+
+				unset($user->password);
+
 				return $user;
+			}
 		}
 
-		return $record;
+		return false;
 	}
 
 	public function getTable() {
@@ -23,11 +31,8 @@ class UsersModel extends Model {
 	}
 
 	public function validate(&$data) {
-		if (!isset($data['salt']))
-			$data['salt'] = md5(uniqid(rand(), true));
-
-		if (isset($data['pass']))
-			$data['pass'] = hash_hmac('md5', $pass, $data['salt']);
+		if (isset($data['password']))
+			$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
 		return true;
 	}

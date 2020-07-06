@@ -19,6 +19,7 @@ if ($library_path = realpath(dirname(PU_PATH_BASE) . '/vendor'))
 
 unset($library_path, $library_file);
 
+Plutonium\Loader::autoload();
 Plutonium\Loader::importDirectory('Plutonium/Functions');
 
 Plutonium\Http\Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
