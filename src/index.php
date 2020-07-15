@@ -14,46 +14,34 @@ require_once 'constants.php';
 if (is_file(PU_PATH_BASE . '/config.php'))
 	require_once PU_PATH_BASE . '/config.php';
 
-if ($library_path = realpath(dirname(PU_PATH_BASE) . '/vendor'))
-	require_once $library_path . DS . 'autoload.php';
+if (empty($config)) {
+	http_response_code(500);
+	die('Configuration could not be loaded.');
+}
 
-unset($library_path, $library_file);
+if ($vendor_path = realpath(dirname(PU_PATH_BASE) . '/vendor'))
+	require_once $vendor_path . DS . 'autoload.php';
+
+unset($vendor_path);
 
 Plutonium\Loader::autoload();
 Plutonium\Loader::importDirectory('Plutonium/Functions');
 
 Plutonium\Http\Url::initialize(PU_URL_BASE . FS . basename(__FILE__));
 
-if (isset($config)) {
-	require_once 'application/application.php';
-	require_once 'application/error.php';
+require_once 'application/application.php';
+require_once 'application/error.php';
 
-	Plutonium\Error\ErrorHandler::register('HttpErrorHandler');
+Plutonium\Error\ErrorHandler::register('HttpErrorHandler');
 
-	$config = new Plutonium\AccessObject($config);
-	$config->system->def('scheme', PU_URL_SCHEME);
+$config = new Plutonium\AccessObject($config);
+$config->system->def('scheme', PU_URL_SCHEME);
+$config->system->def('default_host', 'main');
+$config->application->def('default_theme', 'charcoal');
+$config->application->def('default_module', 'site');
 
-	Plutonium\Database\AbstractAdapter::getInstance($config->database);
+Plutonium\Database\AbstractAdapter::getInstance($config->database);
 
-	$application = new HttpApplication($config);
-	$application->initialize();
-	$application->execute();
-} else {
-	require_once PU_PATH_BASE . '/application/setup/application.php';
-	require_once PU_PATH_BASE . '/application/setup/error.php';
-
-	Plutonium\Error\AbstractHandler::register('SetupErrorHandler');
-
-	$config = new Plutonium\AccessObject([
-		'system'   => [
-			'hostname' => PU_URL_HOST,
-			'scheme'   => PU_URL_SCHEME
-		],
-		'timezone' => timezone_name_from_abbr('UTC'),
-		'locale'   => ['language' => 'en']
-	]);
-
-	$application = new SetupApplication($config);
-	$application->initialize();
-	$application->execute();
-}
+$application = new HttpApplication($config);
+$application->initialize();
+$application->execute();

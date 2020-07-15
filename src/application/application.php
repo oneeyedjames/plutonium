@@ -22,56 +22,23 @@ class HttpApplication extends Application {
 	}
 
 	public function initialize() {
+		$default_host   = $this->config->system->default_host;
+		$default_theme  = $this->config->application->default_theme;
+		$default_module = $this->config->application->default_module;
+
 		$route = $this->router->match($this->request->get('Host', null, 'headers'));
 
-		if (isset($route->host))
-			$this->request->host = $route->host;
+		$this->request->host   = $route->get('host',   $default_host);
+		$this->request->module = $route->get('module', $default_module);
 
-		if (isset($route->module))
-			$this->request->module = $route->module;
-
-		// Lookup default host
-		if (!isset($this->request->host)) {
-			$table = Table::getInstance('hosts');
-			$rows  = $table->find(['default' => 1]);
-
-			if (!empty($rows))
-				$this->request->host = $rows[0]->slug;
-		}
-
-		// Lookup default module
-		if (!isset($this->request->module)) {
-			$table = Table::getInstance('modules');
-			$rows  = $table->find(['default' => 1]);
-
-			if (!empty($rows))
-				$this->request->module = $rows[0]->slug;
-		}
-
-		// Lookup default theme
-		if (!isset($this->config->theme)) {
-			$table = Table::getInstance('themes');
-			$rows  = $table->find(['default' => 1]);
-
-			if (!empty($rows))
-				$this->config->theme = $rows[0]->slug;
-		}
-
-		// Go for broke with hard-coded defaults
-		$this->request->def('host',   'main');
-		$this->request->def('module', 'site');
-
-		$this->config->def('theme', 'charcoal');
+		$this->config->def('theme', $default_theme);
 
 		parent::initialize();
 
-		// Load widgets
 		$table = Table::getInstance('modules');
 		$rows  = $table->find(['slug' => $this->request->module]);
 
-		if (!empty($rows)) {
-			$widgets = [];
-
+		if (count($rows)) {
 			foreach ($rows[0]->widget as $widget) {
 				$xref = $widget->xref->module;
 				$this->addWidget($xref->location, $widget->slug);
@@ -83,7 +50,8 @@ class HttpApplication extends Application {
 		if (is_null($this->_router)) {
 			$type = ucfirst(strtolower($this->name)) . 'Router';
 			$file = realpath(PU_PATH_BASE . '/application/router.php');
-			$this->_router = Loader::getClass($file, $type, 'Plutonium\Application\Router', $this->config->system);
+			$this->_router = Loader::getClass($file, $type,
+				'Plutonium\Application\Router', $this->config->system);
 		}
 
 		return $this->_router;
