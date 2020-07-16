@@ -1,5 +1,5 @@
 <?php
 
-require_once 'component.php';
+require_once __DIR__ . '/components.php';
 
-class ModulesModel extends ComponentModel {}
+class ModulesModel extends ComponentsModel {}

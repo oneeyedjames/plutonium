@@ -1,19 +1,15 @@
 <?php
 
+require_once dirname(__DIR__) . '/components.php';
+
 use Plutonium\Application\Module;
-use Plutonium\Application\View;
 
-class ModulesView extends View {
-	public function defaultLayout() {
-		$modules = [];
+class ModulesView extends ComponentsView {
+	protected function getPath() {
+		return Module::getPath();
+	}
 
-		foreach (glob(PU_PATH_BASE . '/modules/*') as $path) {
-			if (is_dir($path)) {
-				$name = basename($path);
-				$modules[$name] = Module::getMetadata($name);
-			}
-		}
-
-		$this->setRef('modules', $modules);
+	protected function getMetadata($name) {
+		return Module::getMetadata($name);
 	}
 }
