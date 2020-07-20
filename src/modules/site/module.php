@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A typical CMS package
+ * A typical content management package
  * @package Plutonium Site Module
  */
 
