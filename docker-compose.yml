@@ -13,6 +13,7 @@ services:
             - ./conf/nginx.conf:/etc/nginx/conf.d/plutonium.conf
             - ./src:/var/www/plutonium/src
             - ./log:/var/log/nginx
+            - ../phpMyAdmin:/var/www/phpMyAdmin
         networks:
             - stack
 
@@ -25,6 +26,7 @@ services:
             - ./conf/php.conf:/usr/local/etc/php-fpm.d/zz-log.conf
             - ./src:/var/www/plutonium/src
             - ./vendor:/var/www/plutonium/vendor
+            - ../phpMyAdmin:/var/www/phpMyAdmin
         networks:
             - stack
 
