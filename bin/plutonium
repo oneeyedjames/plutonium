@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+echo preg_replace('/\/bin$/', '/src', __DIR__);
+
+die(PHP_EOL);
+
+if (1 == $argc) exit;
+
+$task = $argv[1];
+
+if ($file = realpath(__DIR__ . "/$task.php"))
+	require_once $file;
