@@ -22,30 +22,9 @@ $config['database']['password'] = get_input('Database Password', '', true);
 $config['locale']   = get_input('Locale', $locale);
 $config['timezone'] = get_input('Timezone', $timezone);
 
-file_put_contents($file, '<?php' . PHP_EOL . PHP_EOL . put_output($config));
+file_put_contents($file, '<?php' . PHP_EOL . PHP_EOL . build_config($config));
 
-function get_input($prompt, $default = '', $obscured = false) {
-	if ($default) $prompt .= " ($default)";
-
-	echo "$prompt: ";
-
-	if ($obscured)
-		readline_callback_handler_install('', function(){});
-
-	$input = '';
-
-	while (($char = stream_get_contents(STDIN, 1)) !== PHP_EOL)
-		$input .= $char;
-
-	if ($obscured) {
-		readline_callback_handler_remove();
-		echo PHP_EOL;
-	}
-
-	return empty($input) ? $default : $input;
-}
-
-function put_output($value, $key = []) {
+function build_config($value, $key = []) {
 	$output = '';
 
 	if (is_scalar($value)) {
@@ -57,7 +36,7 @@ function put_output($value, $key = []) {
 		$output .= " = '$value';";
 	} elseif (is_array($value)) {
 		foreach ($value as $subkey => $subvalue)
-			$output .= put_output($subvalue, array_merge($key, [$subkey]));
+			$output .= build_config($subvalue, array_merge($key, [$subkey]));
 	}
 
 	return $output . PHP_EOL;

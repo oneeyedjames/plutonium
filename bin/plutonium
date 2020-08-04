@@ -11,3 +11,24 @@ $task = $argv[1];
 
 if ($file = realpath(__DIR__ . "/$task.php"))
 	require_once $file;
+
+function get_input($prompt, $default = '', $obscured = false) {
+	if ($default) $prompt .= " ($default)";
+
+	echo "$prompt: ";
+
+	if ($obscured)
+		readline_callback_handler_install('', function(){});
+
+	$input = '';
+
+	while (($char = stream_get_contents(STDIN, 1)) !== PHP_EOL)
+		$input .= $char;
+
+	if ($obscured) {
+		readline_callback_handler_remove();
+		echo PHP_EOL;
+	}
+
+	return empty($input) ? $default : $input;
+}
