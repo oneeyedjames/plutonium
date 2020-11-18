@@ -8,4 +8,8 @@ class WidgetsController extends ComponentsController {
 	protected function getMetadata($name) {
 		return Widget::getMetadata($name);
 	}
+
+	protected function getInstance($name) {
+		return Widget::newInstance($this->module->application, $name);
+	}
 }

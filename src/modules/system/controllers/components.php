@@ -6,7 +6,9 @@ abstract class ComponentsController extends Controller {
 	public function createAction() {
 		$slug = strtolower($this->request->name);
 
-		if ($meta = $this->getMetadata($slug)) {
+		if ($component = $this->getInstance($slug)) {
+			$component->install();
+		} else if ($meta = $this->getMetadata($slug)) {
 			$data = [
 				'slug' => $slug,
 				'name' => $meta['package'],
@@ -28,4 +30,5 @@ abstract class ComponentsController extends Controller {
 	}
 
 	abstract protected function getMetadata($name);
+	abstract protected function getInstance($name);
 }
